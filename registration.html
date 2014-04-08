@@ -16,33 +16,34 @@
         </div>
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+                <form ng-submit="logWork()">
                 <div class="form-inline" role="form" style="width:100%">
                     <div class="input-group has-feedback has-{{status}}">
                         
                         <span class="input-group-btn">
                             <button
-                                ng-click="logWork()" 
                                 class="btn btn-lg btn-primary" 
                                 style="height:46px;" 
-                                type="button">
-                                
+                                type="submit">
                                 <span class="glyphicon glyphicon-time"></span>
                             </button>
                         </span>
                         
                         <span class="glyphicon glyphicon-ok form-control-feedback"></span>
                         <span class="glyphicon glyphicon-ban-circle form-control-feedback"></span>
-    
-                        <input 
-                            class="form-control input-lg" 
+
+                        <input
+                            class="form-control input-lg worklog-expression-input"
                             ng-model="workLogExpression"
-                            ng-change="update()" 
                             type="text"
-                            ng-enter="logWork()"
+                            typeahead="s for s in suggestions"
+                            typeahead-wait-ms="100"
+                            typeahead-on-select="selectSuggestion($item)"
                             placeholder="1d #my-project">
                         </input>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -67,20 +68,6 @@
                     <code>1d on #my-project @1966/02/26</code>
                     <p class="lead">Report <strong>8h</strong> to <strong>my-project</strong> on <strong>Feburary 26, 1966</strong>.</p>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel panel-default available-projects" style="margin-top: 30px;">
-                    <div class="panel-heading">Available projects</div>
-                    <div class="panel-body">                
-                        <ul>
-                            <li ng-repeat="project in projectList">{{project}}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div style="color:#999;" class="col-md-10 col-md-offset-1">
                 <div class="example">
                     <code>1d #my-project @monday</code>
                     <p class="lead">Report <strong>8 hours </strong> to <strong>my project</strong> for <strong>last monday</strong>.</p>
