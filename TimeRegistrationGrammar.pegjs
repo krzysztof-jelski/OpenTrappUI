@@ -5,10 +5,10 @@ Workload
     = WorkloadInDays / WorkloadInHours / WorkloadInMinutes
 
 WorkloadInDays
-    = days:NUMBER "d" WorkloadInHours / days:NUMBER "d" WorkloadInMinutes / days:NUMBER "d"
+    = days:NUMBER "d" SPACE_OPT WorkloadInHours / days:NUMBER "d" SPACE_OPT WorkloadInMinutes / days:NUMBER "d"
 
 WorkloadInHours 
-    = hours:NUMBER "h" WorkloadInMinutes / hours:NUMBER "h"
+    = hours:NUMBER "h" SPACE_OPT WorkloadInMinutes / hours:NUMBER "h"
 
 WorkloadInMinutes 
     = minutes:NUMBER "m"
@@ -17,10 +17,28 @@ ProjectClause
     = "#" projectName:WORD
 
 DateClause
-    = .*
+    = "@" DateDefinition
+
+DateDefinition
+    = DayOfWeek / Date / DateOffset / DateAlias
+
+DayOfWeek
+    = "monday" / "tuesday" / "wednesday" / "thursday" / "friday" / "saturday" / "sunday"
+
+Date
+    = DIGIT DIGIT DIGIT DIGIT "/" DIGIT DIGIT "/" DIGIT DIGIT
+
+DateOffset
+    = "t" offsetSign:[+-] offset:NUMBER
+
+DateAlias
+    = "today" / "yesterday" / "tomorrow"
 
 SPACE
     = " "+
+
+SPACE_OPT
+    = " "*
 
 WORD
     = [^ ]+
