@@ -1,5 +1,19 @@
+{
+  function join(array) {
+    return array.join("");
+  }
+}
+
 TimeRegistrationExpression
-    = Workload SPACE ProjectClause SPACE DateClause / Workload SPACE ProjectClause
+    =
+    workload:Workload SPACE projectName:ProjectClause SPACE day:DateClause
+        {
+            return { workload: workload, projectName: projectName, day: day };
+        }
+    / workload:Workload SPACE projectName:ProjectClause
+        {
+            return { workload: workload, projectName: projectName };
+        }
 
 Workload
     = WorkloadInDays / WorkloadInHours / WorkloadInMinutes
@@ -14,7 +28,7 @@ WorkloadInMinutes
     = minutes:NUMBER "m"
 
 ProjectClause
-    = "#" projectName:WORD
+    = "#" projectName:WORD { return projectName; }
 
 DateClause
     = "@" DateDefinition
@@ -41,10 +55,10 @@ SPACE_OPT
     = " "*
 
 WORD
-    = [^ ]+
+    = word:[^ ]+ { return join(word); }
 
 NUMBER
-    = NON_ZERO_DIGIT DIGIT* / DIGIT
+    = first:NON_ZERO_DIGIT rest:DIGIT* { return first + join(rest); } / DIGIT
 
 DIGIT
     = [0-9]
