@@ -19,13 +19,27 @@ Workload
     = WorkloadInDays / WorkloadInHours / WorkloadInMinutes
 
 WorkloadInDays
-    = days:NUMBER "d" SPACE_OPT WorkloadInHours / days:NUMBER "d" SPACE_OPT WorkloadInMinutes / days:NUMBER "d"
+    = 
+    days:Days SPACE_OPT hours:WorkloadInHours { return days + " " + hours; }
+    / days:Days SPACE_OPT minutes:WorkloadInMinutes { return days + " " + minutes; }
+    / Days
 
 WorkloadInHours 
-    = hours:NUMBER "h" SPACE_OPT WorkloadInMinutes / hours:NUMBER "h"
+    =
+    hours:Hours SPACE_OPT minutes:WorkloadInMinutes { return hours + " " + minutes; }
+    / Hours
 
 WorkloadInMinutes 
-    = minutes:NUMBER "m"
+    = Minutes
+
+Days
+    = days:NUMBER "d" { return days + "d"; }
+
+Hours
+    = hours:NUMBER "h" { return hours + "h"; }
+
+Minutes
+    = minutes:NUMBER "m" { return minutes + "m"; }
 
 ProjectClause
     = "#" projectName:WORD { return projectName; }
