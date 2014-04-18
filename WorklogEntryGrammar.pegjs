@@ -4,7 +4,7 @@
   }
 }
 
-TimeRegistrationExpression
+WorkLogEntry
     =
     workload:Workload SPACE projectName:ProjectClause SPACE day:DateClause
         {
