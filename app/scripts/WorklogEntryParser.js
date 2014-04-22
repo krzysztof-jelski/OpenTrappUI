@@ -1,4 +1,4 @@
-angular.module('openTrapp').factory('worklogEntryParser', function (timeProvider) {
+angular.module('openTrapp').factory('worklogEntryParserOld', function (timeProvider) {
 
     var maxDaysForDiff = 365;
     var projectPattern = /#([a-zA-Z0-9_-]+)/;

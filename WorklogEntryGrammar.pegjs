@@ -1,7 +1,9 @@
 {
-  function join(array) {
-    return array.join("");
-  }
+    var dateFormat = "YYYY/MM/DD";
+
+    function join(array) {
+        return array.join("");
+    }
 }
 
 WorkLogEntry
@@ -55,6 +57,13 @@ DayOfWeek
 
 Date
     = DIGIT DIGIT DIGIT DIGIT "/" DIGIT DIGIT "/" DIGIT DIGIT
+        {
+            if (moment(text).isValid()) {
+                return moment(text).format(dateFormat);
+            } else {
+                error("Not a valid date");
+            }
+        }
 
 DateOffset
     = "t" offsetSign:[+-] offset:NUMBER
