@@ -1,10 +1,6 @@
 {
     var dateFormat = "YYYY/MM/DD";
 
-    function join(array) {
-        return array.join("");
-    }
-
     function timeProvider() {
         return options.timeProvider;
     }
@@ -109,10 +105,10 @@ SPACE_OPT
     = " "*
 
 WORD
-    = word:[^ ]+ { return join(word); }
+    = word:[^ ]+ { return text(); }
 
 NUMBER
-    = first:NON_ZERO_DIGIT rest:DIGIT* { return first + join(rest); } / DIGIT
+    = NON_ZERO_DIGIT DIGIT* { return text(); } / DIGIT
 
 DIGIT
     = [0-9]
