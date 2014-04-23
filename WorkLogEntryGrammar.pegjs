@@ -90,7 +90,7 @@ DayOfWeek
     = "monday" / "tuesday" / "wednesday" / "thursday" / "friday" / "saturday" / "sunday"
 
 Date
-    = DIGIT DIGIT DIGIT DIGIT "/" DIGIT DIGIT "/" DIGIT DIGIT
+    = DIGIT DIGIT DIGIT DIGIT "/" DIGIT DIGIT "/" DIGIT DIGIT { return text(); }
 
 DateOffset
     = "t" offsetSign:[+-] offset:NUMBER
