@@ -4,6 +4,10 @@
     function join(array) {
         return array.join("");
     }
+
+    function timeProvider() {
+        return options.timeProvider;
+    }
 }
 
 WorkLogEntry
@@ -47,7 +51,7 @@ ProjectClause
     = "#" projectName:WORD { return projectName; }
 
 DateClause
-    = "@" DateDefinition
+    = "@" date:DateDefinition { return date; }
 
 DateDefinition
     = DayOfWeek / Date / DateOffset / DateAlias
@@ -67,6 +71,10 @@ Date
 
 DateOffset
     = "t" offsetSign:[+-] offset:NUMBER
+        {
+            var daysToAdd = offsetSign + offset;
+            return moment(timeProvider().getCurrentDate()).add('days', daysToAdd).format(dateFormat)
+        }
 
 DateAlias
     = "today" / "yesterday" / "tomorrow"
