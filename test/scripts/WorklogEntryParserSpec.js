@@ -180,21 +180,21 @@ describe('WorkLogEntry Parser should', function () {
         expect(worklogEntryParser.parse(workLogExpression)).toEqual(undefined);
     });
 
-    it('not parse entry with long worload', function () {
+    it('not parse entry with long workload', function () {
         workLogExpression = '17h #Project-Manhattan';
 
         expect(worklogEntryParser.isValid(workLogExpression)).toBe(false);
         expect(worklogEntryParser.parse(workLogExpression)).toEqual(undefined);
     });
 
-    it('not parse entry with long worload', function () {
+    it('not parse entry with negative workload', function () {
         workLogExpression = '-10h #Project-Manhattan';
 
         expect(worklogEntryParser.isValid(workLogExpression)).toBe(false);
         expect(worklogEntryParser.parse(workLogExpression)).toEqual(undefined);
     });
 
-    it('not parse entry with wrong date', function () {
+    it('parse entry for date without trailing zeros', function () {
         workLogExpression = '4h 30m #Project-Manhattan @2014/1/1';
 
         expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
