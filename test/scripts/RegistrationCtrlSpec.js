@@ -66,8 +66,8 @@ describe('Registration Controller should', function() {
 		expect(scope.workLogExpression).toBe('');
 	});
 
-    it('show succesfull alert with actual data', function() {
-        scope.workLogExpression = '#ProjectManhattan 1d 2h 5m';
+    it('show successful alert with actual data', function () {
+        scope.workLogExpression = '1d 2h 5m #ProjectManhattan';
         scope.alert = { type: 'success', message: '1' };
         httpBackend.expectPOST().respond(200);
 
