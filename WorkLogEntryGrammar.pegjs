@@ -86,7 +86,16 @@ DayOfWeek
     = "monday" / "tuesday" / "wednesday" / "thursday" / "friday" / "saturday" / "sunday"
 
 Date
-    = DIGIT DIGIT DIGIT DIGIT "/" DIGIT DIGIT "/" DIGIT DIGIT { return text(); }
+    = Year "/" Month "/" Day { return text(); }
+
+Year
+    = NON_ZERO_DIGIT DIGIT DIGIT DIGIT
+
+Month
+    = [01] DIGIT / NON_ZERO_DIGIT
+
+Day
+    = [0-3] DIGIT / NON_ZERO_DIGIT
 
 DateOffset
     = "t" offsetSign:[+-] offset:NUMBER
