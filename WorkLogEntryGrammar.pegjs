@@ -47,13 +47,13 @@ WorkloadInMinutes
     = Minutes
 
 Days
-    = days:NUMBER "d" { return days + "d"; }
+    = NUMBER "d" { return text(); }
 
 Hours
-    = hours:NUMBER "h" { return hours + "h"; }
+    = NUMBER "h" { return text(); }
 
 Minutes
-    = minutes:NUMBER "m" { return minutes + "m"; }
+    = NUMBER "m" { return text(); }
 
 ProjectClause
     = "#" projectName:WORD { return projectName; }
