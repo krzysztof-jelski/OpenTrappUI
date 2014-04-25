@@ -83,7 +83,7 @@ DateDefinition
     / DateAlias
 
 DayOfWeek
-    = "monday" / "tuesday" / "wednesday" / "thursday" / "friday" / "saturday" / "sunday"
+    = $([Mm] "onday" / [Tt] "uesday" / [Ww] "ednesday" / [Tt] "hursday" / [Ff] "riday" / [Ss] "aturday" / [Ss] "unday")
 
 Date
     = $(Year "/" Month "/" Day)
