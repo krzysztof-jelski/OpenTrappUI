@@ -47,13 +47,13 @@ WorkloadInMinutes
     = Minutes
 
 Days
-    = NUMBER "d" { return text(); }
+    = $(NUMBER "d")
 
 Hours
-    = NUMBER "h" { return text(); }
+    = $(NUMBER "h")
 
 Minutes
-    = NUMBER "m" { return text(); }
+    = $(NUMBER "m")
 
 ProjectClause
     = "#" projectName:WORD { return projectName; }
@@ -86,7 +86,7 @@ DayOfWeek
     = "monday" / "tuesday" / "wednesday" / "thursday" / "friday" / "saturday" / "sunday"
 
 Date
-    = Year "/" Month "/" Day { return text(); }
+    = $(Year "/" Month "/" Day)
 
 Year
     = NON_ZERO_DIGIT DIGIT DIGIT DIGIT
@@ -114,10 +114,10 @@ SPACE_OPT
     = " "*
 
 WORD
-    = word:[^ ]+ { return text(); }
+    = $([^ ]+)
 
 NUMBER
-    = NON_ZERO_DIGIT DIGIT* { return text(); } / DIGIT
+    = $(NON_ZERO_DIGIT DIGIT*) / DIGIT
 
 DIGIT
     = [0-9]
