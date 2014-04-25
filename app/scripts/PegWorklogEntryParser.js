@@ -1,9 +1,9 @@
 angular.module('openTrapp').factory('worklogEntryParser', function (timeProvider) {
     function doParse(expression) {
-        return PegWorkLogEntryParser.parse(expression, {timeProvider: timeProvider});
+        return PegWorkLogEntryParser.parse(expression, { timeProvider: timeProvider });
     }
 
-    return{
+    return {
         isValid: function (expression) {
             return this.parse(expression) != undefined;
         },
