@@ -80,7 +80,6 @@ DateDefinition
             }
         }
     / DateOffset
-    / DateAlias
 
 DayOfWeek
     = $([Mm] "onday" / [Tt] "uesday" / [Ww] "ednesday" / [Tt] "hursday" / [Ff] "riday" / [Ss] "aturday" / [Ss] "unday")
@@ -103,9 +102,6 @@ DateOffset
             var daysToAdd = offsetSign + offset;
             return now().add('days', daysToAdd).format(dateFormat)
         }
-
-DateAlias
-    = "today" / "yesterday" / "tomorrow"
 
 SPACE
     = " "+

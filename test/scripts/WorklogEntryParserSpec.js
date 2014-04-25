@@ -35,13 +35,6 @@ describe('WorkLogEntry Parser should', function () {
         expect(worklogEntryParser.parse(workLogExpression).day).toEqual(currentDateString);
     });
 
-    it('parse worklog for yesterday', function () {
-        workLogExpression = '2h #ProjectManhattan @yesterday';
-
-        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
-        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(yesterdayDateString);
-    });
-
     it('parse worklog for monday', function () {
         workLogExpression = '2h #ProjectManhattan @monday';
 
@@ -79,14 +72,14 @@ describe('WorkLogEntry Parser should', function () {
     });
 
     it('parse worklog with days and hours', function () {
-        workLogExpression = '1d 3h #ProjectManhattan @yesterday';
+        workLogExpression = '1d 3h #ProjectManhattan';
 
         expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
         expect(worklogEntryParser.parse(workLogExpression).workload).toEqual("1d 3h");
     });
 
     it('parse worklog with days and hours', function () {
-        workLogExpression = '1d 5h 15m #ProjectManhattan @yesterday';
+        workLogExpression = '1d 5h 15m #ProjectManhattan';
 
         expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
         expect(worklogEntryParser.parse(workLogExpression).workload).toEqual("1d 5h 15m");
