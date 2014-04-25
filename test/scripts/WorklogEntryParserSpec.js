@@ -173,13 +173,6 @@ describe('WorkLogEntry Parser should', function () {
         expect(worklogEntryParser.parse(workLogExpression)).toEqual(undefined);
     });
 
-    it('not parse entry with long workload', function () {
-        workLogExpression = '17h #Project-Manhattan';
-
-        expect(worklogEntryParser.isValid(workLogExpression)).toBe(false);
-        expect(worklogEntryParser.parse(workLogExpression)).toEqual(undefined);
-    });
-
     it('not parse entry with negative workload', function () {
         workLogExpression = '-10h #Project-Manhattan';
 
