@@ -34,13 +34,13 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 						
 						_(that.projects).forEach(function(status, project){
 							if(status.active && projects[project] == undefined){
-								projects[project] = { hidden: true, active: true };	
+								projects[project] = { hidden: true };	
 							}
 						});
 
 						_(that.employees).forEach(function(status, employee){
 							if(status.active && employees[employee] == undefined){
-								employees[employee] = { hidden: true, active: true };	
+								employees[employee] = { hidden: true };	
 							}
 						});
 

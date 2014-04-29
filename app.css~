@@ -304,6 +304,3 @@ li.h12 {
 .nav > li.disabled > a{
 	background-color: #eee;
 }
-.nav > li.disabled > a:hover{
-	background-color: #eee;
-}
