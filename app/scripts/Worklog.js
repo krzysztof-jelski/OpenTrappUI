@@ -32,6 +32,18 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 							employees[employee] = statusOf(that.employees[employee]); 
 						});
 						
+						_(that.projects).forEach(function(status, project){
+							if(status.active && projects[project] == undefined){
+								projects[project] = { hidden: true, active: true };	
+							}
+						});
+
+						_(that.employees).forEach(function(status, employee){
+							if(status.active && employees[employee] == undefined){
+								employees[employee] = { hidden: true, active: true };	
+							}
+						});
+
 						that.employees = employees;
 						that.projects = projects;
 						

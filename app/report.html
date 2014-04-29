@@ -25,8 +25,8 @@
     <div class="col-md-4">
         <h4>Projects:</h4>
         <ul class="nav nav-pills small">
-            <li ng-repeat="(project, status) in worklog.projects" ng-class="{active: status.active}">
-                <a ng-click="worklog.toggleProject(project)">
+            <li ng-repeat="(project, status) in worklog.projects" ng-class="{active: status.active && !status.hidden, disabled: status.hidden}">
+                <a ng-click="status.hidden || worklog.toggleProject(project)">
                     {{project}}
                             <span ng-if="status.active" class="badge badge-default">
                                 {{status.total}}
@@ -39,8 +39,8 @@
     <div class="col-md-6">
         <h4>Employees:</h4>
         <ul class="nav nav-pills small">
-            <li ng-repeat="(employee, status) in worklog.employees" ng-class="{active: status.active}">
-                <a ng-click="worklog.toggleEmployee(employee)">
+            <li ng-repeat="(employee, status) in worklog.employees" ng-class="{active: status.active && !status.hidden, disabled: status.hidden}">
+                <a ng-click="status.hidden || worklog.toggleEmployee(employee)">
                     {{employee}}
                             <span ng-if="status.active" class="badge badge-default">
                                 {{status.total}}

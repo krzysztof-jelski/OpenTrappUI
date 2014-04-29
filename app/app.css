@@ -300,3 +300,10 @@ li.h12 {
 .alert-success, .alert-failure, .alert-danger {
 	background-image: none;
 }
+
+.nav > li.disabled > a,
+.nav > li.disabled > a:hover{
+	cursor: default;
+	background-color: #eee;
+}
+
