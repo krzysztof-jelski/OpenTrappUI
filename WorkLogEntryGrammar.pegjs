@@ -73,8 +73,8 @@ DateDefinition
         }
     / date:Date
         {
-            if (moment(date).isValid()) {
-                return moment(date).format(dateFormat);
+            if (moment(date, dateFormat).isValid()) {
+                return moment(date, dateFormat).format(dateFormat);
             } else {
                 error("Not a valid date");
             }
