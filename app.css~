@@ -301,6 +301,9 @@ li.h12 {
 	background-image: none;
 }
 
-.nav > li.disabled > a{
+.nav > li.disabled > a,
+.nav > li.disabled > a:hover{
+	cursor: default;
 	background-color: #eee;
 }
+

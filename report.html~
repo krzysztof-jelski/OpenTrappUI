@@ -26,7 +26,7 @@
         <h4>Projects:</h4>
         <ul class="nav nav-pills small">
             <li ng-repeat="(project, status) in worklog.projects" ng-class="{active: status.active && !status.hidden, disabled: status.hidden}">
-                <a ng-click="worklog.toggleProject(project)">
+                <a ng-click="status.hidden || worklog.toggleProject(project)">
                     {{project}}
                             <span ng-if="status.active" class="badge badge-default">
                                 {{status.total}}
