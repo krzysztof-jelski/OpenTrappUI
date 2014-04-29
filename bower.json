@@ -5,10 +5,10 @@
     "description": "Time registration app GUI",
     "private": true,
     "dependencies": {
-        "angular": "1.2.8",
-        "angular-animate": "1.2.8",
-        "angular-cookies": "1.2.8",
-        "angular-route": "1.2.8",
+        "angular": "1.2.16",
+        "angular-animate": "1.2.16",
+        "angular-cookies": "1.2.16",
+        "angular-route": "1.2.16",
         "bootstrap": "3.1.1",
         "lodash": "2.4.1",
         "moment": "2.5.1",
@@ -17,6 +17,6 @@
         "chartjs": "*"
     },
     "devDependencies": {
-        "angular-mocks": "1.2.8"
+        "angular-mocks": "1.2.16"
     }
 }
