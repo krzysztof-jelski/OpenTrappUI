@@ -1,22 +1,22 @@
 {
-  "name": "OpenTrappUI",
-  "version": "1.1.0",
-  "homepage": "https://github.com/Pragmatists/OpenTrappUI",
-  "description": "Time registration app GUI",
-  "private": true,
-  "dependencies": {
-    "angular": "1.2.8",
-    "angular-animate": "1.2.8",
-    "angular-cookies": "1.2.8",
-    "angular-route": "1.2.8",
-    "bootstrap": "3.1.1",
-    "lodash": "2.4.1",
-    "moment": "2.5.1",
-    "sprintf": "*",
-      "angular-bootstrap": "0.10.0",
-      "chartjs": "*"
-  },
-  "devDependencies": {
-    "angular-mocks": "1.2.8"
-  }
+    "name": "OpenTrappUI",
+    "version": "1.1.0",
+    "homepage": "https://github.com/Pragmatists/OpenTrappUI",
+    "description": "Time registration app GUI",
+    "private": true,
+    "dependencies": {
+        "angular": "1.2.16",
+        "angular-animate": "1.2.16",
+        "angular-cookies": "1.2.16",
+        "angular-route": "1.2.16",
+        "bootstrap": "3.1.1",
+        "lodash": "2.4.1",
+        "moment": "2.6.0",
+        "sprintf": "*",
+        "angular-bootstrap": "0.10.0",
+        "chartjs": "*"
+    },
+    "devDependencies": {
+        "angular-mocks": "1.2.16"
+    }
 }
