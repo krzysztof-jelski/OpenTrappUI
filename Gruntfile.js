@@ -68,6 +68,18 @@ module.exports = function (grunt) {
                 },
                 src: '**/*'
             }
+        },
+        'exec': {
+            generate_parser: {
+                cmd: function () {
+                    var path = require('path');
+                    var pegjs = "node_modules" + path.sep + ".bin" + path.sep + "pegjs";
+                    var parserVar = "-e PegWorkLogEntryParser";
+                    var inputGrammar = "WorkLogEntryGrammar.pegjs";
+                    var outputParser = "app" + path.sep + "lib" + path.sep + "PegWorkLogEntryParser.js";
+                    return pegjs + " " + parserVar + " " + inputGrammar + " " + outputParser;
+                }
+            }
         }
     });
 
@@ -84,8 +96,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-http-server');
     grunt.loadNpmTasks('grunt-gh-pages');
+    grunt.loadNpmTasks('grunt-exec');
 
-    grunt.registerTask('default', ['cleanLib', 'bower', 'karma:unit']);
+    grunt.registerTask('default', ['cleanLib', 'bower', 'exec:generate_parser', 'karma:unit']);
 
     grunt.registerTask('server', ["default", 'http-server:dev']);
 };
