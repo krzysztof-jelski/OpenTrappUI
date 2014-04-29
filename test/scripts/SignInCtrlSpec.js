@@ -31,7 +31,7 @@ describe("SignIn", function () {
             "loginUrl": "/loginUrl",
             "logoutUrl": "/logoutUrl"
         });
-        spyOn(location, 'absUrl').andReturn('currentLocation');
+        spyOn(location, 'absUrl').and.returnValue('currentLocation');
 
         scope.init();
         httpBackend.flush();

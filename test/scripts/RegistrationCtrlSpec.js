@@ -20,12 +20,14 @@ describe('Registration Controller should', function() {
 		httpBackend = $httpBackend;
         timeProvider = _timeProvider_;
         currentEmployee = _currentEmployee_;
-        spyOn(timeProvider, 'getCurrentDate').andReturn(new Date(currentDateString));
-        spyOn(currentEmployee, 'username').andReturn(employeeUsername);
-		spyOn(_projectNames_, 'startingWith').andReturn({
+        spyOn(timeProvider, 'getCurrentDate').and.returnValue(new Date(currentDateString));
+        spyOn(currentEmployee, 'username').and.returnValue(employeeUsername);
+        spyOn(_projectNames_, 'startingWith').and.returnValue({
 			forEach: function(callback){}
-		});       
-		spyOn($sce, 'trustAsHtml').andCallFake(function(x){return x;});
+		});
+        spyOn($sce, 'trustAsHtml').and.callFake(function (x) {
+            return x;
+        });
 	}));
 
     it('create scope', function() {
