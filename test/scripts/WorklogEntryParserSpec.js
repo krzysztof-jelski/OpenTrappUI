@@ -186,4 +186,18 @@ describe('WorkLogEntry Parser should', function () {
         expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
         expect(worklogEntryParser.parse(workLogExpression).day).toEqual(yesterdayDateString);
     });
+
+    it('parse worklog padded with spaces', function () {
+        workLogExpression = '  2h #ProjectManhattan @2014/01/03   ';
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression)).toEqual(
+            {
+                projectName: 'ProjectManhattan',
+                workload: '2h',
+                day: '2014/01/03'
+            }
+        );
+    });
+
 });
