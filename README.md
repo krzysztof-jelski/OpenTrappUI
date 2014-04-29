@@ -30,6 +30,10 @@ Run unit tests in 'continuous run' mode with 'autoWatch'
 
     grunt karma:dev
 
+Re-generate worklog entry parser
+
+    grunt exec:generate_parser
+
 Publish on Github on PROD
 
     grunt gh-pages:prod
