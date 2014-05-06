@@ -306,4 +306,15 @@ li.h12 {
 	cursor: default;
 	background-color: #eee;
 }
+.modal-header {
+	padding-top: 1px;
+	padding-bottom: 5px;
+	padding-left: 30px;
+	background-color: #ffffff;
+}
+.modal-footer {
+	background-color: #eee;
+	padding: 15px;
+	margin: 0px;
+}
 
