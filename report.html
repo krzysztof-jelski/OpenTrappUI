@@ -34,6 +34,17 @@
                 </a>
             </li>
 
+            <li class="separator"></li>
+            <li class="pull-right">
+                <a ng-click="worklog.enableAllProjects()">
+                    <span class="glyphicon glyphicon-plus"></span> All
+                </a>
+            </li>
+            <li class="pull-right">
+                <a ng-click="worklog.disableAllProjects()">
+                    <span class="glyphicon glyphicon-minus"></span> None
+                </a>
+            </li>
         </ul>
     </div>
     <div class="col-md-6">
@@ -45,6 +56,18 @@
                             <span ng-if="status.active" class="badge badge-default">
                                 {{status.total}}
                             </span>
+                </a>
+            </li>
+
+            <li class="separator"></li>
+            <li class="pull-right">
+                <a ng-click="worklog.enableAllEmployees()">
+                    <span class="glyphicon glyphicon-plus"></span> All
+                </a>
+            </li>
+            <li class="pull-right">
+                <a ng-click="worklog.disableAllEmployees()">
+                    <span class="glyphicon glyphicon-minus"></span> None
                 </a>
             </li>
         </ul>
