@@ -306,4 +306,10 @@ li.h12 {
 	cursor: default;
 	background-color: #eee;
 }
-
+.nav > li.separator {
+	clear:both;
+	width: 100%;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #eee;
+}

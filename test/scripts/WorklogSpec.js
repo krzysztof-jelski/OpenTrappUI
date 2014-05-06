@@ -99,6 +99,39 @@ describe('Worklog', function() {
 		expect(worklog.projects['ProjectManhattan'].active).toBeTruthy();
 	});
 	
+	it('enables all projects', function(){
+		
+		// given:
+		worklogWith(
+				{ projectName: 'ProjectManhattan' },
+				{ projectName: 'ApolloProgram' }
+			);
+		
+		// when:
+		worklog.enableAllProjects();
+		
+		// then:
+		expect(worklog.projects['ProjectManhattan'].active).toBeTruthy();
+		expect(worklog.projects['ApolloProgram'].active).toBeTruthy();
+	});
+	
+	it('disables all projects', function(){
+		
+		// given:
+		worklogWith(
+				{ projectName: 'ProjectManhattan' },
+				{ projectName: 'ApolloProgram' }
+			);
+		worklog.enableAllProjects();
+		
+		// when:
+		worklog.disableAllProjects();
+		
+		// then:
+		expect(worklog.projects['ProjectManhattan'].active).toBeFalsy();
+		expect(worklog.projects['ApolloProgram'].active).toBeFalsy();
+	});
+	
 	it('enables employee', function(){
 		
 		// given:
@@ -126,6 +159,39 @@ describe('Worklog', function() {
 		
 		// then:
 		expect(worklog.employees['bart.simpson'].active).toBeTruthy();
+	});
+	
+	it('enables all employees', function(){
+		
+		// given:
+		worklogWith(
+				{ employee: 'bart.simpson' },
+				{ employee: 'homer.simpson' }
+			);
+		
+		// when:
+		worklog.enableAllEmployees();
+		
+		// then:
+		expect(worklog.employees['bart.simpson'].active).toBeTruthy();
+		expect(worklog.employees['homer.simpson'].active).toBeTruthy();
+	});
+	
+	it('disables all employees', function(){
+		
+		// given:
+		worklogWith(
+				{ employee: 'bart.simpson' },
+				{ employee: 'homer.simpson' }
+		);
+		worklog.enableAllEmployees();
+		
+		// when:
+		worklog.disableAllEmployees();
+		
+		// then:
+		expect(worklog.employees['bart.simpson'].active).toBeFalsy();
+		expect(worklog.employees['homer.simpson'].active).toBeFalsy();
 	});
 	
 	it('toggles project', function(){

@@ -76,11 +76,33 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 			that.employees[employee] = { active: true };
 			apply();
 		},
+		enableAllEmployees: function(){
+			_(that.employees).forEach(function(status){
+				status.active = true;
+			});
+			apply();
+		},
+		disableAllEmployees: function(){
+			_(that.employees).forEach(function(status){
+				status.active = false;
+			});
+			apply();
+		},
 		enableProject: function(project){
 			
 			that.projects[project] = { active: true };
 			apply();
 		}, 
+		enableAllProjects: function(){
+			_(that.projects).forEach(function(status){
+				status.active = true;
+			});
+		},
+		disableAllProjects: function(){
+			_(that.projects).forEach(function(status){
+				status.active = false;
+			});
+		},
 		enableEmployeeProjects: function(employee){
 
 			_(worklog).forEach(function(x){
