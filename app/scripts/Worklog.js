@@ -97,11 +97,13 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 			_(that.projects).forEach(function(status){
 				status.active = true;
 			});
+			apply();
 		},
 		disableAllProjects: function(){
 			_(that.projects).forEach(function(status){
 				status.active = false;
 			});
+			apply();
 		},
 		enableEmployeeProjects: function(employee){
 
