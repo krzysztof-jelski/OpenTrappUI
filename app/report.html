@@ -12,6 +12,7 @@
     <div class="col-md-2">
         <h4>Month:</h4>
         <ul class="nav nav-pills small months">
+
             <li ng-repeat="month in months" ng-class="month == worklog.month ? 'active' : ''">
                 <a ng-click="worklog.setMonth(month)">
                     {{month}}
@@ -19,6 +20,9 @@
                         {{worklog.month.total}}
                     </span>
                 </a>
+		<a ng-if="month == worklog.month" ng-click="worklog.setMonth(month)" class="refresh">
+			<span class="glyphicon glyphicon-refresh"></span>
+		</a>
             </li>
         </ul>
     </div>
