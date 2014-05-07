@@ -20,7 +20,7 @@
                         {{worklog.month.total}}
                     </span>
                 </a>
-		<a ng-if="month == worklog.month" ng-click="worklog.setMonth(month)" class="refresh">
+		<a ng-click="worklog.setMonth(month)" class="refresh">
 			<span class="glyphicon glyphicon-refresh"></span>
 		</a>
             </li>
