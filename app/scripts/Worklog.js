@@ -156,12 +156,18 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 		_(that.projects).forEach(resetTotal);
 		_([that.month]).forEach(resetTotal);
 		
-		_(that.entries).forEach(function(x){
+		_(worklog).forEach(function(x){
 			if(x.workload){
 				var workload = new Workload(x.workload);
-				that.month.total = that.month.total.add(workload);
-				that.employees[x.employee].total = that.employees[x.employee].total.add(workload); 
-				that.projects[x.projectName].total = that.projects[x.projectName].total.add(workload); 
+				if(that.employees[x.employee].active && that.projects[x.projectName].active){
+					that.month.total = that.month.total.add(workload);
+				}
+				if(that.projects[x.projectName].active){
+					that.employees[x.employee].total = that.employees[x.employee].total.add(workload); 
+				}
+				if(that.employees[x.employee].active){
+					that.projects[x.projectName].total = that.projects[x.projectName].total.add(workload); 
+				}
 			}
 		});
 

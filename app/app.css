@@ -330,3 +330,6 @@ li.h12 {
 	background-color: #ffffff;
 	color: #2d6ca2;
 }
+.nav > li.hidden {
+	display: none;
+}
