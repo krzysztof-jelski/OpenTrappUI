@@ -312,6 +312,7 @@ li.h12 {
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 	border-bottom-color: #eee;
+	margin-top: 15px;	
 }
 .nav > li.refresh {
 	min-width:0px;
@@ -319,6 +320,15 @@ li.h12 {
 .nav > li {
 	position: relative;
 }
+.nav > li.active.disabled > a {
+	color: #999;
+}
+
+.nav > li.active.hidden {
+	display: block !important;
+	visibility: visible !important;
+}
+
 .nav > li > a.refresh:hover,
 .nav > li > a.refresh {
 	padding-top: 8px;
