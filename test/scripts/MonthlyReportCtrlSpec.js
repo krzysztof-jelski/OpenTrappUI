@@ -85,12 +85,34 @@ describe('Monthly Report Controller', function () {
     	worklogUpdated();
     	
     	// then:
-        expect(scope.report)
+        expect(scope.report.json())
         	.toEqual({
                 "bart.simpson": { "2014/01/01": "3.5", "2014/01/02": "3", "total": "6.5" },
                 "homer.simpson": { "2014/01/02": "4.33", "total": "4.33" },
                 "Total": { "2014/01/01": "3.5", "2014/01/02": "7.33", "total": "10.83" }
         	});
+    });
+
+    it("rounds to hours only once", function () {
+        worklog.entries = [
+            {
+                day: "2014/01/01",
+                employee: "bart.simpson",
+                workload: "1h"
+            }
+        ];
+        scope.init();
+
+        // when:
+        worklogUpdated();
+        scope.report.json();
+
+        // then:
+        expect(scope.report.json())
+            .toEqual({
+                "bart.simpson": { "2014/01/01": "1", "total": "1" },
+                "Total": { "2014/01/01": "1", "total": "1" }
+            });
     });
 
 

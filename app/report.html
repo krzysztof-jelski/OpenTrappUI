@@ -132,7 +132,7 @@
                     Total
                 </th>
             </tr>
-            <tr ng-repeat="(employee, hours) in report">
+            <tr ng-repeat="(employee, hours) in report.json()">
                 <td class="employee">{{employee}}</td>
                 <td ng-repeat="day in days" ng-class="{weekend: day.holiday}">
                     {{hours[day.id]}}
