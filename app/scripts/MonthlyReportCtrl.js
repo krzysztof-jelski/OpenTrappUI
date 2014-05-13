@@ -32,25 +32,40 @@ angular.module('openTrapp')
 		
 		var calculateDays = function(){
 			$scope.report = {};
-			_(worklog.entries).forEach(function(x){
-				var employee = $scope.report[x.employee] || {};
-                var totalPerDay = $scope.report['Total'] || {};
-				var day = employee[x.day] || 0;
-                var dayTotal = totalPerDay[x.day] || 0;
-				var employeeTotal = employee.total || 0;
-				var allEmployeesTotal = totalPerDay.total || 0;
-				employee[x.day] = day + new Workload(x.workload).minutes;
-				employee.total = employeeTotal + new Workload(x.workload).minutes;
-                totalPerDay[x.day] = dayTotal +  new Workload(x.workload).minutes;
-                totalPerDay.total = allEmployeesTotal +  new Workload(x.workload).minutes;
-				$scope.report[x.employee] = employee;
-				$scope.report['Total'] = totalPerDay;
-			});
-			
+
+            _(worklog.entries).forEach(function(worklogEntry){
+                updateEmployeeWorkload(worklogEntry);
+                updateTotalWorkload(worklogEntry);
+            });
+
 			_($scope.report).forEach(function(employee){
 				_(employee).forEach(function(minutes, day){
 					employee[day] = toHours(minutes);
 				});
 			});
-		};
+
+            function updateEmployeeWorkload(worklogEntry) {
+                var rowName = worklogEntry.employee;
+                updateRowWithWorkload(rowName, worklogEntry);
+            }
+
+            function updateTotalWorkload(worklogEntry) {
+                updateRowWithWorkload('Total', worklogEntry);
+            }
+
+            function addWorkloadToCell(row, column, workload) {
+                var currentWorkload = (row[column] || 0);
+                row[column] = currentWorkload + workload;
+            }
+
+            function updateRowWithWorkload(key, worklogEntry) {
+                var row = $scope.report[key] || {};
+
+                var minutes = new Workload(worklogEntry.workload).minutes;
+                addWorkloadToCell(row, worklogEntry.day, minutes);
+                addWorkloadToCell(row, 'total', minutes);
+
+                $scope.report[key] = row;
+            }
+        };
 	});
