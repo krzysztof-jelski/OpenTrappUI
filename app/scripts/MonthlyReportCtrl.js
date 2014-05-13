@@ -34,11 +34,17 @@ angular.module('openTrapp')
 			$scope.report = {};
 			_(worklog.entries).forEach(function(x){
 				var employee = $scope.report[x.employee] || {};
+                var totalPerDay = $scope.report['Total'] || {};
 				var day = employee[x.day] || 0;
-				var total = employee.total || 0;
+                var dayTotal = totalPerDay[x.day] || 0;
+				var employeeTotal = employee.total || 0;
+				var allEmployeesTotal = totalPerDay.total || 0;
 				employee[x.day] = day + new Workload(x.workload).minutes;
-				employee.total = total + new Workload(x.workload).minutes;
+				employee.total = employeeTotal + new Workload(x.workload).minutes;
+                totalPerDay[x.day] = dayTotal +  new Workload(x.workload).minutes;
+                totalPerDay.total = allEmployeesTotal +  new Workload(x.workload).minutes;
 				$scope.report[x.employee] = employee;
+				$scope.report['Total'] = totalPerDay;
 			});
 			
 			_($scope.report).forEach(function(employee){

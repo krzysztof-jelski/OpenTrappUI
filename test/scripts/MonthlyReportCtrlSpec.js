@@ -88,8 +88,10 @@ describe('Monthly Report Controller', function () {
         expect(scope.report)
         	.toEqual({
                 "bart.simpson": { "2014/01/01": "3.5", "2014/01/02": "3", "total": "6.5" },
-                "homer.simpson": { "2014/01/02": "4.33", "total": "4.33" }
+                "homer.simpson": { "2014/01/02": "4.33", "total": "4.33" },
+                "Total": { "2014/01/01": "3.5", "2014/01/02": "7.33", "total": "10.83" }
         	});
     });
-    
+
+
 });
