@@ -25,7 +25,7 @@ angular.module('openTrapp')
 						number: m.format('DD'),
 						name: m.format('ddd'),
 						holiday: d.holiday
-					}
+					};
 				}).value();
 			});
 		};

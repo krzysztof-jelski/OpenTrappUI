@@ -6,8 +6,6 @@ describe('Registration Controller should', function() {
     	};
     }));
 
-    var timeProvider;
-    var projectList;
     var currentDateString = "2014/01/02";
     var employeeUsername = 'homer.simpson';
 
@@ -18,10 +16,8 @@ describe('Registration Controller should', function() {
 			$scope : scope
 		});
 		httpBackend = $httpBackend;
-        timeProvider = _timeProvider_;
-        currentEmployee = _currentEmployee_;
-        spyOn(timeProvider, 'getCurrentDate').and.returnValue(new Date(currentDateString));
-        spyOn(currentEmployee, 'username').and.returnValue(employeeUsername);
+        spyOn(_timeProvider_, 'getCurrentDate').and.returnValue(new Date(currentDateString));
+        spyOn(_currentEmployee_, 'username').and.returnValue(employeeUsername);
         spyOn(_projectNames_, 'startingWith').and.returnValue({
 			forEach: function(callback){}
 		});
