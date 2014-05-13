@@ -25,8 +25,24 @@ describe('Worklog', function() {
 		worklog.setMonth('2014/01');
 		httpBackend.flush();
 	});
-	
-	it('exposes active month', function(){
+
+    it('fetches data for given months', function(){
+
+        // expect:
+        httpBackend
+            .expectGET('http://localhost:8080/endpoints/v1/calendar/201401/work-log/entries')
+            .respond(200);
+        httpBackend
+            .expectGET('http://localhost:8080/endpoints/v1/calendar/201401,201402/work-log/entries')
+            .respond(200);
+
+        // when:
+        worklog.toggleMonth('2014/01');
+        worklog.toggleMonth('2014/02');
+        httpBackend.flush();
+    });
+
+    it('exposes active month', function(){
 		
 		// given:
 		monthContainsFollowingItems('2014/01', []); 
@@ -37,24 +53,24 @@ describe('Worklog', function() {
 		// then:
 		expect(worklog.month).toEqual('2014/01');
 	});
-	
-	it('exposes project names', function(){
-		
-		// given:
-		monthContainsFollowingItems('2014/01', 
-				[
-				 { projectName: 'ProjectManhattan' }, 
-				 { projectName: 'ApolloProgram' } 
-			    ]);
-		// when:
-		worklogFor('2014/01');
-		
-		// then:
-		expect(worklog.projects['ProjectManhattan']).toBeDefined();
-		expect(worklog.projects['ApolloProgram']).toBeDefined()
-	});
 
-	it('exposes employee usernames', function(){
+    it('exposes project names', function(){
+
+        // given:
+        monthContainsFollowingItems('2014/01',
+            [
+                { projectName: 'ProjectManhattan' },
+                { projectName: 'ApolloProgram' }
+            ]);
+        // when:
+        worklogFor('2014/01');
+
+        // then:
+        expect(worklog.projects['ProjectManhattan']).toBeDefined();
+        expect(worklog.projects['ApolloProgram']).toBeDefined()
+    });
+
+    it('exposes employee usernames', function(){
 		
 		// given:
 		monthContainsFollowingItems('2014/01', 
@@ -193,37 +209,63 @@ describe('Worklog', function() {
 		expect(worklog.employees['bart.simpson'].active).toBeFalsy();
 		expect(worklog.employees['homer.simpson'].active).toBeFalsy();
 	});
-	
-	it('toggles project', function(){
-		
-		// given:
-		worklogWith({ 
-				projectName: 'ProjectManhattan' 
-			});
-		
-		// when:
-		worklog.toggleProject('ProjectManhattan');
-		
-		// then:
-		expect(worklog.projects['ProjectManhattan'].active).toBeTruthy();
-	});
-	
-	it('toggles project twice', function(){
-		
-		// given:
-		worklogWith({ 
-				projectName: 'ProjectManhattan' 
-			});
 
-		// when:
-		worklog.toggleProject('ProjectManhattan');
-		worklog.toggleProject('ProjectManhattan');
-		
-		// then:
-		expect(worklog.projects['ProjectManhattan'].active).toBeFalsy();
-	});
-	
-	it('toggles employee', function(){
+    it('toggles project', function(){
+
+        // given:
+        worklogWith({
+            projectName: 'ProjectManhattan'
+        });
+
+        // when:
+        worklog.toggleProject('ProjectManhattan');
+
+        // then:
+        expect(worklog.projects['ProjectManhattan'].active).toBeTruthy();
+    });
+
+    it('toggles project twice', function(){
+
+        // given:
+        worklogWith({
+            projectName: 'ProjectManhattan'
+        });
+
+        // when:
+        worklog.toggleProject('ProjectManhattan');
+        worklog.toggleProject('ProjectManhattan');
+
+        // then:
+        expect(worklog.projects['ProjectManhattan'].active).toBeFalsy();
+    });
+
+    it('toggles month', function(){
+
+        // given:
+        worklogWithMonths('2014/01');
+
+        // when:
+        worklog.toggleMonth('2014/01');
+
+        // then:
+        expect(worklog.months['2014/01'].active).toBeFalsy();
+    });
+
+    it('toggles month twice', function(){
+
+        // given:
+        worklogWithMonths('2014/01');
+
+        // when:
+        worklog.toggleMonth('2014/01');
+        worklog.toggleMonth('2014/01');
+
+        // then:
+        expect(worklog.months['2014/01'].active).toBeTruthy();
+    });
+
+
+    it('toggles employee', function(){
 		
 		// given:
 		worklogWith({ 
@@ -333,26 +375,30 @@ describe('Worklog', function() {
 
 			// given:
 			worklogWith(
-					{ employee: 'bart.simpson', projectName: 'ProjectManhattan', workload: '1m' },
-					{ employee: 'homer.simpson', projectName: 'ProjectManhattan', workload: '1h' },
-					{ employee: 'bart.simpson', projectName: 'ApolloProgram', workload: '1d' },
-					{ employee: 'homer.simpson', projectName: 'ApolloProgram', workload: '7m' },
-					{ employee: 'inactive.employee', projectName: 'ProjectManhattan', workload: '1h 15m'},
-					{ employee: 'homer.simpson', projectName: 'InactiveProject', workload: '1h 45m'}
+					{ employee: 'bart.simpson', projectName: 'ProjectManhattan', workload: '1m', day: '2014/04/01' },
+					{ employee: 'homer.simpson', projectName: 'ProjectManhattan', workload: '1h', day: '2014/04/02' },
+					{ employee: 'bart.simpson', projectName: 'ApolloProgram', workload: '1d', day: '2014/04/03' },
+					{ employee: 'homer.simpson', projectName: 'ApolloProgram', workload: '7m', day: '2014/05/04' },
+					{ employee: 'inactive.employee', projectName: 'ProjectManhattan', workload: '1h 15m', day: '2014/05/05'},
+					{ employee: 'homer.simpson', projectName: 'InactiveProject', workload: '1h 45m', day: '2014/05/06'},
+                    { employee: 'homer.simpson', projectName: 'ApolloProgram', workload: '1d', day: '2014/06/07' }
 			);
 			
 			// when:
+            worklog.toggleMonth('2014/04');
+            worklog.toggleMonth('2014/05');
 			worklog.toggleEmployee('bart.simpson');
 			worklog.toggleEmployee('homer.simpson');
 			worklog.toggleProject('ProjectManhattan');
 			worklog.toggleProject('ApolloProgram');
-			
+
 		});
 		
-		it('is calculated for active month', function(){
+		it('is calculated for active months', function(){
 			
 			// then:
-			expect(worklog.month.total).toEqual("1d 1h 8m");
+			expect(worklog.months['2014/04'].total).toEqual("1d 1h 1m");
+			expect(worklog.months['2014/05'].total).toEqual("7m");
 		});
 
 		it('is calculated for every active employee', function(){
@@ -465,21 +511,37 @@ describe('Worklog', function() {
 		});
 	};
 
-	var monthContainsFollowingItems = function(month, items){
-		httpBackend
-			.whenGET('http://localhost:8080/endpoints/v1/calendar/' + month + '/work-log/entries')
-			.respond(200, { items: items });
-	};
-	
-	var worklogFor = function(month){
+    var monthContainsFollowingItems = function(month, items){
+        httpBackend
+            .whenGET('http://localhost:8080/endpoints/v1/calendar/' + month + '/work-log/entries')
+            .respond(200, { items: items });
+    };
+
+    var monthsContainsFollowingItems = function(months, items){
+        var requestMonths = _(months).map(function(x){
+            return x.replace('/', '');
+        }).join(",");
+
+        httpBackend
+            .whenGET('http://localhost:8080/endpoints/v1/calendar/' + requestMonths + '/work-log/entries')
+            .respond(200, { items: items });
+    };
+
+
+    var worklogFor = function(month){
 		worklog.setMonth(month);
 		httpBackend.flush();
 	};
-	
-	var worklogWith = function(items){
 
-		monthContainsFollowingItems('2014/01', _.toArray(arguments));
-		worklogFor('2014/01');
-	};
+    var worklogWith = function(items){
+
+        monthContainsFollowingItems('2014/01', _.toArray(arguments));
+        worklogFor('2014/01');
+    };
+    var worklogWithMonths = function(month){
+
+        monthContainsFollowingItems(month, { projectName: "Default project"});
+        worklogFor(month);
+    };
 
 });
