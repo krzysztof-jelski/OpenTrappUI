@@ -9,6 +9,10 @@ angular.module('openTrapp')
 				calculateDays();
 			});
 		};
+
+        $scope.satisfies = function() {
+            return false;
+        };
 		
 		var fetchDays = function(){
 			$http.get('http://localhost:8080/endpoints/v1/calendar/' + worklog.month).success(function(data){

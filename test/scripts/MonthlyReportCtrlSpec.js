@@ -85,12 +85,13 @@ describe('Monthly Report Controller', function () {
     	worklogUpdated();
     	
     	// then:
-        expect(scope.report.json())
+        expect(scope.report.employees())
         	.toEqual({
                 "bart.simpson": { "2014/01/01": "3.5", "2014/01/02": "3", "total": "6.5" },
-                "homer.simpson": { "2014/01/02": "4.33", "total": "4.33" },
-                "Total": { "2014/01/01": "3.5", "2014/01/02": "7.33", "total": "10.83" }
-        	});
+                "homer.simpson": { "2014/01/02": "4.33", "total": "4.33" }
+            });
+        expect(scope.report.total())
+            .toEqual({ "2014/01/01": "3.5", "2014/01/02": "7.33", "total": "10.83" });
     });
 
     it("rounds to hours only once", function () {
@@ -105,13 +106,12 @@ describe('Monthly Report Controller', function () {
 
         // when:
         worklogUpdated();
-        scope.report.json();
+        scope.report.employees();
 
         // then:
-        expect(scope.report.json())
+        expect(scope.report.employees())
             .toEqual({
-                "bart.simpson": { "2014/01/01": "1", "total": "1" },
-                "Total": { "2014/01/01": "1", "total": "1" }
+                "bart.simpson": { "2014/01/01": "1", "total": "1" }
             });
     });
 

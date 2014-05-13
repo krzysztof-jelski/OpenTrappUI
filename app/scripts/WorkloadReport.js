@@ -1,20 +1,30 @@
 var WorkloadReport = function() {
-    var report = {};
+    var employeesReport = {};
+    var totalReport = {};
     this.updateWorkload = function (worklogEntry) {
         updateEmployeeWorkload(worklogEntry);
         updateTotalWorkload(worklogEntry);
     };
 
-    this.json = function() {
-        return  report;
+    this.total = function() {
+        return totalReport;
     };
 
-    this.roundToHours = function() {
-        _(report).forEach(function (employee) {
-            _(employee).forEach(function (minutes, day) {
-                employee[day] = minutesToHours(minutes);
-            });
+    this.employees = function() {
+        return employeesReport;
+    };
+
+    function updateMinutesToHoursOnRow(row) {
+        _(row).forEach(function (minutes, column) {
+            row[column] = minutesToHours(minutes);
         });
+    }
+
+    this.roundToHours = function() {
+        _(employeesReport).forEach(function (row) {
+            updateMinutesToHoursOnRow(row);
+        });
+        updateMinutesToHoursOnRow(totalReport)
     };
 
     function minutesToHours(minutes){
@@ -27,7 +37,9 @@ var WorkloadReport = function() {
     }
 
     function updateTotalWorkload(worklogEntry) {
-        updateRowWithWorkload('Total', worklogEntry);
+        var minutes = new Workload(worklogEntry.workload).minutes;
+        addWorkloadToCell(totalReport, worklogEntry.day, minutes);
+        addWorkloadToCell(totalReport, 'total', minutes);
     }
 
     function addWorkloadToCell(row, column, workload) {
@@ -36,12 +48,12 @@ var WorkloadReport = function() {
     }
 
     function updateRowWithWorkload(key, worklogEntry) {
-        var row = report[key] || {};
+        var row = employeesReport[key] || {};
 
         var minutes = new Workload(worklogEntry.workload).minutes;
         addWorkloadToCell(row, worklogEntry.day, minutes);
         addWorkloadToCell(row, 'total', minutes);
 
-        report[key] = row;
+        employeesReport[key] = row;
     }
 };
