@@ -12,7 +12,6 @@
     <div class="col-md-2">
         <h4>Month:</h4>
         <ul class="nav nav-pills small months">
-
             <li ng-repeat="month in months" ng-class="month == worklog.month ? 'active' : ''">
                 <a ng-click="worklog.setMonth(month)">
                     {{month}}
@@ -20,9 +19,6 @@
                         {{worklog.month.total}}
                     </span>
                 </a>
-		<a ng-click="worklog.setMonth(month)" class="refresh">
-			<span class="glyphicon glyphicon-refresh"></span>
-		</a>
             </li>
         </ul>
     </div>
@@ -38,17 +34,6 @@
                 </a>
             </li>
 
-            <li class="separator"></li>
-            <li class="pull-right">
-                <a ng-click="worklog.enableAllProjects()">
-                    <span class="glyphicon glyphicon-plus"></span> All
-                </a>
-            </li>
-            <li class="pull-right">
-                <a ng-click="worklog.disableAllProjects()">
-                    <span class="glyphicon glyphicon-minus"></span> None
-                </a>
-            </li>
         </ul>
     </div>
     <div class="col-md-6">
@@ -62,18 +47,6 @@
                             </span>
                 </a>
             </li>
-
-            <li class="separator"></li>
-            <li class="pull-right">
-                <a ng-click="worklog.enableAllEmployees()">
-                    <span class="glyphicon glyphicon-plus"></span> All
-                </a>
-            </li>
-            <li class="pull-right">
-                <a ng-click="worklog.disableAllEmployees()">
-                    <span class="glyphicon glyphicon-minus"></span> None
-                </a>
-            </li>
         </ul>
     </div>
 </div>
@@ -82,18 +55,18 @@
         <h2>{{worklog.month.toString()}}</h2>
         <ul class="nav nav-pills small">
             <li ng-class="{active: display=='table'}" ng-click="display='table'">
-                <a title="Table">
-                <span class="glyphicon glyphicon-th-list"></span>
+                <a>
+                    <span class="glyphicon glyphicon-th-list"></span>
                 </a>
             </li>
             <li ng-class="{active: display=='calendar'}" ng-click="display='calendar'">
-                <a title="Calendar">
-                <span class="glyphicon glyphicon-calendar"></span>
+                <a>
+                    <span class="glyphicon glyphicon-calendar"></span>
                 </a>
             </li>
             <li ng-class="{active: display=='pie-chart'}" ng-click="display='pie-chart'">
-                <a title="Chart">
-                <span class="glyphicon glyphicon-stats"></span>
+                <a>
+                    <span class="glyphicon glyphicon-stats"></span>
                 </a>
             </li>
         </ul>
@@ -116,10 +89,17 @@
             </tr>
             <tr ng-repeat="(employee, hours) in report">
                 <td class="employee">{{employee}}</td>
-                <td ng-repeat="day in days" ng-class="{weekend: day.holiday}">
+                <td ng-repeat="day in days" ng-class="{weekend: day.holiday}" style="position:relative;">
                     {{hours[day.id]}}
+		    <small ng-if="hours[day.id] && hours[day.id] - 8 != 0" ng-class="{plus: hours[day.id] - 8 > 0, minus: hours[day.id] - 8 < 0}">
+			{{hours[day.id] - 8}}
+		    </small>
                 </td>
-                <td class="total">{{hours.total}}</td>
+                <td class="total">{{hours.total}}
+			<small>
+				{{hours.total - ((Object.getOwnPropertyNames(hours).length - 1)*8)}}
+			</small>
+		</td>
             </tr>
         </thead>
     </table>
