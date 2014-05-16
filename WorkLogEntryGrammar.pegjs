@@ -79,6 +79,17 @@ DateDefinition
                 error("Not a valid date");
             }
         }
+    / relativeDay:RelativeDay
+        {
+            relativeDay = relativeDay.toLowerCase();
+            var relativeDayDate = now();
+            if (relativeDay === "yesterday") {
+                relativeDayDate.subtract('days', 1);
+            } else if (relativeDay === "tomorrow") {
+                relativeDayDate.add('days', 1);
+            }
+            return relativeDayDate.format(dateFormat);
+        }
     / DateOffset
 
 DayOfWeek
@@ -95,6 +106,9 @@ Month
 
 Day
     = [0-3] DIGIT / NON_ZERO_DIGIT
+
+RelativeDay
+    = $([Yy] "esterday" / [Tt] "oday" / [Tt] "omorrow")
 
 DateOffset
     = "t" offsetSign:[+-] offset:NUMBER
