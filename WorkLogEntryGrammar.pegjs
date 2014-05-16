@@ -8,6 +8,19 @@
     function now() {
         return moment(timeProvider().getCurrentDate());
     }
+
+    function dateOfLast(dayOfWeek) {
+        var dayOfWeekDate = now().day(dayOfWeek);
+        if (dayOfWeekDate.isAfter(now())) {
+            dayOfWeekDate.subtract('days', 7);
+        }
+        return dayOfWeekDate;
+    }
+
+    function dateOfNext(dayOfWeek) {
+        var dayOfWeekDate = dateOfLast(dayOfWeek).add('days', 7);
+        return dayOfWeekDate;
+    }
 }
 
 WorkLogEntry
@@ -65,11 +78,17 @@ DateDefinition
     =
     dayOfWeek:DayOfWeek
         {
-            var dayOfWeekDate = now().day(dayOfWeek);
-            if (dayOfWeekDate.isAfter(now())) {
-                dayOfWeekDate.subtract('days', 7);
-            }
-            return dayOfWeekDate.format(dateFormat);
+            return dateOfLast(dayOfWeek).format(dateFormat);
+        }
+    / dayOfWeekWithPrefix:LastDayOfWeek
+        {
+            var dayOfWeek = dayOfWeekWithPrefix.replace("last-", "");
+            return dateOfLast(dayOfWeek).format(dateFormat);
+        }
+    / dayOfWeekWithPrefix:NextDayOfWeek
+        {
+            var dayOfWeek = dayOfWeekWithPrefix.replace("next-", "");
+            return dateOfNext(dayOfWeek).format(dateFormat);
         }
     / date:Date
         {
@@ -94,6 +113,12 @@ DateDefinition
 
 DayOfWeek
     = $([Mm] "onday" / [Tt] "uesday" / [Ww] "ednesday" / [Tt] "hursday" / [Ff] "riday" / [Ss] "aturday" / [Ss] "unday")
+
+LastDayOfWeek
+    = $("last-" DayOfWeek)
+
+NextDayOfWeek
+    = $("next-" DayOfWeek)
 
 Date
     = $(Year "/" Month "/" Day)

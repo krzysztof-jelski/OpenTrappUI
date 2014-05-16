@@ -8,6 +8,8 @@ describe('WorkLogEntry Parser should', function () {
     var tomorrowDateString = "2014/01/03";
     var mondayBeforeTodayString = "2013/12/30";
     var fridayBeforeTodayString = "2013/12/27";
+    var mondayAfterTodayString = "2014/01/06";
+    var fridayAfterTodayString = "2014/01/03";
 
     beforeEach(inject(function (_worklogEntryParser_, _timeProvider_) {
         timeProvider = _timeProvider_;
@@ -54,6 +56,34 @@ describe('WorkLogEntry Parser should', function () {
 
         expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
         expect(worklogEntryParser.parse(workLogExpression).day).toEqual(fridayBeforeTodayString);
+    });
+
+    it('parse worklog for last monday', function () {
+        workLogExpression = '2h #ProjectManhattan @last-monday';
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(mondayBeforeTodayString);
+    });
+
+    it('parse worklog for last friday', function () {
+        workLogExpression = '2h #ProjectManhattan @last-friday';
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(fridayBeforeTodayString);
+    });
+
+    it('parse worklog for next monday', function () {
+        workLogExpression = '2h #ProjectManhattan @next-monday';
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(mondayAfterTodayString);
+    });
+
+    it('parse worklog for next friday', function () {
+        workLogExpression = '2h #ProjectManhattan @next-friday';
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(fridayAfterTodayString);
     });
 
     it('parse worklog for yesterday', function () {
