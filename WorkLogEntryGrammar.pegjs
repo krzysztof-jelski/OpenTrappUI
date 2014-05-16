@@ -80,14 +80,12 @@ DateDefinition
         {
             return dateOfLast(dayOfWeek).format(dateFormat);
         }
-    / dayOfWeekWithPrefix:LastDayOfWeek
+    / "last-" dayOfWeek:DayOfWeek
         {
-            var dayOfWeek = dayOfWeekWithPrefix.replace("last-", "");
             return dateOfLast(dayOfWeek).format(dateFormat);
         }
-    / dayOfWeekWithPrefix:NextDayOfWeek
+    / "next-" dayOfWeek:DayOfWeek
         {
-            var dayOfWeek = dayOfWeekWithPrefix.replace("next-", "");
             return dateOfNext(dayOfWeek).format(dateFormat);
         }
     / date:Date
@@ -113,12 +111,6 @@ DateDefinition
 
 DayOfWeek
     = $([Mm] "onday" / [Tt] "uesday" / [Ww] "ednesday" / [Tt] "hursday" / [Ff] "riday" / [Ss] "aturday" / [Ss] "unday")
-
-LastDayOfWeek
-    = $("last-" DayOfWeek)
-
-NextDayOfWeek
-    = $("next-" DayOfWeek)
 
 Date
     = $(Year "/" Month "/" Day)
