@@ -10,6 +10,9 @@ describe('WorkLogEntry Parser should', function () {
     var fridayBeforeTodayString = "2013/12/27";
     var mondayAfterTodayString = "2014/01/06";
     var fridayAfterTodayString = "2014/01/03";
+    var someWorkload = '1d 1h 1m';
+    var someProject = 'ProjectManhattan';
+    var someDate = '2013/02/01';
 
     beforeEach(inject(function (_worklogEntryParser_, _timeProvider_) {
         timeProvider = _timeProvider_;
@@ -250,4 +253,102 @@ describe('WorkLogEntry Parser should', function () {
         );
     });
 
+    it('parse worklog in order: workload, date, project', function () {
+        workLogExpression = new Expression()
+            .withWorkload(someWorkload).withDate(someDate).withProject(someProject).build();
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).projectName).toEqual(someProject);
+        expect(worklogEntryParser.parse(workLogExpression).workload).toEqual(someWorkload);
+        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(someDate);
+    });
+
+    it('parse worklog in order: date, workload, project', function () {
+        workLogExpression = new Expression()
+            .withDate(someDate).withWorkload(someWorkload).withProject(someProject).build();
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).projectName).toEqual(someProject);
+        expect(worklogEntryParser.parse(workLogExpression).workload).toEqual(someWorkload);
+        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(someDate);
+    });
+
+    it('parse worklog in order: date, project, workload', function () {
+        workLogExpression = new Expression()
+            .withDate(someDate).withProject(someProject).withWorkload(someWorkload).build();
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).projectName).toEqual(someProject);
+        expect(worklogEntryParser.parse(workLogExpression).workload).toEqual(someWorkload);
+        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(someDate);
+    });
+
+    it('parse worklog in order: project, workload, date', function () {
+        workLogExpression = new Expression()
+            .withProject(someProject).withWorkload(someWorkload).withDate(someDate).build();
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).projectName).toEqual(someProject);
+        expect(worklogEntryParser.parse(workLogExpression).workload).toEqual(someWorkload);
+        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(someDate);
+    });
+
+    it('parse worklog in order: project, date, workload', function () {
+        workLogExpression = new Expression()
+            .withProject(someProject).withDate(someDate).withWorkload(someWorkload).build();
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).projectName).toEqual(someProject);
+        expect(worklogEntryParser.parse(workLogExpression).workload).toEqual(someWorkload);
+        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(someDate);
+    });
+
+    it('parse worklog in order: date, project', function () {
+        workLogExpression = new Expression().withDate(someDate).withProject(someProject).build();
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).projectName).toEqual(someProject);
+        expect(worklogEntryParser.parse(workLogExpression).day).toEqual(someDate);
+    });
+
+    it('parse worklog in order: project, workload', function () {
+        workLogExpression = new Expression().withProject(someProject).withWorkload(someWorkload).build();
+
+        expect(worklogEntryParser.isValid(workLogExpression)).toBe(true);
+        expect(worklogEntryParser.parse(workLogExpression).projectName).toEqual(someProject);
+        expect(worklogEntryParser.parse(workLogExpression).workload).toEqual(someWorkload);
+    });
+
+    function Expression() {
+
+        var expression = "";
+
+        this.withWorkload = function(workload) {
+            addSpaceIfNeeded();
+            expression += workload;
+            return this;
+        };
+
+        this.withProject = function(project) {
+            addSpaceIfNeeded();
+            expression += "#" + project;
+            return this;
+        };
+
+        this.withDate = function (date) {
+            addSpaceIfNeeded();
+            expression += "@" + date;
+            return this;
+        };
+
+        this.build = function() {
+            return expression;
+        };
+
+        function addSpaceIfNeeded() {
+            if (expression.length > 0) {
+                expression += " ";
+            }
+        }
+    }
 });

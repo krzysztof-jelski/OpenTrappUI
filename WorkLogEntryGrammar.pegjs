@@ -21,39 +21,90 @@
         var dayOfWeekDate = dateOfLast(dayOfWeek).add('days', 7);
         return dayOfWeekDate;
     }
+
+    function resultMergedFrom(left, right) {
+        for (var key in right) {
+        left[key] = right[key];
+        }
+        return left;
+    }
 }
 
 WorkLogEntry
-    =
-    projectName:ProjectClause SPACE day:DateClause
+    = workload:WorkloadClause SPACE projectAndDate:ProjectAndDateClauses
         {
-            return { workload: "1d", projectName: projectName, day: day };
+            return resultMergedFrom(workload, projectAndDate);
         }
-    / projectName:ProjectClause
+    / project:ProjectClause SPACE workloadAndDate:WorkloadAndDateClauses
         {
-            return { workload: "1d", projectName: projectName, day: now().format(dateFormat) };
+            return resultMergedFrom(project, workloadAndDate);
         }
-    / workload:Workload SPACE projectName:ProjectClause SPACE day:DateClause
+    / date:DateClause SPACE workloadAndProject:WorkloadAndProjectClauses
         {
-            return { workload: workload, projectName: projectName, day: day };
+            return resultMergedFrom(workloadAndProject, date);
         }
-    / workload:Workload SPACE projectName:ProjectClause
+    / projectAndDate:ProjectAndDateClauses
         {
-            return { workload: workload, projectName: projectName, day: now().format(dateFormat) };
+            return resultMergedFrom(projectAndDate, {
+                workload: "1d"
+            });
+        }
+    / workloadAndProject:WorkloadAndProjectClauses
+        {
+            return resultMergedFrom(workloadAndProject, {
+                day: now().format(dateFormat)
+            });
+        }
+    / project:ProjectClause
+        {
+            return resultMergedFrom(project, {
+                workload: "1d",
+                day: now().format(dateFormat)
+            });
         }
 
-Workload
-    = WorkloadInDays / WorkloadInHours / WorkloadInMinutes
+WorkloadAndDateClauses
+    = workload:WorkloadClause SPACE date:DateClause
+        {
+            return resultMergedFrom(workload, date);
+        }
+    / date:DateClause SPACE workload:WorkloadClause
+        {
+            return resultMergedFrom(workload, date);
+        }
+
+ProjectAndDateClauses
+    = project:ProjectClause SPACE date:DateClause
+        {
+            return resultMergedFrom(project, date);
+        }
+    / date:DateClause SPACE project:ProjectClause
+        {
+            return resultMergedFrom(project, date);
+        }
+
+WorkloadAndProjectClauses
+    = workload:WorkloadClause SPACE project:ProjectClause
+        {
+            return resultMergedFrom(workload, project);
+        }
+    / project:ProjectClause SPACE workload:WorkloadClause
+        {
+            return resultMergedFrom(workload, project);
+        }
+
+WorkloadClause
+    = workload:WorkloadInDays { return { workload: workload }; }
+    / workload:WorkloadInHours { return { workload: workload }; }
+    / workload:WorkloadInMinutes { return { workload: workload }; }
 
 WorkloadInDays
-    = 
-    days:Days SPACE_OPT hours:WorkloadInHours { return days + " " + hours; }
+    = days:Days SPACE_OPT hours:WorkloadInHours { return days + " " + hours; }
     / days:Days SPACE_OPT minutes:WorkloadInMinutes { return days + " " + minutes; }
     / Days
 
 WorkloadInHours 
-    =
-    hours:Hours SPACE_OPT minutes:WorkloadInMinutes { return hours + " " + minutes; }
+    = hours:Hours SPACE_OPT minutes:WorkloadInMinutes { return hours + " " + minutes; }
     / Hours
 
 WorkloadInMinutes 
@@ -69,14 +120,13 @@ Minutes
     = $(NUMBER "m")
 
 ProjectClause
-    = "#" projectName:WORD { return projectName; }
+    = "#" projectName:WORD { return {projectName: projectName}; }
 
 DateClause
-    = "@" date:DateDefinition { return date; }
+    = "@" date:DateDefinition { return {day: date}; }
 
 DateDefinition
-    =
-    dayOfWeek:DayOfWeek
+    = dayOfWeek:DayOfWeek
         {
             return dateOfLast(dayOfWeek).format(dateFormat);
         }
