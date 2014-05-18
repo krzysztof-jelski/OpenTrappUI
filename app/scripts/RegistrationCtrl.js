@@ -1,5 +1,5 @@
 angular.module('openTrapp').controller('RegistrationCtrl',
-    function ($scope, $http, currentEmployee, worklogEntryParser, projectNames, $sce,timeProvider,datesSuggestions) {
+    function ($scope, $http, currentEmployee, worklogEntryParser, $sce) {
 
         $scope.alerts = [];
         $scope.workLogExpression = '';
@@ -31,49 +31,6 @@ angular.module('openTrapp').controller('RegistrationCtrl',
                 });
         };
 
-        var projectNameRegexp = /.*#([^\s]*)$/;
-        var timeRegexp = /.*@([^\s]*)$/;
-
-        function enteredProjectName(input) {
-            return projectNameRegexp.exec(input)[1];
-        }
-        function isEditingProjectName(input) {
-            return projectNameRegexp.test(input)
-        }
-        function enteredTime(input) {
-            return timeRegexp.exec(input)[1];
-        }
-        function isEditingTime(input) {
-            return timeRegexp.test(input);
-        }
-
-        function assignToSuggestions(suggestions) {
-            $scope.suggestions = [];
-            suggestions.forEach(function (suggestion) {
-                $scope.suggestions.push(suggestion);
-            });
-        }
-
-        function suggestProjectNames(input) {
-            var prefix = enteredProjectName(input);
-            assignToSuggestions(projectNames.startingWith(prefix));
-        }
-
-        function suggestTime(input) {
-            var prefix = enteredTime(input);
-            assignToSuggestions(datesSuggestions.startingWith(prefix));
-        }
-
-        function calculateSuggestions(input) {
-            if (isEditingProjectName(input)) {
-                suggestProjectNames(input);
-            } else if (isEditingTime(input)) {
-                suggestTime(input);
-            } else {
-                $scope.suggestions = [];
-            }
-        }
-
         var update = function () {
 
             if ($scope.workLogExpression == '') {
@@ -88,18 +45,6 @@ angular.module('openTrapp').controller('RegistrationCtrl',
             }
         };
 
-        // AngularUI sucks
-        var tmp = '';
+        $scope.$watch('workLogExpression', update);
 
-        $scope.$watch('workLogExpression', function (newVal, oldVal) {
-            tmp = newVal;
-            calculateSuggestions(newVal);
-            update();
-        });
-
-        $scope.selectSuggestion = function (suggestion) {
-
-            var prefix = enteredProjectName(tmp);
-            $scope.workLogExpression = tmp.replace('#' + prefix, '#' + suggestion + ' ');
-        };
     });

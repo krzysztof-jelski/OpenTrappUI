@@ -8,8 +8,8 @@
                 </button>
                 <p ng-bind-html="alert.message"/>
             </div>
-        </div>    
-        <div class="row">    
+        </div>
+        <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <h2 class="page-header">Report your time <small>using our expression language, to make it quick!</small></h2>
             </div>
@@ -19,16 +19,16 @@
                 <form ng-submit="logWork()">
                 <div class="form-inline" role="form" style="width:100%">
                     <div class="input-group has-feedback has-{{status}}">
-                        
+
                         <span class="input-group-btn">
                             <button
-                                class="btn btn-lg btn-primary" 
-                                style="height:46px;" 
+                                class="btn btn-lg btn-primary"
+                                style="height:46px;"
                                 type="submit">
                                 <span class="glyphicon glyphicon-time"></span>
                             </button>
                         </span>
-                        
+
                         <span class="glyphicon glyphicon-ok form-control-feedback"></span>
                         <span class="glyphicon glyphicon-ban-circle form-control-feedback"></span>
 
@@ -36,10 +36,8 @@
                             class="form-control input-lg worklog-expression-input"
                             ng-model="workLogExpression"
                             ng-trim="false"
+                            suggester=""
                             type="text"
-                            typeahead="s for s in suggestions"
-                            typeahead-wait-ms="100"
-                            typeahead-on-select="selectSuggestion($item)"
                             placeholder="1d #my-project">
                         </input>
                     </div>
@@ -52,7 +50,7 @@
         <div class="row">
             <div style="color:#999;" class="col-md-7 col-md-offset-1">
                 <h3 class="page-header">Examples:</h3>
-                
+
                 <div class="example">
                     <code>1d #my-project</code>
                     <p class="lead">Report <strong>8h</strong> to <strong>my-project</strong> for <strong>today</strong>.</p>
@@ -84,8 +82,8 @@
                 <div class="example not-implemented">
                     <code>1d #my-project @monday~1</code>
                     <p class="lead">Report <strong>8 hours </strong> to <strong>my project</strong> for <strong>monday and tuesday</strong>. (not yet implemented)</p>
-                </div>                
-            </div> 
+                </div>
+            </div>
         </div>
     </div>
 </div>
