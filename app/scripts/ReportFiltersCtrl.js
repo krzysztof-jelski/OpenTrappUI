@@ -1,29 +1,33 @@
 var openTrapp = angular.module('openTrapp'); 
 
 openTrapp
-	.controller('ReportFiltersCtrl', function ($scope, $http, worklog, currentMonth, currentEmployee) {
+	.controller('ReportFiltersCtrl', function ($scope, $http, $timeout, worklog, currentMonth, currentEmployee) {
 	
 		$scope.worklog = worklog;
 		$scope.months = [];
 
-		$scope.init = function(){
+		$scope.init = function() {
 
-			worklog.reset();
-			worklog.setMonth(currentMonth.name, function(){
+            worklog.reset();
 
-				var employee = currentEmployee.username();
-				worklog.enableEmployee(employee);
-				worklog.enableEmployeeProjects(employee);
-				
-			});
-			
-			$scope.months = [
-			                 currentMonth.next().name,
-			                 currentMonth.name,
-			                 currentMonth.prev().name,
-			                 currentMonth.prev().prev().name
-			                ];
-		};
+            $timeout(function () {
+                worklog.setMonth(currentMonth.name, function () {
+
+                    var employee = currentEmployee.username();
+                    worklog.enableEmployee(employee);
+                    worklog.enableEmployeeProjects(employee);
+
+                });
+
+                $scope.months = [
+                    currentMonth.next().name,
+                    currentMonth.name,
+                    currentMonth.prev().name,
+                    currentMonth.prev().prev().name
+                ];
+            }, 600);
+        };
+
 	})
 	.factory('currentMonth', function() {
 

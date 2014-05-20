@@ -6,19 +6,22 @@ describe('Report Filters Controller', function () {
     var currentEmployee;
     var scope, worklog;
     var worklogIsReady;
+    var timeout;
 
     beforeEach(function () {
         currentMonth = new Month('2014/01');
         worklogIsReady = function () {
         };
     });
-    beforeEach(inject(function ($rootScope, $controller, _worklog_, _currentEmployee_) {
+    beforeEach(inject(function ($rootScope, $controller, $timeout, _worklog_, _currentEmployee_) {
 
         scope = $rootScope.$new();
         $controller('ReportFiltersCtrl', {
             $scope: scope,
-            currentMonth: currentMonth
+            currentMonth: currentMonth,
+            timeout: $timeout
         });
+        timeout = $timeout;
 
         currentEmployee = _currentEmployee_;
         worklog = _worklog_;
@@ -29,11 +32,16 @@ describe('Report Filters Controller', function () {
         spyOn(worklog, 'enableEmployeeProjects');
     }));
 
+    function initScopeWithTimeout() {
+        scope.init();
+        timeout.flush();
+    }
+
     it('starts with current month', function () {
 
         // given:
         // when:
-        scope.init();
+        initScopeWithTimeout();
 
         // then:
         expect(worklog.setMonth).toHaveBeenCalledWith(currentMonth.name, worklogIsReady);
@@ -43,7 +51,7 @@ describe('Report Filters Controller', function () {
 
         // given:
         // when:
-        scope.init();
+        initScopeWithTimeout();
 
         // then:
         expect(scope.months).toEqual(['2014/02', currentMonth.name, '2013/12', '2013/11']);
@@ -53,7 +61,7 @@ describe('Report Filters Controller', function () {
 
         // given:
         currentEmployeeIs('bart.simpson');
-        scope.init();
+        initScopeWithTimeout();
 
         // when:
         worklogIsReady();
@@ -66,7 +74,7 @@ describe('Report Filters Controller', function () {
 
         // given:
         currentEmployeeIs('bart.simpson');
-        scope.init();
+        initScopeWithTimeout();
 
         // when:
         worklogIsReady();
