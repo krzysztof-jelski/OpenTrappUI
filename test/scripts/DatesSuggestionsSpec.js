@@ -12,7 +12,9 @@ describe("DatesSuggestions", function () {
     it("suggests by day name", function () {
         spyOn(timeProvider, 'getCurrentDate').and.returnValue(new Date('2014/05/12'));
 
-        expect(extract(dateSuggestions.startingWith("tu"))).toEqual(["tuesday (2014/05/06)"]);
+        expect(extract(dateSuggestions.startingWith("tu"))).toEqual([
+            {value: 'tuesday', description: '(2014/05/06)'}
+        ]);
     });
 
     it("suggests by date", function () {
@@ -20,7 +22,9 @@ describe("DatesSuggestions", function () {
 
         var suggestions = extract(dateSuggestions.startingWith("2014/05/01"));
 
-        expect(suggestions).toEqual(["thursday (2014/05/01)"]);
+        expect(suggestions).toEqual([
+            {value: 'thursday', description: '(2014/05/01)'}
+        ]);
     });
 
     function extract(iterator) {

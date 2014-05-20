@@ -13,9 +13,12 @@ angular.module('openTrapp').factory('datesSuggestions', function (timeProvider) 
                     day: mapSuggestionToDay(suggestion)
                 };
             }).filter(function (entry) {
-                return entry.name.indexOf(prefix) === 0 || entry.day.indexOf(prefix) === 0;
+                return entry.name.indexOf(prefix) === 0 || entry.day.indexOf(prefix) !== -1;
             }).map(function (entry) {
-                return entry.name + " (" + entry.day + ")";
+                return                  {
+                    value: entry.name,
+                    description: "(" + entry.day + ")"
+                };
             }));
         }
 

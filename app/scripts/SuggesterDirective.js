@@ -7,6 +7,7 @@ angular.module('openTrapp')
 
                 element.attr("typeahead-wait-ms", 100);
                 element.attr("typeahead-on-select", "selectSuggestion($item)")
+                element.attr("typeahead-template-url", "typeahead-template.html")
                 element.attr("typeahead", "s for s in suggestions");
                 element.attr("ng-model", "inputValue");
                 element.removeAttr('suggester');
@@ -49,14 +50,20 @@ angular.module('openTrapp')
                     });
                 }
 
-                function cursorPosition() {
+                scope.getCursorPosition = function () {
                     return element[0].selectionStart;
+                };
+
+                function cursorPosition() {
+                    return scope.getCursorPosition();
                 }
 
                 scope.selectSuggestion = function (suggestion) {
-                    var s = element.val().substring(0, cursorPosition());
-                    var tag = tagBeingEdited(s);
-                    scope.inputValue = element.val().replace(tag.symbol + tag.value, tag.symbol + suggestion + ' ');
+                    if (suggestion.value) {
+                        suggestion = suggestion.value;
+                    }
+                    var tag = tagBeingEdited(element.val().substring(0, cursorPosition()));
+                    scope.inputValue = element.val().replace(new RegExp(tag.symbol + tag.value + '\\s*'), tag.symbol + suggestion + ' ');
                 };
             }
         }

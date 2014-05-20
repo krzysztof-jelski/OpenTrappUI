@@ -35,17 +35,9 @@ describe("SuggesterDirective", function () {
         http.flush();
     }
 
-    function andFinishesTypingAtIndex(index){
-        input[0].setSelectionRange(index,index) ;
-        expect(input[0].selectionStart).toBe(index);
-    }
-
     function userTypes(input){
         elementScope.inputValue= input;
         elementScope.$digest();
-        return {
-            andFinishesTypingAtIndex: andFinishesTypingAtIndex
-        }
     }
 
     function suggestions(){
@@ -132,14 +124,26 @@ describe("SuggesterDirective", function () {
         expect(elementScope.inputValue).toEqual('1d #project @monday ');
     });
 
-    xit("properly puts suggestion inside text", function () {
+    it("extracts the suggestion value when available", function () {
+        // given:
+        followingDatesAreAvailable({value: 'monday'});
+
+        // when:
+        userTypes("1d #project @mo");
+        userConfirmFirstSuggestion();
+
+        expect(elementScope.inputValue).toEqual('1d #project @monday ');
+    });
+
+    it("properly puts suggestion inside text", function () {
         compileDirective('<input suggester ng-model="value" type="text"> </input>');
+        document.body.appendChild(input[0]);
         // given:
         followingDatesAreAvailable("monday");
 
         // when:
-        userTypes("1d @mo #project").andFinishesTypingAtIndex(6);
-
+        spyOn(elementScope,'getCursorPosition').and.returnValue(6);
+        userTypes("1d @mo #project");
         userConfirmFirstSuggestion();
 
         expect(elementScope.inputValue).toEqual('1d @monday #project');
