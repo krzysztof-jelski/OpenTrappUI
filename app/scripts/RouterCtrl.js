@@ -12,6 +12,10 @@ angular.module('openTrapp')
         $routeProvider.when('/', {
             templateUrl: 'home.html'
         });
+        $routeProvider.when('/authFailed', {
+            templateUrl: 'auth-failed.html'
+        });
+
         $routeProvider.when('/authToken/:authToken', {
             redirectTo: '/',
             reloadOnSearch: true,
