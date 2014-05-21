@@ -1,5 +1,5 @@
 angular.module('openTrapp').factory('datesSuggestions', function (timeProvider) {
-    var possibleSuggestions = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "t-1", "t-2", "t-3"];
+    var possibleSuggestions = ["today", "yesterday", "tomorrow", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "t-1", "t-2", "t-3"];
 
     function mapSuggestionToDay(suggestion) {
         return PegWorkLogEntryParser.parse("#proj @" + suggestion, { timeProvider: timeProvider }).day;
@@ -17,7 +17,7 @@ angular.module('openTrapp').factory('datesSuggestions', function (timeProvider) 
             }).map(function (entry) {
                 return                  {
                     value: entry.name,
-                    description: "(" + entry.day + ")"
+                    description: entry.day
                 };
             }));
         }

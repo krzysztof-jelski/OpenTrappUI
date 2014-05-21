@@ -348,3 +348,12 @@ li.h12 {
 .nav > li.hidden {
 	display: none;
 }
+
+li > a > small {
+	color: #999;
+	padding-left: 10px;
+}
+li.active > a > small {
+	color: #ffffff;
+}
+
