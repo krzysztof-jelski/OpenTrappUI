@@ -1,7 +1,6 @@
 angular.module('openTrapp')
     .directive('suggester', function ($compile, projectNames, datesSuggestions) {
         return {
-            scope: {},
             link: function (scope, element) {
                 scope.suggestions = [];
 
@@ -9,7 +8,7 @@ angular.module('openTrapp')
                 element.attr("typeahead-on-select", "selectSuggestion($item)")
                 element.attr("typeahead-template-url", "typeahead-template.html")
                 element.attr("typeahead", "s for s in suggestions");
-                element.attr("ng-model", "inputValue");
+                element.attr("ng-model", "workLogExpression");
                 element.removeAttr('suggester');
                 $compile(element)(scope);
 
@@ -21,7 +20,7 @@ angular.module('openTrapp')
 
                 var tagRegexp = /.*(@|#)([^\s]*)$/;
 
-                scope.$watch('inputValue', function (newVal, oldVal) {
+                scope.$watch('workLogExpression', function (newVal, oldVal) {
                     if (newVal) {
                         scope.suggestions = [];
                         calculateSuggestions(newVal.substring(0, cursorPosition()));
@@ -63,7 +62,7 @@ angular.module('openTrapp')
                         suggestion = suggestion.value;
                     }
                     var tag = tagBeingEdited(element.val().substring(0, cursorPosition()));
-                    scope.inputValue = element.val().replace(new RegExp(tag.symbol + tag.value + '\\s*'), tag.symbol + suggestion + ' ');
+                    scope.workLogExpression = element.val().replace(new RegExp(tag.symbol + tag.value + '\\s*'), tag.symbol + suggestion + ' ');
                 };
             }
         }

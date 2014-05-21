@@ -36,7 +36,7 @@ describe("SuggesterDirective", function () {
     }
 
     function userTypes(input){
-        elementScope.inputValue= input;
+        elementScope.workLogExpression= input;
         elementScope.$digest();
     }
 
@@ -100,7 +100,7 @@ describe("SuggesterDirective", function () {
         userTypes('1d #ApolloPro');
         userConfirmFirstSuggestion();
         // then:
-        expect(elementScope.inputValue).toEqual('1d #ApolloProgram ');
+        expect(elementScope.workLogExpression).toEqual('1d #ApolloProgram ');
     });
 
     it("suggest weekday names", function () {
@@ -121,7 +121,7 @@ describe("SuggesterDirective", function () {
         userTypes("1d #project @mo");
         userConfirmFirstSuggestion();
 
-        expect(elementScope.inputValue).toEqual('1d #project @monday ');
+        expect(elementScope.workLogExpression).toEqual('1d #project @monday ');
     });
 
     it("extracts the suggestion value when available", function () {
@@ -132,7 +132,7 @@ describe("SuggesterDirective", function () {
         userTypes("1d #project @mo");
         userConfirmFirstSuggestion();
 
-        expect(elementScope.inputValue).toEqual('1d #project @monday ');
+        expect(elementScope.workLogExpression).toEqual('1d #project @monday ');
     });
 
     it("properly puts suggestion inside text", function () {
@@ -146,7 +146,7 @@ describe("SuggesterDirective", function () {
         userTypes("1d @mo #project");
         userConfirmFirstSuggestion();
 
-        expect(elementScope.inputValue).toEqual('1d @monday #project');
+        expect(elementScope.workLogExpression).toEqual('1d @monday #project');
     });
 
     function followingDatesAreAvailable() {
@@ -160,7 +160,7 @@ describe("SuggesterDirective", function () {
         compile(input)(outerScope);
         outerScope.$digest();
         outer.append(input);
-        elementScope= input.isolateScope();
+        elementScope= outerScope;
     }
 
 });
