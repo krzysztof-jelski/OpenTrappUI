@@ -26,7 +26,7 @@ openTrapp
                     currentMonth.prev().prev().name
                 ];
             }, 600);
-        }
+        };
 
 	})
 	.factory('currentMonth', function() {
