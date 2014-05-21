@@ -1,6 +1,7 @@
 angular.module('openTrapp')
-    .directive('suggester', function ($compile, projectNames, datesSuggestions) {
+    .directive('suggester', function ($compile, projectNames, datesSuggestions, $scope) {
         return {
+            scope: $scope,
             link: function (scope, element) {
                 scope.suggestions = [];
 
