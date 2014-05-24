@@ -1,7 +1,7 @@
 module.exports = function (config) {
     config.set({
         basePath: '../',
-        exclude: ['**/bootstrap.js', '**/bootstrap.min.js'],
+        exclude: ['**/bootstrap.js', '**/bootstrap.min.js','**/bootstrap-tagautocomplete.js'],
         frameworks: ['jasmine'],
         files: [
             'app/lib/angular.js',

@@ -1,6 +1,6 @@
 describe("SuggesterDirective", function () {
 
-    var elementScope,outerScope;
+    var scope;
     var compile,timeout;
     var input,outer;
     var http;
@@ -15,7 +15,7 @@ describe("SuggesterDirective", function () {
     }));
 
     beforeEach(inject(function ($rootScope, $compile,$timeout,$httpBackend,_projectNames_,_datesSuggestions_) {
-        outerScope= $rootScope.$new();
+        scope= $rootScope.$new();
         compile = $compile;
         timeout = $timeout;
         http = $httpBackend;
@@ -24,7 +24,7 @@ describe("SuggesterDirective", function () {
     }));
 
     beforeEach(function () {
-        compileDirective('<input suggester ng-model="value" type="text"> </input>');
+        compileDirective('<input suggester ng-model="workLogExpression" type="text"> </input>');
     });
 
     function followingProjectsAreAvailable(){
@@ -35,17 +35,18 @@ describe("SuggesterDirective", function () {
         http.flush();
     }
 
-    function userTypes(input){
-        elementScope.workLogExpression= input;
-        elementScope.$digest();
+    function userTypes(textTyped){
+        scope.workLogExpression= textTyped;
+        scope.$digest();
+        input.triggerHandler('input');
     }
 
     function suggestions(){
-        return elementScope.suggestions;
+        return scope.suggestions;
     }
 
     function userConfirmFirstSuggestion(){
-        elementScope.selectSuggestion(elementScope.suggestions[0]);
+        scope.selectSuggestion(scope.suggestions[0]);
     }
 
     it("suggests all available projects after typing #", function(){
@@ -100,7 +101,7 @@ describe("SuggesterDirective", function () {
         userTypes('1d #ApolloPro');
         userConfirmFirstSuggestion();
         // then:
-        expect(elementScope.workLogExpression).toEqual('1d #ApolloProgram ');
+        expect(scope.workLogExpression).toEqual('1d #ApolloProgram ');
     });
 
     it("suggest weekday names", function () {
@@ -110,7 +111,7 @@ describe("SuggesterDirective", function () {
         // when:
         userTypes("@");
 
-        expect(elementScope.suggestions).toEqual(["monday", "tuesday"]);
+        expect(scope.suggestions).toEqual(["monday", "tuesday"]);
     });
 
     it("suggest weekday names", function () {
@@ -121,7 +122,7 @@ describe("SuggesterDirective", function () {
         userTypes("1d #project @mo");
         userConfirmFirstSuggestion();
 
-        expect(elementScope.workLogExpression).toEqual('1d #project @monday ');
+        expect(scope.workLogExpression).toEqual('1d #project @monday ');
     });
 
     it("extracts the suggestion value when available", function () {
@@ -132,21 +133,20 @@ describe("SuggesterDirective", function () {
         userTypes("1d #project @mo");
         userConfirmFirstSuggestion();
 
-        expect(elementScope.workLogExpression).toEqual('1d #project @monday ');
+        expect(scope.workLogExpression).toEqual('1d #project @monday ');
     });
 
     it("properly puts suggestion inside text", function () {
-        compileDirective('<input suggester ng-model="value" type="text"> </input>');
         document.body.appendChild(input[0]);
         // given:
         followingDatesAreAvailable("monday");
 
         // when:
-        spyOn(elementScope,'getCursorPosition').and.returnValue(6);
+        spyOn(scope,'getCursorPosition').and.returnValue(6);
         userTypes("1d @mo #project");
         userConfirmFirstSuggestion();
 
-        expect(elementScope.workLogExpression).toEqual('1d @monday #project');
+        expect(scope.workLogExpression).toEqual('1d @monday #project');
     });
 
     function followingDatesAreAvailable() {
@@ -157,10 +157,9 @@ describe("SuggesterDirective", function () {
     function compileDirective(html) {
         outer = angular.element('<div></div>');
         input = angular.element(html);
-        compile(input)(outerScope);
-        outerScope.$digest();
+        compile(input)(scope);
+        scope.$digest();
         outer.append(input);
-        elementScope= outerScope;
     }
 
 });
