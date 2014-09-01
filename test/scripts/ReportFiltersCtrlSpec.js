@@ -47,14 +47,15 @@ describe('Report Filters Controller', function () {
         expect(worklog.setMonth).toHaveBeenCalledWith(currentMonth.name, worklogIsReady);
     });
 
-    it('offers one next month and two previous months', function () {
+    it('offers one next month, current month and 11 previous months', function () {
 
         // given:
         // when:
         initScopeWithTimeout();
 
         // then:
-        expect(scope.months).toEqual(['2014/02', currentMonth.name, '2013/12', '2013/11']);
+        expect(scope.months).toEqual(['2014/02', '2014/01', '2013/12', '2013/11', '2013/10', '2013/09', '2013/08', '2013/07', '2013/06',
+					'2013/05', '2013/04', '2013/03', '2013/02']);
     });
 
     it('selects current user by default', function () {
