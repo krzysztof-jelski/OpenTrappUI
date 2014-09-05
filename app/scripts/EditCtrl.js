@@ -1,5 +1,5 @@
 angular.module('openTrapp')
-    .controller('EditCtrl', function ($scope, $modal, projectNames, $http) {
+    .controller('EditCtrl', function ($scope, $modal, projectNames, $http, worklog) {
 
         $scope.open = function (item) {
 
@@ -15,7 +15,10 @@ angular.module('openTrapp')
                     },
                     http: function () {
                         return $http;
-                    }
+                    },
+		    worklog: function() {
+			return worklog;
+		    }
                 }
             });
 
@@ -28,7 +31,7 @@ angular.module('openTrapp')
         };
     });
 
-var EditModalCtrl = function ($scope, $modalInstance, item, projectNames, http) {
+var EditModalCtrl = function ($scope, $modalInstance, item, projectNames, http, worklog) {
 
     var suggestions = [];
     (function gatherSuggestions() {
@@ -63,7 +66,8 @@ var EditModalCtrl = function ($scope, $modalInstance, item, projectNames, http) 
                 $modalInstance.close({
                     type: 'success',
                     message: 'Worklog updated'
-                })
+                });
+		worklog.refresh();
             })
 	    .error(function(){
 		console.log('error');

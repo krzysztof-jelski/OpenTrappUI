@@ -180,7 +180,7 @@
             <th>Date</th>
         </tr>
         </thead>
-        <tr class="worklog-entry" ng-repeat="item in worklog.entries | orderBy: 'day'">
+        <tr class="worklog-entry" ng-repeat="item in worklog.entries track by item.id | orderBy: 'day'">
             <td align="right">
 		&nbsp;
                 <a ng-click="worklog.remove(item.id)" ng-if="item.employee == currentUser">
