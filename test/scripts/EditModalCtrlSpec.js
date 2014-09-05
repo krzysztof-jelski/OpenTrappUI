@@ -43,7 +43,10 @@ describe('EditModalCtrl', function () {
     });
 
     it("posts", function () {
-        new EditModalCtrl(scope, modal, {id: "worklogId"}, [], http);
+
+	var worklog = jasmine.createSpyObj("modal", ['refresh']);
+
+        new EditModalCtrl(scope, modal, {id: "worklogId"}, [], http, worklog);
         scope.item.workload = "some workload";
         scope.item.projectName = "Project Manhattan";
         httpBackend.expectPOST("http://localhost:8080/endpoints/v1/work-log/entries/worklogId",
@@ -56,6 +59,7 @@ describe('EditModalCtrl', function () {
             type: 'success',
             message: 'Worklog updated'
         });
+	expect(worklog.refresh).toHaveBeenCalled();
     });
 
 });
