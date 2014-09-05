@@ -101,7 +101,7 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th></th>
+            <th style="width: 40px"></th>
             <th>Project</th>
             <th>Workload</th>
             <th>Employee</th>
@@ -110,15 +110,23 @@
         </thead>
         <tr class="worklog-entry" ng-repeat="item in worklog.entries | filter:satisfies | orderBy: 'day'">
             <td align="right">
-                <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
-                    <span class="glyphicon glyphicon-edit"/>
-                </a>
+		&nbsp;
                 <a ng-click="worklog.remove(item.id)" ng-if="item.employee == currentUser">
-                    <span class="glyphicon glyphicon-trash"/>
+                    <span class="glyphicon glyphicon-trash small-glyph"/>
                 </a>
             </td>
-            <td>{{item.projectName}}</td>
-            <td>{{item.workload}}</td>
+            <td>
+                <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
+                    {{item.projectName}} <span class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
+                </a>
+                <span ng-if="item.employee != currentUser">{{item.projectName}}</span>
+	    </td>
+            <td>
+                <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
+                    {{item.workload}} <span style="font-size: 80%" class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
+                </a>
+                <span ng-if="item.employee != currentUser">{{item.workload}}</span>
+	    </td>
             <td>{{item.employee}}</td>
             <td>{{item.day}}</td>
         </tr>

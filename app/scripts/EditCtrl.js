@@ -49,6 +49,10 @@ var EditModalCtrl = function ($scope, $modalInstance, item, projectNames, http) 
         $scope.suggestions = getSuggestions(newValue);
     });
 
+    $scope.isInvalidWorkload = function (workload){
+        return !Workload.isValid(workload);
+    };
+
     $scope.ok = function () {
         var data = {
             workload: $scope.item.workload,
@@ -59,11 +63,33 @@ var EditModalCtrl = function ($scope, $modalInstance, item, projectNames, http) 
                 $modalInstance.close({
                     type: 'success',
                     message: 'Worklog updated'
-                });
-            });
+                })
+            })
+	    .error(function(){
+		console.log('error');
+		$scope.shake();
+	    });
     };
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
 };
+
+angular.module('openTrapp')
+  .directive('shakeMe', ['$animate', function($animate) {
+
+  return {
+    link: function(scope, element, attrs, form) {
+     
+      scope.$parent.shake = function(){
+		
+          var e = element.parent('.modal-content');
+          $animate.addClass(e, 'shake', function() {
+            $animate.removeClass(e, 'shake');
+          });
+      };
+    }
+  };
+
+}]);

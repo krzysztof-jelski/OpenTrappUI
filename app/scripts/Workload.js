@@ -40,3 +40,10 @@ var Workload = function (workload) {
         }
     };
 }
+
+Workload.isValid = function(workload){
+	if(workload.trim() === ""){
+		return false;
+	}
+	return /^(\d+d)?\s*(\d+h)?\s*(\d+m)?$/.test(workload.trim());
+}

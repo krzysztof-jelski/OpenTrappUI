@@ -78,6 +78,17 @@ describe('Workload', function () {
         });
     });
 
+    describe('validation', function () {
+	
+	it("validates input", function () {
+
+            expect(Workload.isValid("")).toBeFalsy();
+            expect(Workload.isValid("invalid")).toBeFalsy();
+            expect(Workload.isValid("1d 1h 1m")).toBeTruthy();
+            expect(Workload.isValid(" 1d ")).toBeTruthy();
+        });
+    });
+
     describe('adding', function () {
 
         it("can handle minutes", function () {

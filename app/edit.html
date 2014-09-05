@@ -1,12 +1,12 @@
 <!-- EditCtrl -->
     <div class="modal-header">
-        <h2>Edit worklog entry</h2>
+        <h2><span class="glyphicon glyphicon-pencil small-glyph"></span> Edit worklog entry</h2>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" shake-me>
         <form class="form-horizontal" role="form">
             <div class="form-group">
                 <label for="workload" class="col-sm-3 control-label">Workload</label>
-                <div class="col-sm-6">
+                <div class="col-sm-6" ng-class="{'has-error': isInvalidWorkload(item.workload)}">
                     <input type="text" class="form-control" id="workload" ng-model="item.workload">
                 </div>
             </div>
