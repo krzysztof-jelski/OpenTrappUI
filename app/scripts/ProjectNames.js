@@ -31,7 +31,7 @@ angular.module('openTrapp').factory('projectNames', function ($http) {
 	    		
 	    		this.fetchFromServer().then(function(response){
 	    			_(response.data).filter(function(x){
-	    				return x.indexOf(prefix) == 0;
+	    				return x.indexOf(prefix) === 0;
 	    			}).forEach(callback);
 	    		});
 	    	}

@@ -99,6 +99,39 @@ describe('Worklog', function() {
 		expect(worklog.projects['ProjectManhattan'].active).toBeTruthy();
 	});
 	
+	it('enables all projects', function(){
+		
+		// given:
+		worklogWith(
+				{ projectName: 'ProjectManhattan' },
+				{ projectName: 'ApolloProgram' }
+			);
+		
+		// when:
+		worklog.enableAllProjects();
+		
+		// then:
+		expect(worklog.projects['ProjectManhattan'].active).toBeTruthy();
+		expect(worklog.projects['ApolloProgram'].active).toBeTruthy();
+	});
+	
+	it('disables all projects', function(){
+		
+		// given:
+		worklogWith(
+				{ projectName: 'ProjectManhattan' },
+				{ projectName: 'ApolloProgram' }
+			);
+		worklog.enableAllProjects();
+		
+		// when:
+		worklog.disableAllProjects();
+		
+		// then:
+		expect(worklog.projects['ProjectManhattan'].active).toBeFalsy();
+		expect(worklog.projects['ApolloProgram'].active).toBeFalsy();
+	});
+	
 	it('enables employee', function(){
 		
 		// given:
@@ -126,6 +159,39 @@ describe('Worklog', function() {
 		
 		// then:
 		expect(worklog.employees['bart.simpson'].active).toBeTruthy();
+	});
+	
+	it('enables all employees', function(){
+		
+		// given:
+		worklogWith(
+				{ employee: 'bart.simpson' },
+				{ employee: 'homer.simpson' }
+			);
+		
+		// when:
+		worklog.enableAllEmployees();
+		
+		// then:
+		expect(worklog.employees['bart.simpson'].active).toBeTruthy();
+		expect(worklog.employees['homer.simpson'].active).toBeTruthy();
+	});
+	
+	it('disables all employees', function(){
+		
+		// given:
+		worklogWith(
+				{ employee: 'bart.simpson' },
+				{ employee: 'homer.simpson' }
+		);
+		worklog.enableAllEmployees();
+		
+		// when:
+		worklog.disableAllEmployees();
+		
+		// then:
+		expect(worklog.employees['bart.simpson'].active).toBeFalsy();
+		expect(worklog.employees['homer.simpson'].active).toBeFalsy();
 	});
 	
 	it('toggles project', function(){
@@ -271,8 +337,8 @@ describe('Worklog', function() {
 					{ employee: 'homer.simpson', projectName: 'ProjectManhattan', workload: '1h' },
 					{ employee: 'bart.simpson', projectName: 'ApolloProgram', workload: '1d' },
 					{ employee: 'homer.simpson', projectName: 'ApolloProgram', workload: '7m' },
-					{ employee: 'inactive.employee', projectName: 'ProjectManhattan', workload: '1h'},
-					{ employee: 'homer.simpson', projectName: 'InactiveProject', workload: '1h'}
+					{ employee: 'inactive.employee', projectName: 'ProjectManhattan', workload: '1h 15m'},
+					{ employee: 'homer.simpson', projectName: 'InactiveProject', workload: '1h 45m'}
 			);
 			
 			// when:
@@ -294,7 +360,12 @@ describe('Worklog', function() {
 			// then:
 			expect(worklog.employees['bart.simpson'].total).toEqual("1d 1m");
 			expect(worklog.employees['homer.simpson'].total).toEqual("1h 7m");
-			expect(worklog.employees['inactive.employee'].total).toEqual("0h");
+		});
+		
+		it('is calculated for every inactive employee (as if he would be active)', function(){
+			
+			// then:
+			expect(worklog.employees['inactive.employee'].total).toEqual("1h 15m");
 		});
 		
 		it('is calculated for every active project', function(){
@@ -302,7 +373,12 @@ describe('Worklog', function() {
 			// then:
 			expect(worklog.projects['ProjectManhattan'].total).toEqual("1h 1m");
 			expect(worklog.projects['ApolloProgram'].total).toEqual("1d 7m");
-			expect(worklog.projects['InactiveProject'].total).toEqual("0h");
+		});
+
+		it('is calculated for every active project', function(){
+			
+			// then:
+			expect(worklog.projects['InactiveProject'].total).toEqual("1h 45m");
 		});
 	
 	});

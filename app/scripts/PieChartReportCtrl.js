@@ -25,7 +25,7 @@ angular.module('openTrapp')
 					projects.push({
 						name: projectName,
 						total: status.total,
-						share: total == 0 ? "n/a" : Math.round(project/total * 100) + "%" 
+						share: total === 0 ? "n/a" : Math.round(project/total * 100) + "%"
 					});
 				}
 			});
@@ -37,7 +37,7 @@ angular.module('openTrapp')
 
         var hashCode = function(str){
         	var hash = 0;
-        	if (str.length == 0) return hash;
+        	if (str.length === 0) return hash;
         	for (var i = 0; i < str.length; i++) {
         		var character = str.charCodeAt(i);
         		hash = ((hash<<7)-hash)+character;
