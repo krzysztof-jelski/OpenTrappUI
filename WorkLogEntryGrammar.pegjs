@@ -9,16 +9,24 @@
         return moment(timeProvider().getCurrentDate());
     }
 
-    function dateOfLast(dayOfWeek) {
+    function isToday(dayOfWeek) {
         var dayOfWeekDate = now().day(dayOfWeek);
-        if (dayOfWeekDate.isAfter(now())) {
+        return !dayOfWeekDate.isBefore(now(), 'day') && !dayOfWeekDate.isAfter(now(), 'day');
+    }
+
+    function dateOfPrevious(dayOfWeek) {
+        var dayOfWeekDate = now().day(dayOfWeek);
+        if (!dayOfWeekDate.isBefore(now(), 'day')) {
             dayOfWeekDate.subtract('days', 7);
         }
         return dayOfWeekDate;
     }
 
     function dateOfNext(dayOfWeek) {
-        var dayOfWeekDate = dateOfLast(dayOfWeek).add('days', 7);
+        var dayOfWeekDate = now().day(dayOfWeek);
+        if (!dayOfWeekDate.isAfter(now(), 'day')) {
+            dayOfWeekDate.add('days', 7);
+        }
         return dayOfWeekDate;
     }
 
@@ -128,11 +136,13 @@ DateClause
 DateDefinition
     = dayOfWeek:DayOfWeek
         {
-            return dateOfLast(dayOfWeek).format(dateFormat);
+            return isToday(dayOfWeek)
+                ? now().format(dateFormat)
+                : dateOfPrevious(dayOfWeek).format(dateFormat);
         }
     / "last-" dayOfWeek:DayOfWeek
         {
-            return dateOfLast(dayOfWeek).format(dateFormat);
+            return dateOfPrevious(dayOfWeek).format(dateFormat);
         }
     / "next-" dayOfWeek:DayOfWeek
         {
