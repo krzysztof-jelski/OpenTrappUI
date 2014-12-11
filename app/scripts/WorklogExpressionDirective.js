@@ -1,7 +1,6 @@
 angular.module('openTrapp')
     .directive('worklogExpression', function ($compile, projectNames, datesSuggestions) {
         return {
-            scope: false,
             restrict: 'E',
             template: '<input' +
                     ' class="form-control input-lg worklog-expression-input"' +
@@ -11,7 +10,7 @@ angular.module('openTrapp')
                     ' placeholder="1d #my-project"' +
                     ' typeahead-wait-ms="100"' +
                     ' typeahead-on-select="selectSuggestion($item)"' +
-                    ' typeahead-template-url=   "typeahead-template.html"' +
+                    ' typeahead-template-url="typeahead-template.html"' +
                     ' typeahead="s for s in suggestions"' +
                     '>' +
                     ' </input>',

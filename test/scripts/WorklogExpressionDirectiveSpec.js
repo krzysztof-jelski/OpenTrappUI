@@ -28,7 +28,25 @@ describe("WorklogExpressionDirective", function () {
     });
 
     it("contains input element of type 'text'", function () {
-        expect($(inputElement).attr("type")).toEqual("text");
+        expect(inputElement.attr("type")).toEqual("text");
+    });
+
+    it("contains input element with proper classes'", function () {
+        expect(inputElement.hasClass("form-control")).toBeTruthy();
+        expect(inputElement.hasClass("input-lg")).toBeTruthy();
+        expect(inputElement.hasClass("worklog-expression-input")).toBeTruthy();
+    });
+
+    it("contains input with '1d #my-project' as placeholder", function () {
+        expect(inputElement.attr("placeholder")).toEqual("1d #my-project");
+    });
+
+    it("contains input with 100 ms wait for typeahead", function () {
+        expect(inputElement.attr("typeahead-wait-ms")).toEqual("100");
+    });
+
+    it("contains input with proper template for typeahead", function () {
+        expect(inputElement.attr("typeahead-template-url")).toEqual("typeahead-template.html");
     });
 
     it("suggests all available projects after typing #", function(){
@@ -83,7 +101,7 @@ describe("WorklogExpressionDirective", function () {
         userTypes('1d #ApolloPro');
         userConfirmFirstSuggestion();
         // then:
-        expect(outerScope.workLogExpression).toEqual('1d #ApolloProgram ');
+        expect(worklogExpression()).toEqual('1d #ApolloProgram ');
     });
 
     it("suggest weekday names", function () {
@@ -93,7 +111,7 @@ describe("WorklogExpressionDirective", function () {
         // when:
         userTypes("@");
 
-        expect(outerScope.suggestions).toEqual(["monday", "tuesday"]);
+        expect(suggestions()).toEqual(["monday", "tuesday"]);
     });
 
     it("suggest weekday names", function () {
@@ -104,7 +122,7 @@ describe("WorklogExpressionDirective", function () {
         userTypes("1d #project @mo");
         userConfirmFirstSuggestion();
 
-        expect(outerScope.workLogExpression).toEqual('1d #project @monday ');
+        expect(worklogExpression()).toEqual('1d #project @monday ');
     });
 
     it("extracts the suggestion value when available", function () {
@@ -115,7 +133,7 @@ describe("WorklogExpressionDirective", function () {
         userTypes("1d #project @mo");
         userConfirmFirstSuggestion();
 
-        expect(outerScope.workLogExpression).toEqual('1d #project @monday ');
+        expect(worklogExpression()).toEqual('1d #project @monday ');
     });
 
     it("properly puts suggestion inside text", function () {
@@ -128,39 +146,42 @@ describe("WorklogExpressionDirective", function () {
         userTypes("1d @mo #project");
         userConfirmFirstSuggestion();
 
-        expect(outerScope.workLogExpression).toEqual('1d @monday #project');
+        expect(worklogExpression()).toEqual('1d @monday #project');
     });
+
+    function followingProjectsAreAvailable(){
+        var args = _.toArray(arguments);
+        http.expectGET("http://localhost:8080/endpoints/v1/projects/").respond(200, args);
+        projectNames.forEach(function(){});
+        http.flush();
+    }
 
     function followingDatesAreAvailable() {
         var args = _.toArray(arguments);
         spyOn(datesSuggestions,'startingWith').and.returnValue(args);
     }
 
-    function followingProjectsAreAvailable(){
-        var args = _.toArray(arguments);
-
-        http.expectGET("http://localhost:8080/endpoints/v1/projects/").respond(200, args);
-        projectNames.forEach(function(){});
-        http.flush();
+    function userTypes(input){
+        outerScope.workLogExpression = input;
+        outerScope.$digest();
     }
 
-    function userTypes(input){
-        outerScope.workLogExpression= input;
-        outerScope.$digest();
+    function userConfirmFirstSuggestion(){
+        outerScope.selectSuggestion(suggestions()[0]);
     }
 
     function suggestions(){
         return outerScope.suggestions;
     }
 
-    function userConfirmFirstSuggestion(){
-        outerScope.selectSuggestion(outerScope.suggestions[0]);
+    function worklogExpression(){
+        return outerScope.workLogExpression;
     }
 
     function compileDirective(html) {
         directive = angular.element(html);
         compile(directive)(outerScope);
-        inputElement = $(directive[0]).children()[0];
+        inputElement = $(directive.children()[0]);
     }
 
 });
