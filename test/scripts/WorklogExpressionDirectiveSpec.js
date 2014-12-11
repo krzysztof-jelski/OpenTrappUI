@@ -29,8 +29,8 @@ describe("WorklogExpressionDirective", function () {
     });
 
     beforeEach(function () {
-        spiedCursorPosition = spyOn(outerScope, 'getCursorPosition');
-        spiedCursorPosition.and.returnValue(0);
+        spyCursorPosition();
+        cursorMovedToPosition(0);
     });
 
     it("contains input element of type 'text'", function () {
@@ -155,20 +155,6 @@ describe("WorklogExpressionDirective", function () {
         expect(worklogExpression()).toEqual('@monday #ProjectManhattan 1d');
     });
 
-    it("replaces completed word", function(){
-        // given:
-        followingProjectsAreAvailable('ProjectAbc', 'ProjectDef');
-        userTypes('#ProjectA').atCursorPosition();
-        userConfirmsFirstSuggestion();
-
-        // when:
-        userTypes('D').atPosition("#Project".length);
-        userConfirmsFirstSuggestion();
-
-        // then:
-        expect(worklogExpression()).toEqual("#ProjectDef");
-    });
-
     it("puts new characters after space after completed word", function(){
         // given:
         followingProjectsAreAvailable('ProjectManhattan');
@@ -182,7 +168,7 @@ describe("WorklogExpressionDirective", function () {
         expect(worklogExpression()).toEqual('#ProjectManhattan 1d');
     });
 
-    it("puts new characters after space after completed word and not at the end of expresion", function(){
+    it("puts new characters after space after completed word and not at the end of expression", function(){
         // given:
         followingProjectsAreAvailable('ProjectManhattan');
         userTypes('30m').atCursorPosition();
@@ -227,7 +213,7 @@ describe("WorklogExpressionDirective", function () {
     function userConfirmsFirstSuggestion(){
         outerScope.selectSuggestion(suggestions()[0]);
         outerScope.$digest();
-        spiedCursorPosition.and.returnValue(worklogExpression().length);
+        cursorMovedToPosition(worklogExpression().length);
     }
 
     function suggestions(){
@@ -240,14 +226,22 @@ describe("WorklogExpressionDirective", function () {
 
     function setWorklogExpression(expression){
         outerScope.workLogExpression = expression;
-        spiedCursorPosition.and.returnValue(worklogExpression().length);
+        cursorMovedToPosition(worklogExpression().length);
     }
 
     function insertIntoWorklogExpression(position, input) {
         var expression = worklogExpression();
         expression = expression.substr(0, position) + input + expression.substr(position);
         setWorklogExpression(expression);
-        spiedCursorPosition.and.returnValue(position + input.length);
+        cursorMovedToPosition(position + input.length);
+    }
+
+    function spyCursorPosition() {
+        spiedCursorPosition = spyOn(outerScope, 'getCursorPosition');
+    }
+
+    function cursorMovedToPosition(position) {
+        spiedCursorPosition.and.returnValue(position);
     }
 
     function compileDirective(html) {
