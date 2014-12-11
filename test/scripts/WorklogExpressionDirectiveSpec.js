@@ -1,12 +1,12 @@
-describe("SuggesterDirective", function () {
+describe("WorklogExpressionDirective", function () {
 
-    var elementScope,outerScope;
+    var outerScope;
     var compile,timeout;
-    var input,outer;
+    var directive,inputElement;
     var http;
     var projectNames, datesSuggestions;
 
-    beforeEach(module("openTrapp")  );
+    beforeEach(module("openTrapp"));
 
     beforeEach(inject(function(_enviromentInterceptor_){
         _enviromentInterceptor_.request = function(x){
@@ -24,29 +24,12 @@ describe("SuggesterDirective", function () {
     }));
 
     beforeEach(function () {
-        compileDirective('<input suggester ng-model="value" type="text"> </input>');
+        compileDirective('<worklog-expression></worklog-expression>');
     });
 
-    function followingProjectsAreAvailable(){
-        var args = _.toArray(arguments);
-
-        http.expectGET("http://localhost:8080/endpoints/v1/projects/").respond(200, args);
-        projectNames.forEach(function(){});
-        http.flush();
-    }
-
-    function userTypes(input){
-        elementScope.workLogExpression= input;
-        elementScope.$digest();
-    }
-
-    function suggestions(){
-        return elementScope.suggestions;
-    }
-
-    function userConfirmFirstSuggestion(){
-        elementScope.selectSuggestion(elementScope.suggestions[0]);
-    }
+    it("contains input element of type 'text'", function () {
+        expect($(inputElement).attr("type")).toEqual("text");
+    });
 
     it("suggests all available projects after typing #", function(){
         // given:
@@ -100,7 +83,7 @@ describe("SuggesterDirective", function () {
         userTypes('1d #ApolloPro');
         userConfirmFirstSuggestion();
         // then:
-        expect(elementScope.workLogExpression).toEqual('1d #ApolloProgram ');
+        expect(outerScope.workLogExpression).toEqual('1d #ApolloProgram ');
     });
 
     it("suggest weekday names", function () {
@@ -110,7 +93,7 @@ describe("SuggesterDirective", function () {
         // when:
         userTypes("@");
 
-        expect(elementScope.suggestions).toEqual(["monday", "tuesday"]);
+        expect(outerScope.suggestions).toEqual(["monday", "tuesday"]);
     });
 
     it("suggest weekday names", function () {
@@ -121,7 +104,7 @@ describe("SuggesterDirective", function () {
         userTypes("1d #project @mo");
         userConfirmFirstSuggestion();
 
-        expect(elementScope.workLogExpression).toEqual('1d #project @monday ');
+        expect(outerScope.workLogExpression).toEqual('1d #project @monday ');
     });
 
     it("extracts the suggestion value when available", function () {
@@ -132,21 +115,20 @@ describe("SuggesterDirective", function () {
         userTypes("1d #project @mo");
         userConfirmFirstSuggestion();
 
-        expect(elementScope.workLogExpression).toEqual('1d #project @monday ');
+        expect(outerScope.workLogExpression).toEqual('1d #project @monday ');
     });
 
     it("properly puts suggestion inside text", function () {
-        compileDirective('<input suggester ng-model="value" type="text"> </input>');
-        document.body.appendChild(input[0]);
+        document.body.appendChild(directive[0]);
         // given:
         followingDatesAreAvailable("monday");
 
         // when:
-        spyOn(elementScope,'getCursorPosition').and.returnValue(6);
+        spyOn(outerScope,'getCursorPosition').and.returnValue(6);
         userTypes("1d @mo #project");
         userConfirmFirstSuggestion();
 
-        expect(elementScope.workLogExpression).toEqual('1d @monday #project');
+        expect(outerScope.workLogExpression).toEqual('1d @monday #project');
     });
 
     function followingDatesAreAvailable() {
@@ -154,13 +136,31 @@ describe("SuggesterDirective", function () {
         spyOn(datesSuggestions,'startingWith').and.returnValue(args);
     }
 
-    function compileDirective(html) {
-        outer = angular.element('<div></div>');
-        input = angular.element(html);
-        compile(input)(outerScope);
+    function followingProjectsAreAvailable(){
+        var args = _.toArray(arguments);
+
+        http.expectGET("http://localhost:8080/endpoints/v1/projects/").respond(200, args);
+        projectNames.forEach(function(){});
+        http.flush();
+    }
+
+    function userTypes(input){
+        outerScope.workLogExpression= input;
         outerScope.$digest();
-        outer.append(input);
-        elementScope= outerScope;
+    }
+
+    function suggestions(){
+        return outerScope.suggestions;
+    }
+
+    function userConfirmFirstSuggestion(){
+        outerScope.selectSuggestion(outerScope.suggestions[0]);
+    }
+
+    function compileDirective(html) {
+        directive = angular.element(html);
+        compile(directive)(outerScope);
+        inputElement = $(directive[0]).children()[0];
     }
 
 });

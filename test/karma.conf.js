@@ -11,7 +11,6 @@ module.exports = function (config) {
             'test/lib/*.js',
             'test/**/*.js'
         ],
-
         browsers: [
             'PhantomJS'
         ],
