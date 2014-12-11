@@ -55,7 +55,7 @@ angular.module('openTrapp')
                 }
 
                 $scope.getCursorPosition = function () {
-                    return $(inputElement)[0].selectionStart;
+                    return inputElement.selectionStart;
                 };
 
                 function cursorPosition() {

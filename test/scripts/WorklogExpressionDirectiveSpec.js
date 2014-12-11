@@ -1,10 +1,11 @@
 describe("WorklogExpressionDirective", function () {
 
     var outerScope;
-    var compile,timeout;
-    var directive,inputElement;
+    var compile, timeout;
+    var directive, inputElement;
     var http;
     var projectNames, datesSuggestions;
+    var spiedCursorPosition;
 
     beforeEach(module("openTrapp"));
 
@@ -27,33 +28,38 @@ describe("WorklogExpressionDirective", function () {
         compileDirective('<worklog-expression></worklog-expression>');
     });
 
+    beforeEach(function () {
+        spiedCursorPosition = spyOn(outerScope, 'getCursorPosition');
+        spiedCursorPosition.and.returnValue(0);
+    });
+
     it("contains input element of type 'text'", function () {
-        expect(inputElement.attr("type")).toEqual("text");
+        expect($(inputElement).attr("type")).toEqual("text");
     });
 
     it("contains input element with proper classes'", function () {
-        expect(inputElement.hasClass("form-control")).toBeTruthy();
-        expect(inputElement.hasClass("input-lg")).toBeTruthy();
-        expect(inputElement.hasClass("worklog-expression-input")).toBeTruthy();
+        expect($(inputElement).hasClass("form-control")).toBeTruthy();
+        expect($(inputElement).hasClass("input-lg")).toBeTruthy();
+        expect($(inputElement).hasClass("worklog-expression-input")).toBeTruthy();
     });
 
     it("contains input with '1d #my-project' as placeholder", function () {
-        expect(inputElement.attr("placeholder")).toEqual("1d #my-project");
+        expect($(inputElement).attr("placeholder")).toEqual("1d #my-project");
     });
 
     it("contains input with 100 ms wait for typeahead", function () {
-        expect(inputElement.attr("typeahead-wait-ms")).toEqual("100");
+        expect($(inputElement).attr("typeahead-wait-ms")).toEqual("100");
     });
 
     it("contains input with proper template for typeahead", function () {
-        expect(inputElement.attr("typeahead-template-url")).toEqual("typeahead-template.html");
+        expect($(inputElement).attr("typeahead-template-url")).toEqual("typeahead-template.html");
     });
 
     it("suggests all available projects after typing #", function(){
         // given:
         followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
         // when:
-        userTypes('#');
+        userTypes('#').atCursorPosition();
         // then:
         expect(suggestions()).toContain('ProjectManhattan', 'AppolloProgram');
     });
@@ -62,7 +68,7 @@ describe("WorklogExpressionDirective", function () {
         // given:
         followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
         // when:
-        userTypes('1d');
+        userTypes('1d').atCursorPosition();
         // then:
         expect(suggestions()).toEqual([]);
     });
@@ -71,7 +77,7 @@ describe("WorklogExpressionDirective", function () {
         // given:
         followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
         // when:
-        userTypes('1d #AppolloProject @Proj');
+        userTypes('1d #AppolloProject @Proj').atCursorPosition();
         // then:
         expect(suggestions()).not.toContain('ProjectManhattan')
     });
@@ -80,7 +86,7 @@ describe("WorklogExpressionDirective", function () {
         // given:
         followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
         // when:
-        userTypes('1d #ApolloProject ');
+        userTypes('1d #ApolloProject ').atCursorPosition();
         // then:
         expect(suggestions()).toEqual([]);
     });
@@ -89,7 +95,7 @@ describe("WorklogExpressionDirective", function () {
         // given:
         followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
         // when:
-        userTypes('#Ap');
+        userTypes('#Ap').atCursorPosition();
         // then:
         expect(suggestions()).toEqual(['ApolloProgram']);
     });
@@ -98,8 +104,8 @@ describe("WorklogExpressionDirective", function () {
         // given:
         followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
         // when:
-        userTypes('1d #ApolloPro');
-        userConfirmFirstSuggestion();
+        userTypes('1d #ApolloPro').atCursorPosition();
+        userConfirmsFirstSuggestion();
         // then:
         expect(worklogExpression()).toEqual('1d #ApolloProgram ');
     });
@@ -109,7 +115,7 @@ describe("WorklogExpressionDirective", function () {
         followingDatesAreAvailable("monday", "tuesday");
 
         // when:
-        userTypes("@");
+        userTypes("@").atCursorPosition();
 
         expect(suggestions()).toEqual(["monday", "tuesday"]);
     });
@@ -119,8 +125,8 @@ describe("WorklogExpressionDirective", function () {
         followingDatesAreAvailable("monday");
 
         // when:
-        userTypes("1d #project @mo");
-        userConfirmFirstSuggestion();
+        userTypes("1d #project @mo").atCursorPosition();
+        userConfirmsFirstSuggestion();
 
         expect(worklogExpression()).toEqual('1d #project @monday ');
     });
@@ -130,23 +136,64 @@ describe("WorklogExpressionDirective", function () {
         followingDatesAreAvailable({value: 'monday'});
 
         // when:
-        userTypes("1d #project @mo");
-        userConfirmFirstSuggestion();
+        userTypes("1d #project @mo").atCursorPosition();
+        userConfirmsFirstSuggestion();
 
         expect(worklogExpression()).toEqual('1d #project @monday ');
     });
 
-    it("properly puts suggestion inside text", function () {
-        document.body.appendChild(directive[0]);
+    it("completes word inside expression", function () {
         // given:
+        followingProjectsAreAvailable('ProjectManhattan');
         followingDatesAreAvailable("monday");
+        userTypes("@monday 1d").atCursorPosition();
 
         // when:
-        spyOn(outerScope,'getCursorPosition').and.returnValue(6);
-        userTypes("1d @mo #project");
-        userConfirmFirstSuggestion();
+        userTypes("#ProjectMan").atPosition("@monday ".length);
+        userConfirmsFirstSuggestion();
 
-        expect(worklogExpression()).toEqual('1d @monday #project');
+        expect(worklogExpression()).toEqual('@monday #ProjectManhattan 1d');
+    });
+
+    it("replaces completed word", function(){
+        // given:
+        followingProjectsAreAvailable('ProjectAbc', 'ProjectDef');
+        userTypes('#ProjectA').atCursorPosition();
+        userConfirmsFirstSuggestion();
+
+        // when:
+        userTypes('D').atPosition("#Project".length);
+        userConfirmsFirstSuggestion();
+
+        // then:
+        expect(worklogExpression()).toEqual("#ProjectDef");
+    });
+
+    it("puts new characters after space after completed word", function(){
+        // given:
+        followingProjectsAreAvailable('ProjectManhattan');
+        userTypes('#ProjectMan').atCursorPosition();
+        userConfirmsFirstSuggestion();
+
+        // when:
+        userTypes('1d').atCursorPosition();
+
+        // then:
+        expect(worklogExpression()).toEqual('#ProjectManhattan 1d');
+    });
+
+    it("puts new characters after space after completed word and not at the end of expresion", function(){
+        // given:
+        followingProjectsAreAvailable('ProjectManhattan');
+        userTypes('30m').atCursorPosition();
+        userTypes('#ProjectMan').atPosition(0);
+        userConfirmsFirstSuggestion();
+
+        // when:
+        userTypes("1d").atCursorPosition();
+
+        // then:
+        expect(worklogExpression()).toEqual("#ProjectManhattan 1d 30m");
     });
 
     function followingProjectsAreAvailable(){
@@ -161,13 +208,26 @@ describe("WorklogExpressionDirective", function () {
         spyOn(datesSuggestions,'startingWith').and.returnValue(args);
     }
 
-    function userTypes(input){
-        outerScope.workLogExpression = input;
-        outerScope.$digest();
+    function userTypes(input) {
+        return {
+            atCursorPosition: function() {
+               this.atPosition(outerScope.getCursorPosition())
+            },
+            atPosition: function(position) {
+                if (worklogExpression() == undefined) {
+                    setWorklogExpression(input);
+                } else {
+                    insertIntoWorklogExpression(position, input);
+                }
+                outerScope.$digest();
+            }
+        }
     }
 
-    function userConfirmFirstSuggestion(){
+    function userConfirmsFirstSuggestion(){
         outerScope.selectSuggestion(suggestions()[0]);
+        outerScope.$digest();
+        spiedCursorPosition.and.returnValue(worklogExpression().length);
     }
 
     function suggestions(){
@@ -178,10 +238,22 @@ describe("WorklogExpressionDirective", function () {
         return outerScope.workLogExpression;
     }
 
+    function setWorklogExpression(expression){
+        outerScope.workLogExpression = expression;
+        spiedCursorPosition.and.returnValue(worklogExpression().length);
+    }
+
+    function insertIntoWorklogExpression(position, input) {
+        var expression = worklogExpression();
+        expression = expression.substr(0, position) + input + expression.substr(position);
+        setWorklogExpression(expression);
+        spiedCursorPosition.and.returnValue(position + input.length);
+    }
+
     function compileDirective(html) {
         directive = angular.element(html);
         compile(directive)(outerScope);
-        inputElement = $(directive.children()[0]);
+        inputElement = directive.children()[0];
     }
 
 });
