@@ -217,7 +217,7 @@ describe("WorklogExpressionDirective", function () {
     }
 
     function suggestions(){
-        return outerScope.suggestions;
+        return outerScope.suggestions(worklogExpression());
     }
 
     function worklogExpression(){

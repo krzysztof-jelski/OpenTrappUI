@@ -3,7 +3,6 @@ angular.module('openTrapp').controller('RegistrationCtrl',
 
         $scope.alerts = [];
         $scope.workLogExpression = '';
-        $scope.suggestions = [];
         $scope.clearAlerts = function () {
             $scope.alerts = [];
         };
