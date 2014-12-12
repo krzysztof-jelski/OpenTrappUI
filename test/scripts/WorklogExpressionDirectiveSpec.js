@@ -8,6 +8,7 @@ describe("WorklogExpressionDirective", function () {
     var spiedCursorPosition;
 
     beforeEach(module("openTrapp"));
+    beforeEach(module("karma.cached.htmls"));
 
     beforeEach(inject(function(_enviromentInterceptor_){
         _enviromentInterceptor_.request = function(x){
@@ -42,7 +43,7 @@ describe("WorklogExpressionDirective", function () {
     });
 
     it("contains input with proper template for typeahead", function () {
-        expect($(inputElement).attr("typeahead-template-url")).toEqual("typeahead-template.html");
+        expect($(inputElement).attr("typeahead-template-url")).toEqual("templates/typeahead-template.html");
     });
 
     it("suggests all available projects after typing #", function(){
@@ -230,6 +231,7 @@ describe("WorklogExpressionDirective", function () {
     function compileDirective(html) {
         directive = angular.element(html);
         compile(directive)(outerScope);
+        outerScope.$digest();
         inputElement = directive.children()[0];
     }
 

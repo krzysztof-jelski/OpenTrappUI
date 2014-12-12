@@ -9,8 +9,18 @@ module.exports = function (config) {
             'app/scripts/OpenTrappModule.js',
             'app/scripts/*.js',
             'test/lib/*.js',
-            'test/**/*.js'
+            'test/**/*.js',
+            'app/templates/*.html'
         ],
+        ngHtml2JsPreprocessor: {
+            moduleName: 'karma.cached.htmls',
+            cacheIdFromPath: function (filepath) {
+                return filepath.replace("app/", "");
+            }
+        },
+        preprocessors: {
+            'app/templates/*.html': ['ng-html2js']
+        },
         browsers: [
             'PhantomJS'
         ],

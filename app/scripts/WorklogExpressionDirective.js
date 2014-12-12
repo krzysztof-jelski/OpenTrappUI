@@ -2,18 +2,7 @@ angular.module('openTrapp')
     .directive('worklogExpression', function ($compile, projectNames, datesSuggestions) {
         return {
             restrict: 'E',
-            template: '<input' +
-                    ' class="form-control input-lg worklog-expression-input"' +
-                    ' ng-model="workLogExpression"' +
-                    ' ng-trim="false"' +
-                    ' type="text"' +
-                    ' placeholder="1d #my-project"' +
-                    ' typeahead-wait-ms="100"' +
-                    ' typeahead-on-select="selectSuggestion($item)"' +
-                    ' typeahead-template-url="typeahead-template.html"' +
-                    ' typeahead="s for s in suggestions($viewValue)"' +
-                    '>' +
-                    ' </input>',
+            templateUrl: 'templates/worklog-expression-template.html',
 
             link: function ($scope, element) {
                 inputElement = $(element).children()[0];
@@ -50,7 +39,7 @@ angular.module('openTrapp')
                     lastDesiredEffectOfCompletion = new EffectOfCompletion(match.index + completion.length);
                 };
 
-                $scope.getCursorPosition = function() {
+                $scope.getCursorPosition = function () {
                     return inputElement.selectionStart;
                 };
 
@@ -82,7 +71,7 @@ angular.module('openTrapp')
                     this.isNotApplied = function () {
                         return applied === false;
                     };
-                    this.apply = function() {
+                    this.apply = function () {
                         setCursorPositionAfterItJumpedToTheEndOnInputValueChange(desiredCursorPosition);
                         applied = true;
                     };
@@ -96,5 +85,5 @@ angular.module('openTrapp')
                     inputElement.setSelectionRange(position, position);
                 }
             }
-        }
+        };
     });
