@@ -18,10 +18,7 @@ angular.module('openTrapp')
             link: function ($scope, element) {
                 inputElement = $(element).children()[0];
 
-                var completionStatus = {
-                    completionWasLastExpressionChange: false,
-                    desiredCursorPositionAfterCompletion: 0
-                };
+                var lastDesiredEffectOfCompletion = new EffectOfCompletion(0);
 
                 var suggestionSourceFor = {
                     '#': projectNames,
@@ -40,14 +37,6 @@ angular.module('openTrapp')
                     return [];
                 };
 
-                function suggestionsFor(tag) {
-                    var suggestions = [];
-                    suggestionSourceFor[tag.symbol].startingWith(tag.value).forEach(function (suggestion) {
-                        suggestions.push(suggestion);
-                    });
-                    return suggestions;
-                }
-
                 $scope.selectSuggestion = function (suggestion) {
                     if (suggestion.value) {
                         suggestion = suggestion.value;
@@ -58,9 +47,26 @@ angular.module('openTrapp')
                     var completion = tag.symbol + suggestion + ' ';
                     var match = replacementRegexp.exec(currentExpression);
                     $scope.workLogExpression = currentExpression.replace(replacementRegexp, completion);
-                    completionStatus.completionWasLastExpressionChange = true;
-                    completionStatus.desiredCursorPositionAfterCompletion = match.index + completion.length;
+                    lastDesiredEffectOfCompletion = new EffectOfCompletion(match.index + completion.length);
                 };
+
+                $scope.getCursorPosition = function() {
+                    return inputElement.selectionStart;
+                };
+
+                $scope.$watch('workLogExpression', function (newVal, oldVal) {
+                    if (lastDesiredEffectOfCompletion.isNotApplied()) {
+                        lastDesiredEffectOfCompletion.apply();
+                    }
+                });
+
+                function suggestionsFor(tag) {
+                    var suggestions = [];
+                    suggestionSourceFor[tag.symbol].startingWith(tag.value).forEach(function (suggestion) {
+                        suggestions.push(suggestion);
+                    });
+                    return suggestions;
+                }
 
                 function currentlyEditedTagIn(input) {
                     var match = tagRegexp.exec(input);
@@ -71,24 +77,24 @@ angular.module('openTrapp')
                     }
                 }
 
-                $scope.$watch('workLogExpression', function (newVal, oldVal) {
-                    if (completionStatus.completionWasLastExpressionChange) {
-                        setCursorPositionAfterItJumpedToTheEndOnInputValueChange();
-                    }
-                    completionStatus.completionWasLastExpressionChange = false;
-                });
+                function EffectOfCompletion(desiredCursorPosition) {
+                    var applied = false;
+                    this.isNotApplied = function () {
+                        return applied === false;
+                    };
+                    this.apply = function() {
+                        setCursorPositionAfterItJumpedToTheEndOnInputValueChange(desiredCursorPosition);
+                        applied = true;
+                    };
+                }
 
-                function setCursorPositionAfterItJumpedToTheEndOnInputValueChange() {
-                    moveCursorToPosition(completionStatus.desiredCursorPositionAfterCompletion);
+                function setCursorPositionAfterItJumpedToTheEndOnInputValueChange(position) {
+                    moveCursorToPosition(position);
                 }
 
                 function moveCursorToPosition(position) {
                     inputElement.setSelectionRange(position, position);
                 }
-
-                $scope.getCursorPosition = function() {
-                    return inputElement.selectionStart;
-                };
             }
         }
     });
