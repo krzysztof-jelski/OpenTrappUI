@@ -18,29 +18,17 @@ angular.module('openTrapp')
             link: function ($scope, element) {
                 inputElement = $(element).children()[0];
 
+                var completionStatus = {
+                    completionWasLastExpressionChange: false,
+                    desiredCursorPositionAfterCompletion: 0
+                };
+
                 var suggestionSourceFor = {
                     '#': projectNames,
                     '@': datesSuggestions
                 };
 
                 var tagRegexp = /.*(@|#)([^\s]*)$/;
-
-                function currentlyEditedTagIn(input) {
-                    var match = tagRegexp.exec(input);
-                    if (match) {
-                        return {symbol: match[1], value: match[2]};
-                    } else {
-                        return null;
-                    }
-                }
-
-                function suggestionsFor(tag) {
-                    var suggestions = [];
-                    suggestionSourceFor[tag.symbol].startingWith(tag.value).forEach(function (suggestion) {
-                        suggestions.push(suggestion);
-                    });
-                    return suggestions;
-                }
 
                 $scope.suggestions = function (expression) {
                     if (expression) {
@@ -52,18 +40,54 @@ angular.module('openTrapp')
                     return [];
                 };
 
-                $scope.getCursorPosition = function () {
-                    return inputElement.selectionStart;
-                };
+                function suggestionsFor(tag) {
+                    var suggestions = [];
+                    suggestionSourceFor[tag.symbol].startingWith(tag.value).forEach(function (suggestion) {
+                        suggestions.push(suggestion);
+                    });
+                    return suggestions;
+                }
 
                 $scope.selectSuggestion = function (suggestion) {
                     if (suggestion.value) {
                         suggestion = suggestion.value;
                     }
-                    var tag = currentlyEditedTagIn($(inputElement).val().substring(0, $scope.getCursorPosition()));
+                    var currentExpression = $(inputElement).val();
+                    var tag = currentlyEditedTagIn(currentExpression.substring(0, $scope.getCursorPosition()));
                     var replacementRegexp = new RegExp(tag.symbol + tag.value + '\\s*');
-                    var completedTag = tag.symbol + suggestion;
-                    $scope.workLogExpression = $(inputElement).val().replace(replacementRegexp, completedTag + ' ');
+                    var completion = tag.symbol + suggestion + ' ';
+                    var match = replacementRegexp.exec(currentExpression);
+                    $scope.workLogExpression = currentExpression.replace(replacementRegexp, completion);
+                    completionStatus.completionWasLastExpressionChange = true;
+                    completionStatus.desiredCursorPositionAfterCompletion = match.index + completion.length;
+                };
+
+                function currentlyEditedTagIn(input) {
+                    var match = tagRegexp.exec(input);
+                    if (match) {
+                        return {symbol: match[1], value: match[2]};
+                    } else {
+                        return null;
+                    }
+                }
+
+                $scope.$watch('workLogExpression', function (newVal, oldVal) {
+                    if (completionStatus.completionWasLastExpressionChange) {
+                        setCursorPositionAfterItJumpedToTheEndOnInputValueChange();
+                    }
+                    completionStatus.completionWasLastExpressionChange = false;
+                });
+
+                function setCursorPositionAfterItJumpedToTheEndOnInputValueChange() {
+                    moveCursorToPosition(completionStatus.desiredCursorPositionAfterCompletion);
+                }
+
+                function moveCursorToPosition(position) {
+                    inputElement.setSelectionRange(position, position);
+                }
+
+                $scope.getCursorPosition = function() {
+                    return inputElement.selectionStart;
                 };
             }
         }

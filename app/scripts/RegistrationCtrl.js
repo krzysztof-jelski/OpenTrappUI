@@ -1,22 +1,22 @@
 angular.module('openTrapp').controller('RegistrationCtrl',
     function ($scope, $http, currentEmployee, worklogEntryParser, $sce) {
-
         $scope.alerts = [];
-        $scope.workLogExpression = '';
+        clearExpression();
         $scope.clearAlerts = function () {
             $scope.alerts = [];
         };
+
         $scope.logWork = function () {
 
-            if (!worklogEntryParser.isValid($scope.workLogExpression)) {
+            if (!worklogEntryParser.isValid(expression())) {
                 return;
             }
-            var data = worklogEntryParser.parse($scope.workLogExpression);
+            var data = worklogEntryParser.parse(expression());
 
             $http
                 .post('http://localhost:8080/endpoints/v1/employee/' + currentEmployee.username() + '/work-log/entries', data)
                 .success(function (response, status) {
-                    $scope.workLogExpression = '';
+                    clearExpression();
                     update();
                     var message = sprintf("<b>Hurray!</b> You  have successfully logged <b>%s</b> on project <b>%s</b> at <b>%s</b>.", data.workload, data.projectName, data.day);
                     $scope.alerts = [
@@ -32,12 +32,12 @@ angular.module('openTrapp').controller('RegistrationCtrl',
 
         var update = function () {
 
-            if ($scope.workLogExpression == '') {
+            if (expression() == '') {
                 $scope.status = '';
                 return;
             }
 
-            if (worklogEntryParser.isValid($scope.workLogExpression)) {
+            if (worklogEntryParser.isValid(expression())) {
                 $scope.status = 'success';
             } else {
                 $scope.status = 'error';
@@ -45,5 +45,13 @@ angular.module('openTrapp').controller('RegistrationCtrl',
         };
 
         $scope.$watch('workLogExpression', update);
+
+        function expression() {
+            return $scope.workLogExpression;
+        }
+
+        function clearExpression() {
+            $scope.workLogExpression = '';
+        }
 
     });
