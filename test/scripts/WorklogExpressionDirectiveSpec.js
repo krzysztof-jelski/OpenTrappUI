@@ -33,16 +33,6 @@ describe("WorklogExpressionDirective", function () {
         resetCursorSpiedReturnValue();
     });
 
-    it("contains input element of type 'text'", function () {
-        expect($(inputElement).attr("type")).toEqual("text");
-    });
-
-    it("contains input element with proper classes'", function () {
-        expect($(inputElement).hasClass("form-control")).toBeTruthy();
-        expect($(inputElement).hasClass("input-lg")).toBeTruthy();
-        expect($(inputElement).hasClass("worklog-expression-input")).toBeTruthy();
-    });
-
     it("contains input with '1d #my-project' as placeholder", function () {
         expect($(inputElement).attr("placeholder")).toEqual("1d #my-project");
     });
