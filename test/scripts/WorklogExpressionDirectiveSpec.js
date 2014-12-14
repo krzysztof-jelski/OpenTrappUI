@@ -2,7 +2,7 @@ describe("WorklogExpressionDirective", function () {
 
     var outerScope;
     var compile, timeout;
-    var directive, inputElement;
+    var inputElement;
     var http;
     var projectNames, datesSuggestions;
     var spiedCursorPosition;
@@ -229,10 +229,10 @@ describe("WorklogExpressionDirective", function () {
     }
 
     function compileDirective(html) {
-        directive = angular.element(html);
+        var directive = angular.element(html);
         compile(directive)(outerScope);
         outerScope.$digest();
-        inputElement = directive.children()[0];
+        inputElement = directive[0];
     }
 
 });

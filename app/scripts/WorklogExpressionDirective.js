@@ -2,10 +2,11 @@ angular.module('openTrapp')
     .directive('worklogExpression', function ($compile, projectNames, datesSuggestions) {
         return {
             restrict: 'E',
+            replace: 'true',
             templateUrl: 'templates/worklog-expression-template.html',
 
             link: function ($scope, element) {
-                inputElement = $(element).children()[0];
+                var inputElement = element[0];
 
                 var lastDesiredEffectOfCompletion = new EffectOfCompletion(0);
 
