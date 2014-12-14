@@ -8,7 +8,7 @@ angular.module('openTrapp')
             link: function ($scope, element) {
                 var inputElement = element[0];
 
-                var lastDesiredEffectOfCompletion = new EffectOfCompletion(0);
+                var effectOfLastCompletion = new EffectOfCompletion(0);
 
                 var suggestionSourceFor = {
                     '#': projectNames,
@@ -37,7 +37,7 @@ angular.module('openTrapp')
                     var completion = tag.symbol + suggestion + ' ';
                     var match = replacementRegexp.exec(currentExpression);
                     $scope.workLogExpression = currentExpression.replace(replacementRegexp, completion);
-                    lastDesiredEffectOfCompletion = new EffectOfCompletion(match.index + completion.length);
+                    effectOfLastCompletion = new EffectOfCompletion(match.index + completion.length);
                 };
 
                 $scope.getCursorPosition = function () {
@@ -45,8 +45,8 @@ angular.module('openTrapp')
                 };
 
                 $scope.$watch('workLogExpression', function (newVal, oldVal) {
-                    if (lastDesiredEffectOfCompletion.isNotApplied()) {
-                        lastDesiredEffectOfCompletion.apply();
+                    if (effectOfLastCompletion.isNotApplied()) {
+                        effectOfLastCompletion.apply();
                     }
                 });
 
