@@ -11,6 +11,10 @@ h3[data-toggle="collapse"]{
     cursor: pointer;
 }
 
+th[ng-click]{
+    cursor: pointer;
+}
+
 .example code:after {
     content: '\000A'; /* U+000A is the Line Feed character in Unicode */
     white-space: pre;
