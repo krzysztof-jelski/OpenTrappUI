@@ -8,10 +8,12 @@ describe('Registration Controller should', function() {
 
     var currentDateString = "2014/01/02";
     var employeeUsername = 'homer.simpson';
+	var scope, httpBackend, worklog, timeout;
 
-	var scope, httpBackend;
-	beforeEach(inject(function($rootScope, $controller, $httpBackend, _currentEmployee_, _timeProvider_ ,_projectNames_, $sce) {
+	beforeEach(inject(function($rootScope, $controller, $httpBackend, _currentEmployee_, _timeProvider_ ,_projectNames_, $sce, _worklog_, $timeout) {
 		scope = $rootScope.$new();
+        worklog = _worklog_;
+        timeout = $timeout;
 		$controller('RegistrationCtrl', {
 			$scope : scope
 		});
@@ -21,6 +23,7 @@ describe('Registration Controller should', function() {
         spyOn(_projectNames_, 'startingWith').and.returnValue({
 			forEach: function(callback){}
 		});
+        spyOn(worklog, 'refresh');
         spyOn($sce, 'trustAsHtml').and.callFake(function (x) {
             return x;
         });
@@ -30,7 +33,7 @@ describe('Registration Controller should', function() {
 		expect(scope).toBeDefined();
 	});
 
-	it('logs work to server', function() {
+	it('logs work to server and refreshes worklog', function() {
 		scope.workLogExpression = '2h #ProjectManhattan @2014/01/03';
 		httpBackend.expectPOST("http://localhost:8080/endpoints/v1/employee/homer.simpson/work-log/entries", {
 			projectName: 'ProjectManhattan',
@@ -40,7 +43,17 @@ describe('Registration Controller should', function() {
 
 		scope.logWork();
 		httpBackend.flush();
+
+        expect(worklog.refresh).toHaveBeenCalled();
 	});
+
+    it("initializes workload with current month", function () {
+        httpBackend.expectGET("http://localhost:8080/endpoints/v1/calendar/2015/02/work-log/entries").respond(200);
+
+        scope.init();
+        timeout.flush();
+        httpBackend.flush();
+    });
 
     it('be invalid when date is not a proper format', function() {
         scope.workLogExpression = 'invalid';

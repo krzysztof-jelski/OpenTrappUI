@@ -21,7 +21,7 @@ openTrapp
 
 		var lastMonth = currentMonth.next();
                 $scope.months = [];
-		
+
 		for(var i = 0; i < 13; i++){
                     $scope.months.push(lastMonth.name);
 		    lastMonth = lastMonth.prev();
