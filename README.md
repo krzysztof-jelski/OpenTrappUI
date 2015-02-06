@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/Pragmatists/OpenTrappUI.png)](http://travis-ci.org/Pragmatists/OpenTrappUI)
+
 OpenTrappUI
 ===========
 
