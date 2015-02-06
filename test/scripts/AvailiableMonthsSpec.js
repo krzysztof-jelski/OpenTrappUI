@@ -2,6 +2,8 @@ describe("Available Months", function () {
 
     var availableMonths;
     var timeProviderStub;
+    var currentMonth;
+
     beforeEach(function() {
 
         module("openTrapp");
@@ -13,18 +15,17 @@ describe("Available Months", function () {
             $provide.value('timeProvider', timeProviderStub);
         });
 
-        inject(function(_availableMonths_) {
+        inject(function(_availableMonths_,_currentMonth_) {
             availableMonths = _availableMonths_;
+            currentMonth = _currentMonth_;
         });
     });
 
-    it('offers 2 next months, current month and 11 previous months', function () {
-        var months = availableMonths.get();
+    it('offers 2 next months, current month and 2 previous months', function () {
+        var months = availableMonths.get(currentMonth);
 
-        expect(months).toEqual(['2014/03','2014/02', '2014/01', '2013/12', '2013/11', '2013/10', '2013/09', '2013/08', '2013/07', '2013/06',
-            '2013/05', '2013/04', '2013/03']);
+        expect(months).toEqual(['2014/03','2014/02', '2014/01', '2013/12', '2013/11']);
     });
-
 
 
 });

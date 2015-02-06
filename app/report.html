@@ -11,36 +11,26 @@
 <div class="row">
     <div class="col-md-2">
         <h4>Month:</h4>
-	<ul class="nav nav-pills small months dropdown" style="position:relative;">
-	    <li ng-repeat="month in months | limitTo: 5" ng-class="month == worklog.month ? 'active' : ''">
-	        <a ng-click="worklog.setMonth(month)">
-	            {{month}}
-	            <span ng-if="month == worklog.month" class="badge badge-default">
-	                {{worklog.month.total}}
-	            </span>
-	        </a>
-		<a ng-if="month == worklog.month" ng-click="worklog.setMonth(month)" class="refresh">
-			<span class="glyphicon glyphicon-refresh"></span>
-		</a>
-	    </li>
+        <ul class="nav nav-pills small months dropdown" style="position:relative;">
             <li>
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></a>
-		<ul class="nav nav-pills small months dropdown-menu">
+                <a ng-click="nextVisibleMonth()" class="glyphicon glyphicon-chevron-up" style="text-align: center"></a>
+            </li>
+            <li ng-repeat="month in months" ng-class="month == worklog.month ? 'active' : ''">
+                <a ng-click="worklog.setMonth(month)">
+                    <span ng-class="{strong:month == currentMonth.name}">{{month}}</span>
+                    <span ng-if="month == worklog.month" class="badge badge-default">
+                        {{worklog.month.total}}
+                    </span>
+                </a>
+                <a ng-if="month == worklog.month" ng-click="worklog.setMonth(month)" class="refresh">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                </a>
+            </li>
+            <li>
+                <a ng-click="prevVisibleMonth()" class="glyphicon glyphicon-chevron-down" style="text-align: center"></a>
+            </li>
 
-		    <li ng-repeat="month in months | limitTo: -9" ng-class="month == worklog.month ? 'active' : ''">
-			<a ng-click="worklog.setMonth(month)">
-			    {{month}}
-			    <span ng-if="month == worklog.month" class="badge badge-default">
-			        {{worklog.month.total}}
-			    </span>
-			</a>
-			<a ng-if="month == worklog.month" ng-click="worklog.setMonth(month)" class="refresh">
-				<span class="glyphicon glyphicon-refresh"></span>
-			</a>
-		    </li>
-		</ul>
-	    </li>
-	</ul>
+        </ul>
     </div>
     <div class="col-md-4" ng-init="showIneligibleProjects=true">
         <h4>Projects:</h4>

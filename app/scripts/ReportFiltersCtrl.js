@@ -23,10 +23,23 @@ openTrapp
 
                 });
 
-				$scope.months = availableMonths.get();
+				$scope.months = availableMonths.get(currentMonth);
+				$scope.currentMonth = currentMonth;
+				$scope.visibleMonth = currentMonth;
 
 			}, 600);
         };
+
+		$scope.nextVisibleMonth = function(){
+			$scope.visibleMonth = $scope.visibleMonth.next();
+			$scope.months = availableMonths.get($scope.visibleMonth);
+		};
+
+		$scope.prevVisibleMonth = function(){
+			$scope.visibleMonth = $scope.visibleMonth.prev();
+			$scope.months = availableMonths.get($scope.visibleMonth);
+		};
+
 
 	})
 	.factory('currentMonth', function(timeProvider) {

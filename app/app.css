@@ -7,6 +7,10 @@ code {
     line-height: 200%;
 }
 
+.strong {
+    font-weight: bold;
+}
+
 h3[data-toggle="collapse"]{
     cursor: pointer;
 }

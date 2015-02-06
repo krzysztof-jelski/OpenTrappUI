@@ -1,12 +1,12 @@
 angular.module("openTrapp")
-    .factory('availableMonths', function (currentMonth) {
+    .factory('availableMonths', function () {
         return {
-            get: function () {
+            get: function (currentMonth) {
                 var lastMonth = currentMonth.next().next();
 
                 var months = [];
 
-                for (var i = 0; i < 13; i++) {
+                for (var i = 0; i < 5; i++) {
                     months.push(lastMonth.name);
                     lastMonth = lastMonth.prev();
                 }
