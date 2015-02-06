@@ -7,14 +7,15 @@ describe('Report Filters Controller', function () {
     var scope, worklog;
     var worklogIsReady;
     var timeout;
+    var availableMonths;
 
     beforeEach(function () {
         currentMonth = new Month('2014/01');
         worklogIsReady = function () {
         };
     });
-    beforeEach(inject(function ($rootScope, $controller, $timeout, _worklog_, _currentEmployee_) {
-
+    beforeEach(inject(function ($rootScope, $controller, $timeout, _worklog_, _currentEmployee_, _availableMonths_) {
+        availableMonths = _availableMonths_;
         scope = $rootScope.$new();
         $controller('ReportFiltersCtrl', {
             $scope: scope,
@@ -47,15 +48,15 @@ describe('Report Filters Controller', function () {
         expect(worklog.setMonth).toHaveBeenCalledWith(currentMonth.name, worklogIsReady);
     });
 
-    it('offers one next month, current month and 11 previous months', function () {
-
+    it('setups months from service', function () {
         // given:
+        spyOn(availableMonths, 'get').and.returnValue(['2014/02','2014/01']);
+
         // when:
         initScopeWithTimeout();
 
         // then:
-        expect(scope.months).toEqual(['2014/02', '2014/01', '2013/12', '2013/11', '2013/10', '2013/09', '2013/08', '2013/07', '2013/06',
-					'2013/05', '2013/04', '2013/03', '2013/02']);
+        expect(scope.months).toEqual(['2014/02','2014/01']);
     });
 
     it('selects current user by default', function () {

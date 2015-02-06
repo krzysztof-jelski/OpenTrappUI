@@ -1,7 +1,7 @@
 var openTrapp = angular.module('openTrapp'); 
 
 openTrapp
-	.controller('ReportFiltersCtrl', function ($scope, $http, $timeout, worklog, currentMonth, currentEmployee) {
+	.controller('ReportFiltersCtrl', function ($scope, $http, $timeout, worklog, currentMonth, currentEmployee, availableMonths) {
 
         $scope.sort = {
             predicate: 'day',
@@ -23,35 +23,29 @@ openTrapp
 
                 });
 
-		var lastMonth = currentMonth.next();
-                $scope.months = [];
+				$scope.months = availableMonths.get();
 
-		for(var i = 0; i < 13; i++){
-                    $scope.months.push(lastMonth.name);
-		    lastMonth = lastMonth.prev();
-		}
-
-            }, 600);
+			}, 600);
         };
 
 	})
-	.factory('currentMonth', function() {
+	.factory('currentMonth', function(timeProvider) {
 
-		return new Month(moment().format('YYYY/MM'));
+		return new Month(timeProvider.moment().format('YYYY/MM'));
 	});
 
-var Month = function(month){
-	
+var Month = function (month) {
 	var that = moment(month, 'YYYY/MM');
-	
+
 	return {
-		
 		name: that.format('YYYY/MM'),
-		next: function(){
+		next: function () {
 			return new Month(moment(that).add('month', 1).format('YYYY/MM'));
 		},
-		prev: function(){
+		prev: function () {
 			return new Month(moment(that).subtract('month', 1).format('YYYY/MM'));
 		}
 	};
 };
+
+

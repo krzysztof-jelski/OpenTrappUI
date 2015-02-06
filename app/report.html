@@ -12,7 +12,7 @@
     <div class="col-md-2">
         <h4>Month:</h4>
 	<ul class="nav nav-pills small months dropdown" style="position:relative;">
-	    <li ng-repeat="month in months | limitTo: 4" ng-class="month == worklog.month ? 'active' : ''">
+	    <li ng-repeat="month in months | limitTo: 5" ng-class="month == worklog.month ? 'active' : ''">
 	        <a ng-click="worklog.setMonth(month)">
 	            {{month}}
 	            <span ng-if="month == worklog.month" class="badge badge-default">
