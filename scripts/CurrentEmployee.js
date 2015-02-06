@@ -9,6 +9,9 @@ angular.module('openTrapp').factory('currentEmployee', function () {
         },
         username: function () {
             return username;
+        },
+        isAuthenticated: function(){
+            return username !== 'Anonymous';
         }
     };
 });
