@@ -1,7 +1,11 @@
 module.exports = function (config) {
     config.set({
         basePath: '../',
-        exclude: ['**/bootstrap.js', '**/bootstrap.min.js'],
+        exclude: [
+            '**/bootstrap.js',
+            '**/bootstrap.min.js',
+            'app/scripts/AuthInterceptor.js'
+        ],
         frameworks: ['jasmine'],
         files: [
             'app/lib/angular.js',

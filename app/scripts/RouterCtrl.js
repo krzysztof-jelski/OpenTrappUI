@@ -1,16 +1,28 @@
 angular.module('openTrapp')
     .config(function ($routeProvider, $locationProvider) {
         $routeProvider.when('/registration', {
-            templateUrl: 'registration.html'
+            templateUrl: 'registration.html',
+            access: {
+                requiresLogin: true
+            }
         });
         $routeProvider.when('/report', {
-            templateUrl: 'report.html'
+            templateUrl: 'report.html',
+            access: {
+                requiresLogin: true
+            }
         });
         $routeProvider.when('/config', {
-            templateUrl: 'configuration.html'
+            templateUrl: 'configuration.html',
+            access: {
+                requiresLogin: true
+            }
         });
         $routeProvider.when('/', {
-            templateUrl: 'home.html'
+            templateUrl: 'home.html',
+            access: {
+                requiresLogin: false
+            }
         });
         $routeProvider.when('/authFailed', {
             templateUrl: 'auth-failed.html'
