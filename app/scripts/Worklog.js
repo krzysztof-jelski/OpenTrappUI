@@ -122,6 +122,7 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 		},
 		refresh: function(){
 			that.setMonth(that.month);
+			apply();
 		},
 		reset: function(){
 			that.month = new String('');
