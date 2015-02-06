@@ -1,9 +1,20 @@
 angular.module('openTrapp').controller('RegistrationCtrl',
-    function ($scope, $http, currentEmployee, worklogEntryParser, $sce) {
+    function ($scope, $http, currentEmployee, worklogEntryParser, $sce, worklog, currentMonth, $timeout) {
         $scope.alerts = [];
         clearExpression();
         $scope.clearAlerts = function () {
             $scope.alerts = [];
+        };
+
+        $scope.init=function(){
+            $timeout(function(){
+                worklog.setMonth(currentMonth.name, function () {
+                    var employee = currentEmployee.username();
+                    worklog.enableEmployee(employee);
+                    worklog.enableEmployeeProjects(employee);
+                });
+            },500)
+
         };
 
         $scope.logWork = function () {
@@ -22,6 +33,7 @@ angular.module('openTrapp').controller('RegistrationCtrl',
                     $scope.alerts = [
                         { type: 'success', message: $sce.trustAsHtml(message)}
                     ];
+                    worklog.refresh();
                 }).error(function (response, status) {
                     var message = '<b>Upps...</b> Server is not responding.';
                     $scope.alerts = [

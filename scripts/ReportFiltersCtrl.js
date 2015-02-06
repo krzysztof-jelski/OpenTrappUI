@@ -2,7 +2,11 @@ var openTrapp = angular.module('openTrapp');
 
 openTrapp
 	.controller('ReportFiltersCtrl', function ($scope, $http, $timeout, worklog, currentMonth, currentEmployee) {
-	
+
+        $scope.sort = {
+            predicate: 'day',
+            reverse: true
+        };
 		$scope.worklog = worklog;
 		$scope.months = [];
 
@@ -21,7 +25,7 @@ openTrapp
 
 		var lastMonth = currentMonth.next();
                 $scope.months = [];
-		
+
 		for(var i = 0; i < 13; i++){
                     $scope.months.push(lastMonth.name);
 		    lastMonth = lastMonth.prev();
