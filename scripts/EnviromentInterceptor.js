@@ -7,7 +7,7 @@ angular.module('openTrapp').factory('enviromentInterceptor', function ($cookies)
             // FIXME: create placeholder and write tests
 
             if (!$cookies.apiServerUrl) {
-                $cookies.apiServerUrl = "localhost:8080";
+                $cookies.apiServerUrl = "open-trapp.herokuapp.com";
             }
             config.url = config.url.replace('localhost:8080', $cookies.apiServerUrl);
 

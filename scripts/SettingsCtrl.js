@@ -2,7 +2,7 @@ angular.module('openTrapp').controller('SettingsCtrl',
     function ($scope, $cookies) {
         $scope.init = function () {
 
-            $scope.apiServerUrl = 'localhost:8080';
+            $scope.apiServerUrl = 'http://open-trapp.herokuapp.com';
             if ($cookies.apiServerUrl) {
                 $scope.apiServerUrl = $cookies.apiServerUrl;
             }
