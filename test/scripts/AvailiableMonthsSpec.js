@@ -21,10 +21,10 @@ describe("Available Months", function () {
         });
     });
 
-    it('offers 2 next months, current month and 2 previous months', function () {
-        var months = availableMonths.get(currentMonth);
+    it('offers 3 previous months, current month and 3 next months', function () {
+        var months = availableMonths.get(currentMonth, 3);
 
-        expect(months).toEqual(['2014/03','2014/02', '2014/01', '2013/12', '2013/11']);
+        expect(months).toEqual(['2013/10', '2013/11', '2013/12', '2014/01', '2014/02', '2014/03', '2014/04']);
     });
 
 

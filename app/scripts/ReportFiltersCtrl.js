@@ -40,6 +40,11 @@ openTrapp
 			$scope.months = availableMonths.get($scope.visibleMonth);
 		};
 
+        $scope.keypressCallback = function ($event) {
+            alert('Voila!');
+            $event.preventDefault();
+        };
+
 
 	})
 	.factory('currentMonth', function(timeProvider) {

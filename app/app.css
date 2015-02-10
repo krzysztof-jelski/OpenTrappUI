@@ -19,6 +19,16 @@ th[ng-click]{
     cursor: pointer;
 }
 
+.line-separator {
+    clear:both;
+    width: 100%;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #eee;
+    padding-top: 15px;
+    margin-bottom: 10px;
+}
+
 .example code:after {
     content: '\000A'; /* U+000A is the Line Feed character in Unicode */
     white-space: pre;
