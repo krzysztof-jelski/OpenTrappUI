@@ -15,7 +15,6 @@
     "sprintf": "*",
     "angular-bootstrap": "0.10.0",
     "chartjs": "*",
-    "angular-ui-utils": "bower-keypress"
   },
   "devDependencies": {
     "angular-mocks": "1.2.16"

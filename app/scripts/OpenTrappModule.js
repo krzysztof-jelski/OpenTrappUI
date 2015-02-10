@@ -1,1 +1,1 @@
-angular.module('openTrapp', ['ngRoute', 'ngAnimate', 'ngCookies', 'ui.bootstrap','ui.keypress']);
+angular.module('openTrapp', ['ngRoute', 'ngAnimate', 'ngCookies', 'ui.bootstrap','multi.selection']);

@@ -1,7 +1,7 @@
-var openTrapp = angular.module('openTrapp'); 
+var openTrapp = angular.module('openTrapp');
 
 openTrapp
-	.controller('ReportFiltersCtrl', function ($scope, $http, $timeout, worklog, currentMonth, currentEmployee, availableMonths) {
+	.controller('ReportFiltersCtrl', function ($scope, $http, $timeout, worklog, currentMonth, currentEmployee, availableMonths,multiSelection) {
 
         $scope.sort = {
             predicate: 'day',
@@ -40,11 +40,11 @@ openTrapp
 			$scope.months = availableMonths.get($scope.visibleMonth);
 		};
 
-        $scope.keypressCallback = function ($event) {
-            alert('Voila!');
-            $event.preventDefault();
-        };
+        $scope.setCurrentMonth = function (month) {
+            worklog.setMonth(month)
+        }
 
+        $scope.selection = multiSelection;
 
 	})
 	.factory('currentMonth', function(timeProvider) {

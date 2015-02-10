@@ -1,6 +1,6 @@
 <!-- ReportCtrl -->
 <div ng-controller="ReportFiltersCtrl" ng-init="init();display='calendar'" class="report">
-<div class="container" ui-keydown="{16:'keypressCallback($event)'}">
+<div class="container">
     <div class="row">
     <div class="col-md-12">
         <h2 class="page-header">Review reports
@@ -9,17 +9,22 @@
     </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" ng-mouseleave="selection.clearSelection()">
             <h4>Months:</h4>
-            <ul class="nav nav-justified nav-pills small months dropdown list-inline" style="position:relative;">
+            <ul class="nav nav-justified nav-pills small months dropdown list-inline noselect" style="position:relative;"
+				>
                 <li>
                     <a ng-click="prevVisibleMonth()" class="glyphicon glyphicon-chevron-left" style="text-align: center"></a>
                 </li>
-                <li ng-repeat="month in months" ng-class="month == worklog.month ? 'active' : ''">
-                    <a ng-click="worklog.setMonth(month)">
+                <li ng-repeat="month in months" ng-class="month == worklog.month ||  selection.isSelected(month) ? 'active' : ''">
+                    <a ng-click="setCurrentMonth(month)"
+					   ng-mousedown="selection.startSelection(month)"
+					   ng-mouseup="selection.endSelection(month)"
+					   ng-mouseover="selection.overSelection(month)"
+					   >
 
-                        <span ng-class="{strong:month == currentMonth.name}">{{month}}</span>
-                        <span ng-if="month == worklog.month" class="badge badge-default">
+                        <span ng-class="{strong:month == currentMonth.name }">{{month}}</span>
+                        <span ng-if="month == worklog.month " class="badge badge-default">
                             {{worklog.month.total}}
                         </span>
                     </a>
@@ -120,7 +125,7 @@
 </div>
     <div class="row">
     <div class="col-md-12">
-        <h2>{{worklog.month.toString()}}</h2>
+        <h2>{{worklog.month.toString()}} {{selection.selectionStart()}} - {{selection.selectionEnd()}}</h2>
         <ul class="nav nav-pills small">
             <li ng-class="{active: display=='calendar'}" ng-click="display='calendar'">
                 <a title="Calendar">
