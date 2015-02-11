@@ -36,7 +36,7 @@ describe('Registration Controller should', function() {
 	it('logs work to server and refreshes worklog', function() {
 		scope.workLogExpression = '2h #ProjectManhattan @2014/01/03';
 		httpBackend.expectPOST("http://localhost:8080/endpoints/v1/employee/homer.simpson/work-log/entries", {
-			projectName: 'ProjectManhattan',
+			projectNames: ['ProjectManhattan'],
 			workload: '2h',
 			day: '2014/01/03'
 		}).respond(200);
@@ -66,7 +66,7 @@ describe('Registration Controller should', function() {
 	it('clear input after successfull submit', function() {
 		scope.workLogExpression = '2h #ProjectManhattan @2014/01/03';
 		httpBackend.expectPOST("http://localhost:8080/endpoints/v1/employee/homer.simpson/work-log/entries", {
-			projectName: 'ProjectManhattan',
+			projectNames: ['ProjectManhattan'],
 			workload: '2h',
 			day: '2014/01/03'
 		}).respond(200);
@@ -87,7 +87,21 @@ describe('Registration Controller should', function() {
 
         expect(scope.alerts).toContain({
             type: 'success',
-            message: '<b>Hurray!</b> You  have successfully logged <b>1d 2h 5m</b> on project <b>ProjectManhattan</b> at <b>' + currentDateString+ '</b>.'
+            message: '<b>Hurray!</b> You  have successfully logged <b>1d 2h 5m</b> on <b>ProjectManhattan</b> at <b>' + currentDateString+ '</b>.'
+        });
+    });
+
+    it('show successful alert with multiple projets', function () {
+        scope.workLogExpression = '1d 2h 5m #ProjectManhattan #Apollo';
+        scope.alert = { type: 'success', message: '1' };
+        httpBackend.expectPOST().respond(200);
+
+        scope.logWork();
+        httpBackend.flush();
+
+        expect(scope.alerts).toContain({
+            type: 'success',
+            message: '<b>Hurray!</b> You  have successfully logged <b>1d 2h 5m</b> on <b>ProjectManhattan</b>,<b>Apollo</b> at <b>' + currentDateString+ '</b>.'
         });
     });
 	
@@ -101,7 +115,7 @@ describe('Registration Controller should', function() {
 
 		expect(scope.alerts).toContain({
 			type: 'success',
-			message: '<b>Hurray!</b> You  have successfully logged <b>2h</b> on project <b>ProjectManhattan</b> at <b>2014/01/03</b>.'
+			message: '<b>Hurray!</b> You  have successfully logged <b>2h</b> on <b>ProjectManhattan</b> at <b>2014/01/03</b>.'
 		});
 	});
 
