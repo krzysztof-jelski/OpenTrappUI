@@ -56,4 +56,4 @@ angular.module('multi.selection',[])
         selectionStart: getSelectionStart,
         selectionEnd: getSelectionEnd
     }
-})
+});

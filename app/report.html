@@ -9,20 +9,19 @@
     </div>
     </div>
     <div class="row">
-        <div class="col-md-12" ng-mouseleave="selection.clearSelection()">
+        <div class="col-md-12" >
             <h4>Months:</h4>
             <ul class="nav nav-justified nav-pills small months dropdown list-inline noselect" style="position:relative;"
-				>
+                ng-mouseleave="selection.clearSelection()">
                 <li>
                     <a ng-click="prevVisibleMonth()" class="glyphicon glyphicon-chevron-left" style="text-align: center"></a>
                 </li>
-                <li ng-repeat="month in months" ng-class="month == worklog.month ||  selection.isSelected(month) ? 'active' : ''">
-                    <a ng-click="setCurrentMonth(month)"
-					   ng-mousedown="selection.startSelection(month)"
-					   ng-mouseup="selection.endSelection(month)"
-					   ng-mouseover="selection.overSelection(month)"
-					   >
+                <li ng-repeat="month in months" ng-class="month == worklog.month ||  selection.isSelected(month) ? 'active' : ''"
+                    ng-mousedown="selection.startSelection(month)"
+                    ng-mouseup="selection.endSelection(month)"
+                    ng-mouseover="selection.overSelection(month)">
 
+                    <a ng-click="setCurrentMonth(month)">
                         <span ng-class="{strong:month == currentMonth.name }">{{month}}</span>
                         <span ng-if="month == worklog.month " class="badge badge-default">
                             {{worklog.month.total}}
