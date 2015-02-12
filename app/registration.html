@@ -34,7 +34,14 @@
 
                         <worklog-expression></worklog-expression>
 
+						<span class="input-group-btn">
+								<button class="btn btn-lg btn-default" data-toggle="modal" data-target="#myModal"
+										style="height:46px; margin-left: -4px; z-index: 3; color: #999" type="button">?
+								</button>
+						</span>
+
                     </div>
+
                 </div>
                 </form>
             </div>
@@ -63,51 +70,48 @@
 			</div>
 		</div>
 
-        <div class="row">
-            <div style="color:#999;" class="col-md-10 col-md-offset-1">
-                <h3 class="page-header">Examples </h3>
-				<div id="examples">
-					<div class="example">
-						<code>1d #my-project</code>
-						<p class="lead">Report <strong>8 hours</strong> to <strong>my-project</strong> for <strong>today</strong>.</p>
-					</div>
-					<div class="example">
-						<code>1d #my-project @yesterday</code>
-						<code>1d #my-project @t-1</code>
-						<p class="lead">Report <strong>8 hours</strong> to <strong>my-project</strong> for <strong>yesterday</strong>. </p>
-					</div>
-					<div class="example">
-						<code>1d 2h 15m #my-project</code>
-						<p class="lead">Report <strong>10 hours and 15 minutes</strong> to <strong>my-project</strong> for <strong>today</strong>. </p>
-					</div>
-					<div class="example">
-						<code>1d #my-project @1966/02/26</code>
-						<p class="lead">Report <strong>8 hours</strong> to <strong>my-project</strong> on <strong>Feburary 26, 1966</strong>.</p>
-					</div>
-					<div class="example">
-						<code>1d #my-project @monday</code>
-						<code>1d #my-project @last-monday</code>
-						<p class="lead">Report <strong>8 hours </strong> to <strong>my project</strong> for <strong>last monday</strong>.</p>
-					</div>
-					<div class="example">
-						<code>1d #my-project @next-monday</code>
-						<p class="lead">Report <strong>8 hours </strong> to <strong>my project</strong> for <strong>next monday</strong>.</p>
-					</div>
-					<div class="example not-implemented">
-						<code>1d</code>
-						<p class="lead">Report <strong>8 hours </strong> to <strong>your default project</strong> for <strong>today</strong>. (not yet implemented)</p>
-					</div>
-					<div class="example not-implemented">
-						<code>1d #my-project @1 apr</code>
-						<p class="lead">Report <strong>8 hours </strong> to <strong>my project</strong> for <strong>1st of April</strong>. (not yet implemented)</p>
-					</div>
-					<div class="example not-implemented">
-						<code>1d #my-project @monday~1</code>
-						<p class="lead">Report <strong>8 hours </strong> to <strong>my project</strong> for <strong>monday and tuesday</strong>. (not yet implemented)</p>
+    </div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<div id="examples">
+						<div class="example">
+							<code>1d #my-project</code>
+							<p>Report <strong>8 hours</strong> to <strong>my-project</strong> for <strong>today</strong>.</p>
+						</div>
+						<div class="example">
+							<code>1d #my-project @yesterday</code>
+							<code>1d #my-project @t-1</code>
+							<p>Report <strong>8 hours</strong> to <strong>my-project</strong> for <strong>yesterday</strong>. </p>
+						</div>
+						<div class="example">
+							<code>1d 2h 15m #my-project</code>
+							<p>Report <strong>10 hours and 15 minutes</strong> to <strong>my-project</strong> for <strong>today</strong>. </p>
+						</div>
+						<div class="example">
+							<code>1d #my-project @1966/02/26</code>
+							<p>Report <strong>8 hours</strong> to <strong>my-project</strong> on <strong>Feburary 26, 1966</strong>.</p>
+						</div>
+						<div class="example">
+							<code>1d #my-project @monday</code>
+							<code>1d #my-project @last-monday</code>
+							<p>Report <strong>8 hours </strong> to <strong>my project</strong> for <strong>last monday</strong>.</p>
+						</div>
+						<div class="example">
+							<code>1d #my-project @next-monday</code>
+							<p>Report <strong>8 hours </strong> to <strong>my project</strong> for <strong>next monday</strong>.</p>
+						</div>
 					</div>
 				</div>
-            </div>
-        </div>
-    </div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>
 <!-- /RegistrationCtrl -->
