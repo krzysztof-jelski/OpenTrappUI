@@ -1,4 +1,5 @@
-<div ng-controller="ReportFiltersCtrl" ng-init="init();display='calendar'" class="report">
+<!-- ReportCtrl -->
+<div ng-controller="ReportFiltersCtrl" ng-init="init();display='table'" class="report">
 <div class="container">
 <div class="row">
     <div class="col-md-12">
@@ -10,25 +11,19 @@
 <div class="row">
     <div class="col-md-2">
         <h4>Month:</h4>
-        <ul class="nav nav-pills small months dropdown" style="position:relative;">
-            <li>
-                <a ng-click="nextVisibleMonth()" class="glyphicon glyphicon-chevron-up" style="text-align: center"></a>
-            </li>
+        <ul class="nav nav-pills small months">
+
             <li ng-repeat="month in months" ng-class="month == worklog.month ? 'active' : ''">
                 <a ng-click="worklog.setMonth(month)">
-                    <span ng-class="{strong:month == currentMonth.name}">{{month}}</span>
+                    {{month}}
                     <span ng-if="month == worklog.month" class="badge badge-default">
                         {{worklog.month.total}}
                     </span>
                 </a>
-                <a ng-if="month == worklog.month" ng-click="worklog.setMonth(month)" class="refresh">
-                    <span class="glyphicon glyphicon-refresh"></span>
-                </a>
+		<a ng-if="month == worklog.month" ng-click="worklog.setMonth(month)" class="refresh">
+			<span class="glyphicon glyphicon-refresh"></span>
+		</a>
             </li>
-            <li>
-                <a ng-click="prevVisibleMonth()" class="glyphicon glyphicon-chevron-down" style="text-align: center"></a>
-            </li>
-
         </ul>
     </div>
     <div class="col-md-4" ng-init="showIneligibleProjects=true">
@@ -104,14 +99,14 @@
     <div class="col-md-12">
         <h2>{{worklog.month.toString()}}</h2>
         <ul class="nav nav-pills small">
-            <li ng-class="{active: display=='calendar'}" ng-click="display='calendar'">
-                <a title="Calendar">
-                <span class="glyphicon glyphicon-calendar"></span>
-                </a>
-            </li>
             <li ng-class="{active: display=='table'}" ng-click="display='table'">
                 <a title="Table">
                 <span class="glyphicon glyphicon-th-list"></span>
+                </a>
+            </li>
+            <li ng-class="{active: display=='calendar'}" ng-click="display='calendar'">
+                <a title="Calendar">
+                <span class="glyphicon glyphicon-calendar"></span>
                 </a>
             </li>
             <li ng-class="{active: display=='pie-chart'}" ng-click="display='pie-chart'">
@@ -162,35 +157,21 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 40px"></th>
+            <th></th>
             <th>Project</th>
             <th>Workload</th>
             <th>Employee</th>
-            <th ng-click="sort.predicate = 'day'; sort.reverse=!sort.reverse">
-				Date
-				<span class="glyphicon" ng-class="sort.reverse ? 'glyphicon-chevron-down' : 'glyphicon-chevron-up'"></span>
-			</th>
+            <th>Date</th>
         </tr>
         </thead>
-        <tr class="worklog-entry" ng-repeat="item in worklog.entries | orderBy:sort.predicate:sort.reverse track by item.id">
+        <tr class="worklog-entry" ng-repeat="item in worklog.entries | orderBy: 'day'">
             <td align="right">
-				&nbsp;
                 <a ng-click="worklog.remove(item.id)" ng-if="item.employee == currentUser">
-                    <span class="glyphicon glyphicon-trash small-glyph"/>
+                    <span class="glyphicon glyphicon-trash"/>
                 </a>
             </td>
-            <td>
-                <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
-                    {{item.projectNames.join(",")}} <span class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
-                </a>
-                <span ng-if="item.employee != currentUser">{{item.projectNames.join(",")}}</span>
-	    	</td>
-            <td>
-                <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
-                    {{item.workload}} <span style="font-size: 80%" class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
-                </a>
-                <span ng-if="item.employee != currentUser">{{item.workload}}</span>
-	    	</td>
+            <td>{{item.projectName}}</td>
+            <td>{{item.workload}}</td>
             <td>{{item.employee}}</td>
             <td>{{item.day}}</td>
         </tr>
@@ -223,3 +204,4 @@
 </div>
 </div>
 </div>
+<!-- /ReportCtrl -->
