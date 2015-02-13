@@ -22,8 +22,8 @@
 
                     <a ng-click="setCurrentMonth(month)">
                         <span ng-class="{strong:month == currentMonth.name }">{{month}}</span>
-                        <span ng-if="month == worklog.month " class="badge badge-default">
-                            {{worklog.month.total}}
+                        <span ng-if="worklogs.areForMonth(month) " class="badge badge-default">
+                            {{worklogs.total[month]}}
                         </span>
                     </a>
                 </li>

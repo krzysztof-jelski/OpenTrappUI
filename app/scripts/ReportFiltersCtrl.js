@@ -1,13 +1,14 @@
 var openTrapp = angular.module('openTrapp');
 
 openTrapp
-	.controller('ReportFiltersCtrl', function ($scope, $http, $timeout, worklog, currentMonth, currentEmployee, availableMonths,multiSelection) {
+	.controller('ReportFiltersCtrl', function ($scope, $http, $timeout, worklog, currentMonth, currentEmployee, availableMonths,multiSelection, worklogsProvider) {
 
         $scope.sort = {
             predicate: 'day',
             reverse: true
         };
 		$scope.worklog = worklog;
+		$scope.worklogs = worklogsProvider;
 		$scope.months = [];
 
 		$scope.init = function() {
@@ -15,11 +16,12 @@ openTrapp
             worklog.reset();
 
             $timeout(function () {
-                worklog.setMonth(currentMonth.name, function () {
+
+                $scope.worklogs.setMonths([currentMonth.name], function () {
 
                     var employee = currentEmployee.username();
-                    worklog.enableEmployee(employee);
-                    worklog.enableEmployeeProjects(employee);
+                    $scope.worklogs.enableEmployee(employee);
+                    $scope.worklogs.enableEmployeeProjects(employee);
 
                 });
 
@@ -41,8 +43,8 @@ openTrapp
 		};
 
         $scope.setCurrentMonth = function (month) {
-            worklog.setMonth(month)
-        }
+            $scope.worklogs.setMonths([month]);
+        };
 
         $scope.selection = multiSelection;
 
