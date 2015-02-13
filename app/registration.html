@@ -1,4 +1,3 @@
-<!-- RegistrationCtrl -->
 <div ng-controller="RegistrationCtrl" class="registration" ng-init="init()">
     <div class="container">
         <div class="row" style="height:50px;position:relative;">
@@ -106,6 +105,11 @@
 							<code>1d #my-project @next-monday</code>
 							<p>Report <strong>8 hours </strong> to <strong>my project</strong> for <strong>next monday</strong>.</p>
 						</div>
+						<div class="example">
+							<code>1d #main-project #sub-project @today</code>
+							<p>Report <strong>8 hours </strong> to <strong>main-project</strong>, precisely <strong>sub-project</strong>
+                                for <strong>today</strong> (8 hours total, not 16).</p>
+                        </div>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -116,4 +120,3 @@
 	</div>
 
 </div>
-<!-- /RegistrationCtrl -->
