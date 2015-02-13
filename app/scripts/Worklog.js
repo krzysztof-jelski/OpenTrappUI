@@ -24,8 +24,8 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 						var statusOf = function(x){
 							return _.isUndefined(x) ? { active: false } : { active: x.active };
 						};
-						
-						_(worklog).pluck('projectNames').uniq().forEach(function(project){
+
+						_(worklog).pluck('projectNames').flatten().uniq().forEach(function(project){
 							projects[project] = statusOf(that.projects[project]); 
 						});
 						_(worklog).pluck('employee').uniq().forEach(function(employee){
@@ -175,9 +175,9 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 				if(that.employees[x.employee].active && hasAnyProjectActive(x)){
 					that.month.total = that.month.total.add(workload);
 				}
-				if(hasAnyProjectActive(x)){
-					that.employees[x.employee].total = that.employees[x.employee].total.add(workload); 
-				}
+                if (hasAnyProjectActive(x)) {
+                    that.employees[x.employee].total = that.employees[x.employee].total.add(workload);
+                }
 				if(that.employees[x.employee].active){
                     _(x.projectNames).forEach(function (project) {
 					    that.projects[project].total = that.projects[project].total.add(workload);

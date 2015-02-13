@@ -375,13 +375,51 @@ describe('Worklog', function() {
 			expect(worklog.projects['ApolloProgram'].total).toEqual("1d 7m");
 		});
 
-		it('is calculated for every active project', function(){
+		it('is calculated for inactive project', function(){
 			
 			// then:
 			expect(worklog.projects['InactiveProject'].total).toEqual("1h 45m");
 		});
-	
+
 	});
+
+    describe("totals for multiple projects", function () {
+
+        it('is calculated for multiple projects', function(){
+            worklogWith(
+                { employee: 'homer.simpson', projectNames: ['MultiProject1', 'MultiProject2'], workload: '1h 25m'}
+            );
+
+            worklog.toggleEmployee('homer.simpson');
+
+            expect(worklog.projects['MultiProject1'].total).toEqual("1h 25m");
+            expect(worklog.projects['MultiProject2'].total).toEqual("1h 25m");
+            expect(worklog.employees['homer.simpson'].total).toEqual("0h");
+        });
+
+        it('is calculated for employee with one project selected', function(){
+            worklogWith(
+                { employee: 'homer.simpson', projectNames: ['MultiProject1', 'MultiProject2'], workload: '1h 25m'}
+            );
+
+            worklog.toggleProject('MultiProject1');
+
+            expect(worklog.projects['MultiProject1'].total).toEqual("0h");
+            expect(worklog.projects['MultiProject2'].total).toEqual("0h");
+            expect(worklog.employees['homer.simpson'].total).toEqual("1h 25m");
+        });
+
+        it('is calculated for employee when multiple projects selected', function(){
+            worklogWith(
+                { employee: 'homer.simpson', projectNames: ['MultiProject1', 'MultiProject2'], workload: '1h 25m'}
+            );
+
+            worklog.toggleProject('MultiProject1');
+            worklog.toggleProject('MultiProject2');
+
+            expect(worklog.employees['homer.simpson'].total).toEqual('1h 25m');
+        });
+    });
 	
 	describe('notifications', function(){
 		
