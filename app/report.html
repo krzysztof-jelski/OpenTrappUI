@@ -1,4 +1,3 @@
-<!-- ReportCtrl -->
 <div ng-controller="ReportFiltersCtrl" ng-init="init();display='calendar'" class="report">
 <div class="container">
 <div class="row">
@@ -182,9 +181,9 @@
             </td>
             <td>
                 <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
-                    {{item.projectName}} <span class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
+                    {{item.projectNames.join(",")}} <span class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
                 </a>
-                <span ng-if="item.employee != currentUser">{{item.projectName}}</span>
+                <span ng-if="item.employee != currentUser">{{item.projectNames.join(",")}}</span>
 	    	</td>
             <td>
                 <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
@@ -224,4 +223,3 @@
 </div>
 </div>
 </div>
-<!-- /ReportCtrl -->
