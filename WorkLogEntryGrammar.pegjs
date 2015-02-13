@@ -43,7 +43,7 @@ WorkLogEntry
         {
             return resultMergedFrom(workload, projectAndDate);
         }
-    / project:ProjectClause SPACE workloadAndDate:WorkloadAndDateClauses
+    / project:ProjectsClause SPACE workloadAndDate:WorkloadAndDateClauses
         {
             return resultMergedFrom(project, workloadAndDate);
         }
@@ -63,7 +63,7 @@ WorkLogEntry
                 day: now().format(dateFormat)
             });
         }
-    / project:ProjectClause
+    / project:ProjectsClause
         {
             return resultMergedFrom(project, {
                 workload: "1d",
@@ -82,21 +82,21 @@ WorkloadAndDateClauses
         }
 
 ProjectAndDateClauses
-    = project:ProjectClause SPACE date:DateClause
+    = project:ProjectsClause SPACE date:DateClause
         {
             return resultMergedFrom(project, date);
         }
-    / date:DateClause SPACE project:ProjectClause
+    / date:DateClause SPACE project:ProjectsClause
         {
             return resultMergedFrom(project, date);
         }
 
 WorkloadAndProjectClauses
-    = workload:WorkloadClause SPACE project:ProjectClause
+    = workload:WorkloadClause SPACE project:ProjectsClause
         {
             return resultMergedFrom(workload, project);
         }
-    / project:ProjectClause SPACE workload:WorkloadClause
+    / project:ProjectsClause SPACE workload:WorkloadClause
         {
             return resultMergedFrom(workload, project);
         }
@@ -127,8 +127,11 @@ Hours
 Minutes
     = $(NUMBER "m")
 
+ProjectsClause
+    = projectNames:ProjectClause+ { return {projectNames: projectNames}; }
+
 ProjectClause
-    = "#" projectName:WORD { return {projectName: projectName}; }
+    = SPACE_OPT "#" projectName:WORD { return projectName; }
 
 DateClause
     = "@" date:DateDefinition { return {day: date}; }

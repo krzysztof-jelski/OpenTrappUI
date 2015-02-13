@@ -24,8 +24,8 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 						var statusOf = function(x){
 							return _.isUndefined(x) ? { active: false } : { active: x.active };
 						};
-						
-						_(worklog).pluck('projectName').uniq().forEach(function(project){
+
+						_(worklog).pluck('projectNames').flatten().uniq().forEach(function(project){
 							projects[project] = statusOf(that.projects[project]); 
 						});
 						_(worklog).pluck('employee').uniq().forEach(function(employee){
@@ -46,7 +46,7 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 
 						that.employees = employees;
 						that.projects = projects;
-						
+
 						apply();
 						if(callback){
 							callback();
@@ -109,7 +109,9 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 
 			_(worklog).forEach(function(x){
 				if(x.employee == employee){
-					that.enableProject(x.projectName);
+                    _(x.projectNames).forEach(function (project) {
+                        that.enableProject(project);
+                    });
 				}
 			});
 			apply();
@@ -143,11 +145,18 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 		notifyListeners();
 	};
 
-	var buildWorklog = function(){
+    function hasAnyProjectActive(worklog) {
+        return _(worklog.projectNames).any(function (project) {
+            return that.projects[project].active;
+        });
+    }
 
+    var buildWorklog = function(){
 		that.entries = _(worklog)
 			.filter(function(x){ return that.employees[x.employee].active })
-			.filter(function(x){ return that.projects[x.projectName].active })
+			.filter(function(x) {
+                return hasAnyProjectActive(x);
+            })
 			.value();
 	};
 	
@@ -163,14 +172,16 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 		_(worklog).forEach(function(x){
 			if(x.workload){
 				var workload = new Workload(x.workload);
-				if(that.employees[x.employee].active && that.projects[x.projectName].active){
+				if(that.employees[x.employee].active && hasAnyProjectActive(x)){
 					that.month.total = that.month.total.add(workload);
 				}
-				if(that.projects[x.projectName].active){
-					that.employees[x.employee].total = that.employees[x.employee].total.add(workload); 
-				}
+                if (hasAnyProjectActive(x)) {
+                    that.employees[x.employee].total = that.employees[x.employee].total.add(workload);
+                }
 				if(that.employees[x.employee].active){
-					that.projects[x.projectName].total = that.projects[x.projectName].total.add(workload); 
+                    _(x.projectNames).forEach(function (project) {
+					    that.projects[project].total = that.projects[project].total.add(workload);
+                    });
 				}
 			}
 		});

@@ -43,8 +43,8 @@ describe('Worklog', function() {
 		// given:
 		monthContainsFollowingItems('2014/01', 
 				[
-				 { projectName: 'ProjectManhattan' }, 
-				 { projectName: 'ApolloProgram' } 
+				 { projectNames: ['ProjectManhattan'] },
+				 { projectNames: ['ApolloProgram'] }
 			    ]);
 		// when:
 		worklogFor('2014/01');
@@ -74,7 +74,7 @@ describe('Worklog', function() {
 		
 		// given:
 		worklogWith({ 
-			projectName: 'ProjectManhattan' 
+			projectNames: ['ProjectManhattan']
 		});
 		
 		// when:
@@ -88,7 +88,7 @@ describe('Worklog', function() {
 		
 		// given:
 		worklogWith({ 
-			projectName: 'ProjectManhattan' 
+			projectNames: ['ProjectManhattan']
 		});
 		
 		// when:
@@ -103,8 +103,8 @@ describe('Worklog', function() {
 		
 		// given:
 		worklogWith(
-				{ projectName: 'ProjectManhattan' },
-				{ projectName: 'ApolloProgram' }
+				{ projectNames: ['ProjectManhattan'] },
+				{ projectNames: ['ApolloProgram'] }
 			);
 		
 		// when:
@@ -119,8 +119,8 @@ describe('Worklog', function() {
 		
 		// given:
 		worklogWith(
-				{ projectName: 'ProjectManhattan' },
-				{ projectName: 'ApolloProgram' }
+				{ projectNames: ['ProjectManhattan'] },
+				{ projectNames: ['ApolloProgram'] }
 			);
 		worklog.enableAllProjects();
 		
@@ -198,7 +198,7 @@ describe('Worklog', function() {
 		
 		// given:
 		worklogWith({ 
-				projectName: 'ProjectManhattan' 
+				projectNames: ['ProjectManhattan']
 			});
 		
 		// when:
@@ -212,7 +212,7 @@ describe('Worklog', function() {
 		
 		// given:
 		worklogWith({ 
-				projectName: 'ProjectManhattan' 
+				projectNames: ['ProjectManhattan']
 			});
 
 		// when:
@@ -256,9 +256,9 @@ describe('Worklog', function() {
 		
 		// given:
 		worklogWith(
-				{ employee: 'bart.simpson', projectName: 'ProjectManhattan'},
-				{ employee: 'bart.simpson', projectName: 'ApolloProgram'},
-				{ employee: 'homer.simpson', projectName: 'OtherProject'}
+				{ employee: 'bart.simpson', projectNames: ['ProjectManhattan']},
+				{ employee: 'bart.simpson', projectNames: ['ApolloProgram']},
+				{ employee: 'homer.simpson', projectNames: ['OtherProject']}
 			);
 		
 		// when:
@@ -277,7 +277,7 @@ describe('Worklog', function() {
 
 		// when:
 		worklogWith(
-				{ employee: 'bart.simpson', projectName: 'ProjectManhattan' });
+				{ employee: 'bart.simpson', projectNames: ['ProjectManhattan'] });
 		toggleAll();
 		worklogFor('2014/02');
 		
@@ -291,7 +291,7 @@ describe('Worklog', function() {
 		worklog.toggleEmployee('bart.simpson');
 		
 		// when:
-		worklogWith({ employee: 'bart.simpson', projectName: 'ProjectManhattan' });
+		worklogWith({ employee: 'bart.simpson', projectNames: ['ProjectManhattan'] });
 		
 		// then:
 		expect(worklog.employees['bart.simpson'].active).toBeTruthy();
@@ -303,7 +303,7 @@ describe('Worklog', function() {
 		worklog.toggleProject('ProjectManhattan');
 		
 		// when:
-		worklogWith({ employee: 'bart.simpson', projectName: 'ProjectManhattan' });
+		worklogWith({ employee: 'bart.simpson', projectNames: ['ProjectManhattan'] });
 		
 		// then:
 		expect(worklog.projects['ProjectManhattan'].active).toBeTruthy();
@@ -313,10 +313,10 @@ describe('Worklog', function() {
 		
 		// given:
 		worklogWith(
-				{ employee: 'bart.simpson', projectName: 'ProjectManhattan' },
-				{ employee: 'homer.simpson', projectName: 'ProjectManhattan' },
-				{ employee: 'bart.simpson', projectName: 'ApolloProgram' },
-				{ employee: 'homer.simpson', projectName: 'ApolloProgram' }
+				{ employee: 'bart.simpson', projectNames: ['ProjectManhattan'] },
+				{ employee: 'homer.simpson', projectNames: ['ProjectManhattan'] },
+				{ employee: 'bart.simpson', projectNames: ['ApolloProgram'] },
+				{ employee: 'homer.simpson', projectNames: ['ApolloProgram'] }
 			);
 		
 		// when:
@@ -324,7 +324,7 @@ describe('Worklog', function() {
 		worklog.toggleProject('ApolloProgram');
 		
 		// then:
-		expect(worklog.entries).toEqual([{ employee: 'bart.simpson', projectName: 'ApolloProgram' }]);
+		expect(worklog.entries).toEqual([{ employee: 'bart.simpson', projectNames: ['ApolloProgram'] }]);
 	});
 	
 	describe('totals', function(){
@@ -333,12 +333,12 @@ describe('Worklog', function() {
 
 			// given:
 			worklogWith(
-					{ employee: 'bart.simpson', projectName: 'ProjectManhattan', workload: '1m' },
-					{ employee: 'homer.simpson', projectName: 'ProjectManhattan', workload: '1h' },
-					{ employee: 'bart.simpson', projectName: 'ApolloProgram', workload: '1d' },
-					{ employee: 'homer.simpson', projectName: 'ApolloProgram', workload: '7m' },
-					{ employee: 'inactive.employee', projectName: 'ProjectManhattan', workload: '1h 15m'},
-					{ employee: 'homer.simpson', projectName: 'InactiveProject', workload: '1h 45m'}
+					{ employee: 'bart.simpson', projectNames: ['ProjectManhattan'], workload: '1m' },
+					{ employee: 'homer.simpson', projectNames: ['ProjectManhattan'], workload: '1h' },
+					{ employee: 'bart.simpson', projectNames: ['ApolloProgram'], workload: '1d' },
+					{ employee: 'homer.simpson', projectNames: ['ApolloProgram'], workload: '7m' },
+					{ employee: 'inactive.employee', projectNames: ['ProjectManhattan'], workload: '1h 15m'},
+					{ employee: 'homer.simpson', projectNames: ['InactiveProject'], workload: '1h 45m'}
 			);
 			
 			// when:
@@ -375,13 +375,51 @@ describe('Worklog', function() {
 			expect(worklog.projects['ApolloProgram'].total).toEqual("1d 7m");
 		});
 
-		it('is calculated for every active project', function(){
+		it('is calculated for inactive project', function(){
 			
 			// then:
 			expect(worklog.projects['InactiveProject'].total).toEqual("1h 45m");
 		});
-	
+
 	});
+
+    describe("totals for multiple projects", function () {
+
+        it('is calculated for multiple projects', function(){
+            worklogWith(
+                { employee: 'homer.simpson', projectNames: ['MultiProject1', 'MultiProject2'], workload: '1h 25m'}
+            );
+
+            worklog.toggleEmployee('homer.simpson');
+
+            expect(worklog.projects['MultiProject1'].total).toEqual("1h 25m");
+            expect(worklog.projects['MultiProject2'].total).toEqual("1h 25m");
+            expect(worklog.employees['homer.simpson'].total).toEqual("0h");
+        });
+
+        it('is calculated for employee with one project selected', function(){
+            worklogWith(
+                { employee: 'homer.simpson', projectNames: ['MultiProject1', 'MultiProject2'], workload: '1h 25m'}
+            );
+
+            worklog.toggleProject('MultiProject1');
+
+            expect(worklog.projects['MultiProject1'].total).toEqual("0h");
+            expect(worklog.projects['MultiProject2'].total).toEqual("0h");
+            expect(worklog.employees['homer.simpson'].total).toEqual("1h 25m");
+        });
+
+        it('is calculated for employee when multiple projects selected', function(){
+            worklogWith(
+                { employee: 'homer.simpson', projectNames: ['MultiProject1', 'MultiProject2'], workload: '1h 25m'}
+            );
+
+            worklog.toggleProject('MultiProject1');
+            worklog.toggleProject('MultiProject2');
+
+            expect(worklog.employees['homer.simpson'].total).toEqual('1h 25m');
+        });
+    });
 	
 	describe('notifications', function(){
 		
@@ -405,7 +443,7 @@ describe('Worklog', function() {
 			// given:
 			var callback = jasmine.createSpy('callback');
 			worklogWith({
-				projectName: "ProjectManhattan"
+				projectNames: ["ProjectManhattan"]
 			});
 			
 			// when:
@@ -423,7 +461,7 @@ describe('Worklog', function() {
 			// given:
 			var callback = jasmine.createSpy('callback');
 			worklogWith({
-					projectName: "ProjectManhattan"
+					projectNames: ["ProjectManhattan"]
 				});
 			
 			// when:

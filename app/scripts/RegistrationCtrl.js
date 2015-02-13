@@ -29,7 +29,10 @@ angular.module('openTrapp').controller('RegistrationCtrl',
                 .success(function (response, status) {
                     clearExpression();
                     update();
-                    var message = sprintf("<b>Hurray!</b> You  have successfully logged <b>%s</b> on project <b>%s</b> at <b>%s</b>.", data.workload, data.projectName, data.day);
+                    var projectNames = _(data.projectNames).map(function (name) {
+                        return sprintf("<b>%s</b>", name);
+                    }).join(",");
+                    var message = sprintf("<b>Hurray!</b> You  have successfully logged <b>%s</b> on %s at <b>%s</b>.", data.workload, projectNames, data.day);
                     $scope.alerts = [
                         { type: 'success', message: $sce.trustAsHtml(message)}
                     ];
