@@ -3,7 +3,7 @@ function Worklog($http) {
     var worklog = [];
     var listeners = [];
     this.http = $http;
-    this.month = new String('');
+    this.month = {};
     this.employees = {};
     this.projects = {};
     this.entries = [];
@@ -17,7 +17,7 @@ function Worklog($http) {
             .success(function (data) {
                 if (data) {
 
-                    that.month = new String(month);
+                    that.month = {name:month};
                     var projects = {};
                     var employees = {};
 
@@ -122,15 +122,15 @@ function Worklog($http) {
     Worklog.prototype.remove = function (id) {
         $http({method: 'DELETE', url: 'http://localhost:8080/endpoints/v1/work-log/entries/' + id})
             .success(function (data) {
-                that.setMonth(that.month);
+                that.setMonth(that.month.name);
             });
     };
     Worklog.prototype.refresh = function () {
-        that.setMonth(that.month);
+        that.setMonth(that.month.name);
         apply();
     };
     Worklog.prototype.reset = function () {
-        that.month = new String('');
+        that.month = {};
         that.employees = {};
         that.projects = {};
         that.entries = [];
@@ -170,6 +170,7 @@ function Worklog($http) {
                 var workload = new Workload(x.workload);
                 if(that.employees[x.employee].active && hasAnyProjectActive(x)){
                     that.month.total = that.month.total.add(workload);
+                    console.log(that.month.total)
                 }
                 if (hasAnyProjectActive(x)) {
                     that.employees[x.employee].total = that.employees[x.employee].total.add(workload);

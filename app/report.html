@@ -15,7 +15,7 @@
                 <li>
                     <a ng-click="prevVisibleMonth()" class="glyphicon glyphicon-chevron-left" style="text-align: center"></a>
                 </li>
-                <li ng-repeat="month in months" ng-class="month == worklog.month ||  selection.isSelected(month) ? 'active' : ''"
+                <li ng-repeat="month in months" ng-class="worklogs.areForMonth(month) ||  selection.isSelected(month) ? 'active' : ''"
                     ng-mousedown="selection.startSelection(month)"
                     ng-mouseup="selection.endSelection(month)"
                     ng-mouseover="selection.overSelection(month)">
@@ -51,13 +51,16 @@
 
     </div>
 
+    {{worklogs.employees()}}
+    {{worklogs.projects()}}
+
     <div class="row">
     <div class="col-md-6" ng-init="showIneligibleProjects=true">
         <h4>Projects:</h4>
         <ul class="nav nav-pills small" style="clear:both;">
-            <li ng-repeat="(project, status) in worklog.projects" 
+            <li ng-repeat="(project, status) in worklogs.projects()"
                 ng-class="{active: status.active, disabled: status.hidden, hidden: status.total == '0h' && !showIneligibleProjects}">
-                <a ng-click="status.hidden || worklog.toggleProject(project)">
+                <a ng-click="status.hidden || worklogs.toggleProject(project)">
                     {{project}}
                             <span class="badge badge-primary" ng-if="status.total != '0h'">
                                 {{status.total}}
@@ -86,12 +89,16 @@
             </li>
         </ul>
     </div>
+        <ul class="nav nav-pills small">
+            <li ng-repeat="(employee, status) in worklogs.employees()"></li>
+            ss {{employee}} / {{status}}
+            </ul>
     <div class="col-md-6" ng-init="showIneligibleEmployees=false">
         <h4>Employees:</h4>
         <ul class="nav nav-pills small">
-            <li ng-repeat="(employee, status) in worklog.employees" 
+            <li ng-repeat="(employee, status) in worklogs.employees()"
                 ng-class="{active: status.active, disabled: status.hidden, hidden: status.total == '0h' && !showIneligibleEmployees}">
-                <a ng-click="status.hidden || worklog.toggleEmployee(employee)">
+                <a ng-click="status.hidden || worklogs.toggleEmployee(employee)">
                     {{employee}}
                     <span class="badge badge-primary" ng-if="status.total != '0h'">
                         {{status.total}}

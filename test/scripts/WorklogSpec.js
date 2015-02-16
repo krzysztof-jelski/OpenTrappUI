@@ -35,7 +35,7 @@ describe('Worklog', function() {
 		worklogFor('2014/01');
 		
 		// then:
-		expect(worklog.month).toEqual('2014/01');
+		expect(worklog.month.name).toEqual('2014/01');
 	});
 	
 	it('exposes project names', function(){

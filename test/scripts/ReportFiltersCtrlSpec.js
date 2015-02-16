@@ -46,7 +46,7 @@ describe('Report Filters Controller', function () {
         initScopeWithTimeout();
 
         // then:
-        expect(worklogs.setMonths).toHaveBeenCalledWith(currentMonth.name, worklogIsReady);
+        expect(worklogs.setMonths).toHaveBeenCalledWith([currentMonth.name], worklogIsReady);
     });
 
     it('setups months from service', function () {

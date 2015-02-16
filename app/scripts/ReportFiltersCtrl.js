@@ -13,7 +13,7 @@ openTrapp
 
 		$scope.init = function() {
 
-            worklog.reset();
+            $scope.worklogs.reset();
 
             $timeout(function () {
 
