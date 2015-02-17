@@ -15,15 +15,15 @@
                 <li>
                     <a ng-click="prevVisibleMonth()" class="glyphicon glyphicon-chevron-left" style="text-align: center"></a>
                 </li>
-                <li ng-repeat="month in months" ng-class="worklogs.areForMonth(month) ||  selection.isSelected(month) ? 'active' : ''"
+                <li ng-repeat="month in months" ng-class="worklog.isForMonth(month) ||  selection.isSelected(month) ? 'active' : ''"
                     ng-mousedown="selection.startSelection(month)"
-                    ng-mouseup="selection.endSelection(month)"
+                    ng-mouseup="endSelection(month)"
                     ng-mouseover="selection.overSelection(month)">
 
                     <a ng-click="setCurrentMonth(month)">
                         <span ng-class="{strong:month == currentMonth.name }">{{month}}</span>
-                        <span ng-if="worklogs.areForMonth(month) " class="badge badge-default">
-                            {{worklogs.total[month]}}
+                        <span ng-if="worklog.isForMonth(month)" class="badge badge-default">
+                            {{worklog.month(month).total}}
                         </span>
                     </a>
                 </li>
@@ -51,16 +51,13 @@
 
     </div>
 
-    {{worklogs.employees()}}
-    {{worklogs.projects()}}
-
     <div class="row">
     <div class="col-md-6" ng-init="showIneligibleProjects=true">
         <h4>Projects:</h4>
         <ul class="nav nav-pills small" style="clear:both;">
-            <li ng-repeat="(project, status) in worklogs.projects()"
+            <li ng-repeat="(project, status) in worklog.projects"
                 ng-class="{active: status.active, disabled: status.hidden, hidden: status.total == '0h' && !showIneligibleProjects}">
-                <a ng-click="status.hidden || worklogs.toggleProject(project)">
+                <a ng-click="status.hidden || worklog.toggleProject(project)">
                     {{project}}
                             <span class="badge badge-primary" ng-if="status.total != '0h'">
                                 {{status.total}}
@@ -89,16 +86,12 @@
             </li>
         </ul>
     </div>
-        <ul class="nav nav-pills small">
-            <li ng-repeat="(employee, status) in worklogs.employees()"></li>
-            ss {{employee}} / {{status}}
-            </ul>
     <div class="col-md-6" ng-init="showIneligibleEmployees=false">
         <h4>Employees:</h4>
         <ul class="nav nav-pills small">
-            <li ng-repeat="(employee, status) in worklogs.employees()"
+            <li ng-repeat="(employee, status) in worklog.employees"
                 ng-class="{active: status.active, disabled: status.hidden, hidden: status.total == '0h' && !showIneligibleEmployees}">
-                <a ng-click="status.hidden || worklogs.toggleEmployee(employee)">
+                <a ng-click="status.hidden || worklog.toggleEmployee(employee)">
                     {{employee}}
                     <span class="badge badge-primary" ng-if="status.total != '0h'">
                         {{status.total}}
@@ -130,7 +123,7 @@
 </div>
     <div class="row">
     <div class="col-md-12">
-        <h2>{{worklog.month.toString()}} {{selection.selectionStart()}} - {{selection.selectionEnd()}}</h2>
+        <h2>{{selection.selectionStart()}} - {{selection.selectionEnd()}}</h2>
         <ul class="nav nav-pills small">
             <li ng-class="{active: display=='calendar'}" ng-click="display='calendar'">
                 <a title="Calendar">
@@ -149,43 +142,51 @@
             </li>
         </ul>
     </div>
-</div>
-    <div class="row" ng-show="display=='calendar'" ng-controller="MonthlyReportCtrl" ng-init="init()">
-    <table class="table table-striped table-condensed calendar">
-        <thead>
-            <tr>
-                <th class="employee">
-                    Employee
-                </th>
-                <th ng-repeat="day in days" ng-class="{weekend: day.holiday}">
-                   <div>{{day.number}}</div>
-                    {{day.name}}
-                </th>
-                <th class="total">
-                    Total
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="(employee, hours) in report.employees()">
-                <td class="employee">{{employee}}</td>
-                <td ng-repeat="day in days" ng-class="{weekend: day.holiday}">
-                    {{hours[day.id]}}
-                </td>
-                <td class="total">{{hours.total}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td class="employee">Total</td>
-                <td ng-repeat="day in days" ng-class="{weekend: day.holiday}">
-                    {{report.total()[day.id]}}
-                </td>
-                <td class="total">{{report.total().total}}</td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+
+        <div ng-repeat="monthName in worklog.monthsNames()" ng-show="display=='calendar'">
+            <h4>{{monthName}}</h4>
+
+            <div monthly-report="{{monthName}}"></div>
+            <div class="line-separator col-md-12"></div>
+        </div>
+
+<!--</div>-->
+    <!--<div class="row" ng-show="display=='calendar'" ng-controller="MonthlyReportCtrl" ng-init="init()">-->
+    <!--<table class="table table-striped table-condensed calendar">-->
+        <!--<thead>-->
+            <!--<tr>-->
+                <!--<th class="employee">-->
+                    <!--Employee-->
+                <!--</th>-->
+                <!--<th ng-repeat="day in days" ng-class="{weekend: day.holiday}">-->
+                   <!--<div>{{day.number}}</div>-->
+                    <!--{{day.name}}-->
+                <!--</th>-->
+                <!--<th class="total">-->
+                    <!--Total-->
+                <!--</th>-->
+            <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+            <!--<tr ng-repeat="(employee, hours) in report.employees()">-->
+                <!--<td class="employee">{{employee}}</td>-->
+                <!--<td ng-repeat="day in days" ng-class="{weekend: day.holiday}">-->
+                    <!--{{hours[day.id]}}-->
+                <!--</td>-->
+                <!--<td class="total">{{hours.total}}</td>-->
+            <!--</tr>-->
+        <!--</tbody>-->
+        <!--<tfoot>-->
+            <!--<tr>-->
+                <!--<td class="employee">Total</td>-->
+                <!--<td ng-repeat="day in days" ng-class="{weekend: day.holiday}">-->
+                    <!--{{report.total()[day.id]}}-->
+                <!--</td>-->
+                <!--<td class="total">{{report.total().total}}</td>-->
+            <!--</tr>-->
+        <!--</tfoot>-->
+    <!--</table>-->
+<!--</div>-->
     <div class="row" ng-show="display=='table'">
     <table class="table table-striped">
         <thead>

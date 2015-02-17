@@ -14,40 +14,40 @@ describe('Worklog', function() {
 		worklog = _worklog_;
 	}));
 
-	it('fetches data for given month', function(){
+	it('fetches data for given months', function(){
 		
 		// expect:
 		httpBackend
-			.expectGET('http://localhost:8080/endpoints/v1/calendar/2014/01/work-log/entries')
+			.expectGET('http://localhost:8080/endpoints/v1/calendar/201401,201402/work-log/entries')
 			.respond(200);
 		
 		// when:
-		worklog.setMonth('2014/01');
+		worklog.setMonths(['2014/01,2014/02']);
 		httpBackend.flush();
 	});
 	
 	it('exposes active month', function(){
 		
 		// given:
-		monthContainsFollowingItems('2014/01', []); 
+		monthContainsFollowingItems(['2014/01'], []);
 		
 		// when:
-		worklogFor('2014/01');
+		worklogFor(['2014/01']);
 		
 		// then:
-		expect(worklog.month.name).toEqual('2014/01');
+		expect(worklog.monthsNames()).toContain('2014/01');
 	});
 	
 	it('exposes project names', function(){
 		
 		// given:
-		monthContainsFollowingItems('2014/01', 
+		monthContainsFollowingItems(['2014/01'],
 				[
 				 { projectNames: ['ProjectManhattan'] },
 				 { projectNames: ['ApolloProgram'] }
 			    ]);
 		// when:
-		worklogFor('2014/01');
+		worklogFor(['2014/01']);
 		
 		// then:
 		expect(worklog.projects['ProjectManhattan']).toBeDefined();
@@ -57,13 +57,13 @@ describe('Worklog', function() {
 	it('exposes employee usernames', function(){
 		
 		// given:
-		monthContainsFollowingItems('2014/01', 
+		monthContainsFollowingItems(['2014/01'],
 				[
 				 { employee: 'bart.simpson' }, 
 				 { employee: 'homer.simpson' } 
 			    ]);
 		// when:
-		worklogFor('2014/01');
+		worklogFor(['2014/01']);
 		
 		// then:
 		expect(worklog.employees['bart.simpson']).toBeDefined();
@@ -273,13 +273,13 @@ describe('Worklog', function() {
 	it('list empty workload after changing month', function(){
 		
 		// given:
-		monthContainsFollowingItems('2014/02', []); 
+		monthContainsFollowingItems(['2014/02'], []);
 
 		// when:
 		worklogWith(
 				{ employee: 'bart.simpson', projectNames: ['ProjectManhattan'] });
 		toggleAll();
-		worklogFor('2014/02');
+		worklogFor(['2014/02']);
 		
 		// then:
 		expect(worklog.entries).toEqual([]);
@@ -333,12 +333,12 @@ describe('Worklog', function() {
 
 			// given:
 			worklogWith(
-					{ employee: 'bart.simpson', projectNames: ['ProjectManhattan'], workload: '1m' },
-					{ employee: 'homer.simpson', projectNames: ['ProjectManhattan'], workload: '1h' },
-					{ employee: 'bart.simpson', projectNames: ['ApolloProgram'], workload: '1d' },
-					{ employee: 'homer.simpson', projectNames: ['ApolloProgram'], workload: '7m' },
-					{ employee: 'inactive.employee', projectNames: ['ProjectManhattan'], workload: '1h 15m'},
-					{ employee: 'homer.simpson', projectNames: ['InactiveProject'], workload: '1h 45m'}
+					{ employee: 'bart.simpson', projectNames: ['ProjectManhattan'], workload: '1m', day: "2014/01/10" },
+					{ employee: 'homer.simpson', projectNames: ['ProjectManhattan'], workload: '1h', day: "2014/01/10" },
+					{ employee: 'bart.simpson', projectNames: ['ApolloProgram'], workload: '1d', day: "2014/01/10" },
+					{ employee: 'homer.simpson', projectNames: ['ApolloProgram'], workload: '7m', day: "2014/01/10" },
+					{ employee: 'inactive.employee', projectNames: ['ProjectManhattan'], workload: '1h 15m', day: "2014/01/10"},
+					{ employee: 'homer.simpson', projectNames: ['InactiveProject'], workload: '1h 45m', day: "2014/01/10"}
 			);
 			
 			// when:
@@ -352,7 +352,7 @@ describe('Worklog', function() {
 		it('is calculated for active month', function(){
 			
 			// then:
-			expect(worklog.month.total).toEqual("1d 1h 8m");
+			expect(worklog.months[0].total).toEqual("1d 1h 8m");
 		});
 
 		it('is calculated for every active employee', function(){
@@ -382,6 +382,39 @@ describe('Worklog', function() {
 		});
 
 	});
+
+
+    describe("handlig worklog for multiple months", function () {
+
+        it('total is calculated for each moth', function(){
+            monthContainsFollowingItems(['2014/01','2014/02'], [
+                { day: "2014/01/10", employee: 'homer.simpson', projectNames: ['ApolloProgram'], workload: '1h'},
+                { day: "2014/02/10", employee: 'homer.simpson', projectNames: ['ApolloProgram'], workload: '2h'}
+            ]);
+            worklogFor(['2014/01','2014/02']);
+
+            worklog.toggleEmployee('homer.simpson');
+            worklog.toggleProject('ApolloProgram');
+
+            expect(worklog.month('2014/01').total).toEqual("1h");
+            expect(worklog.month('2014/02').total).toEqual("2h");
+        });
+
+        it('knows if contains data for moth', function(){
+            monthContainsFollowingItems(['2014/01','2014/02','2014/03'], [
+                { employee: 'homer.simpson', projectNames: ['ApolloProgram'], workload: '2h'}
+            ]);
+
+            worklogFor(['2014/01','2014/02','2014/03']);
+
+            expect(worklog.isForMonth('2014/01')).toBeTruthy();
+            expect(worklog.isForMonth('2014/02')).toBeTruthy();
+            expect(worklog.isForMonth('2014/03')).toBeTruthy();
+            expect(worklog.isForMonth('2014/04')).toBeFalsy();
+        });
+
+    });
+
 
     describe("totals for multiple projects", function () {
 
@@ -427,10 +460,10 @@ describe('Worklog', function() {
 			
 			// given:
 			var callback = jasmine.createSpy('callback');
-			monthContainsFollowingItems('2014/01', []); 
+			monthContainsFollowingItems(['2014/01'], []);
 	
 			// when:
-			worklog.setMonth('2014/01', callback);
+			worklog.setMonths(['2014/01'], callback);
 			expect(callback).not.toHaveBeenCalled();
 			httpBackend.flush();
 			
@@ -449,7 +482,7 @@ describe('Worklog', function() {
 			// when:
 			worklog.onUpdate(callback);
 			expect(callback).not.toHaveBeenCalled();
-			worklog.setMonth('2014/01');
+			worklog.setMonths(['2014/01']);
 			httpBackend.flush();
 			
 			// then:
@@ -505,19 +538,19 @@ describe('Worklog', function() {
 
 	var monthContainsFollowingItems = function(month, items){
 		httpBackend
-			.whenGET('http://localhost:8080/endpoints/v1/calendar/' + month + '/work-log/entries')
+			.whenGET('http://localhost:8080/endpoints/v1/calendar/' + month.join(',').replace(new RegExp('/', 'g'), '') + '/work-log/entries')
 			.respond(200, { items: items });
 	};
 	
 	var worklogFor = function(month){
-		worklog.setMonth(month);
+		worklog.setMonths(month);
 		httpBackend.flush();
 	};
 	
 	var worklogWith = function(items){
 
-		monthContainsFollowingItems('2014/01', _.toArray(arguments));
-		worklogFor('2014/01');
+		monthContainsFollowingItems(['2014/01'], _.toArray(arguments));
+		worklogFor(['2014/01']);
 	};
 
 });

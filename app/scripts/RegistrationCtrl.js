@@ -6,9 +6,11 @@ angular.module('openTrapp').controller('RegistrationCtrl',
             $scope.alerts = [];
         };
 
+        $scope.currentMonth = currentMonth.name;
+
         $scope.init=function(){
             $timeout(function(){
-                worklog.setMonth(currentMonth.name, function () {
+                worklog.setMonths([currentMonth.name], function () {
                     var employee = currentEmployee.username();
                     worklog.enableEmployee(employee);
                     worklog.enableEmployeeProjects(employee);

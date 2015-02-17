@@ -3,21 +3,22 @@ function Worklog($http) {
     var worklog = [];
     var listeners = [];
     this.http = $http;
-    this.month = {};
+    this.months = [];
     this.employees = {};
     this.projects = {};
     this.entries = [];
 
     var that = this;
 
-    Worklog.prototype.setMonth = function (month,callback) {
-        console.log("setMonth = "+ month);
-        //TODO pass the data here not fetch them
-        that.http.get('http://localhost:8080/endpoints/v1/calendar/' + month + '/work-log/entries')
+    Worklog.prototype.setMonths = function (month,callback) {
+
+        that.http.get('http://localhost:8080/endpoints/v1/calendar/' + month.join(',').replace(new RegExp('/', 'g'), '') + '/work-log/entries')
             .success(function (data) {
                 if (data) {
 
-                    that.month = {name:month};
+                    that.months = _.map(month,function(m){
+                        return {name:m}
+                    });
                     var projects = {};
                     var employees = {};
 
@@ -122,21 +123,31 @@ function Worklog($http) {
     Worklog.prototype.remove = function (id) {
         $http({method: 'DELETE', url: 'http://localhost:8080/endpoints/v1/work-log/entries/' + id})
             .success(function (data) {
-                that.setMonth(that.month.name);
+                that.setMonths(_.pluck(that.months,'name'));
             });
     };
     Worklog.prototype.refresh = function () {
-        that.setMonth(that.month.name);
+        that.setMonth(_.pluck(that.months,'name'));
         apply();
     };
     Worklog.prototype.reset = function () {
-        that.month = {};
+        that.months = [];
         that.employees = {};
         that.projects = {};
         that.entries = [];
     };
     Worklog.prototype.onUpdate = function (listener) {
         listeners.push(listener);
+    };
+
+    Worklog.prototype.monthsNames = function(){
+        return _.pluck(that.months,'name');
+    };
+    Worklog.prototype.isForMonth = function(month){
+        return _.contains(_.pluck(that.months,'name'),month);
+    };
+    Worklog.prototype.month = function(month){
+        return _.findWhere(that.months, {'name':month});
     };
 
     var apply = function() {
@@ -163,14 +174,19 @@ function Worklog($http) {
 
         _(that.employees).forEach(resetTotal);
         _(that.projects).forEach(resetTotal);
-        _([that.month]).forEach(resetTotal);
+        _(that.months).forEach(resetTotal);
 
         _(worklog).forEach(function(x){
             if(x.workload){
                 var workload = new Workload(x.workload);
                 if(that.employees[x.employee].active && hasAnyProjectActive(x)){
-                    that.month.total = that.month.total.add(workload);
-                    console.log(that.month.total)
+                    _.forEach(that.months,function(month){
+                        var currentMonth = new RegExp(month.name);
+                        if(currentMonth.test(x.day)){
+                            month.total = month.total.add(workload);
+                        }
+                    });
+
                 }
                 if (hasAnyProjectActive(x)) {
                     that.employees[x.employee].total = that.employees[x.employee].total.add(workload);
@@ -183,7 +199,7 @@ function Worklog($http) {
             }
         });
 
-        _([that.month]).forEach(normalizeTotal);
+        _(that.months).forEach(normalizeTotal);
         _(that.employees).forEach(normalizeTotal);
         _(that.projects).forEach(normalizeTotal);
     };

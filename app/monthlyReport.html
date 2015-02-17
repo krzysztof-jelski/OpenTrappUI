@@ -1,0 +1,37 @@
+</div>
+<div class="row" >
+    <table class="table table-striped table-condensed calendar">
+        <thead>
+        <tr>
+            <th class="employee">
+                Employee
+            </th>
+            <th ng-repeat="day in days" ng-class="{weekend: day.holiday}">
+                <div>{{day.number}}</div>
+                {{day.name}}
+            </th>
+            <th class="total">
+                Total
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="(employee, hours) in report.employees()">
+            <td class="employee">{{employee}}</td>
+            <td ng-repeat="day in days" ng-class="{weekend: day.holiday}">
+                {{hours[day.id]}}
+            </td>
+            <td class="total">{{hours.total}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td class="employee">Total</td>
+            <td ng-repeat="day in days" ng-class="{weekend: day.holiday}">
+                {{report.total()[day.id]}}
+            </td>
+            <td class="total">{{report.total()[monthName]}}</td>
+        </tr>
+        </tfoot>
+    </table>
+</div>

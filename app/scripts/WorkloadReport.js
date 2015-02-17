@@ -40,6 +40,15 @@ var WorkloadReport = function() {
         var minutes = new Workload(worklogEntry.workload).minutes;
         addWorkloadToCell(totalReport, worklogEntry.day, minutes);
         addWorkloadToCell(totalReport, 'total', minutes);
+
+        updateTotalsForMonths(totalReport,worklogEntry,minutes);
+    }
+
+    function updateTotalsForMonths(totalReport, worklogEntry, minutes) {
+        var yearMonthRegexp = /\d{4}[\/]\d{2}/;
+        var worklogMonth = yearMonthRegexp.exec(worklogEntry.day);
+
+        addWorkloadToCell(totalReport, worklogMonth, minutes);
     }
 
     function addWorkloadToCell(row, column, workload) {

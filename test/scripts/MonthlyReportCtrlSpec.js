@@ -17,13 +17,15 @@ describe('Monthly Report Controller', function () {
     
     beforeEach(inject(function ($rootScope, $controller, $httpBackend) {
     	worklog = {
-    			month: '2014/01',
+    			months: [{name:'2014/01'}],
     			projects: {}, 
     			onUpdate: function(callback){
     				worklogUpdated = callback;
     			}
     		};
     	scope = $rootScope.$new();
+        scope.monthName = '2014/01';
+
         $controller('MonthlyReportCtrl', {
             $scope: scope,
             worklog: worklog
@@ -35,13 +37,12 @@ describe('Monthly Report Controller', function () {
     	
     	// given:
     	httpBackend
-    		.whenGET('http://localhost:8080/endpoints/v1/calendar/' + worklog.month)
+    		.whenGET('http://localhost:8080/endpoints/v1/calendar/' + '2014/01')
     		.respond(200, {
     			days: [ { id: '2014/01/01', holiday: false}, { id: '2014/01/02', holiday: true} ]
     		});
     	
     	// when:
-    	scope.init();
     	worklogUpdated();
     	httpBackend.flush();
     	
@@ -79,7 +80,6 @@ describe('Monthly Report Controller', function () {
     				workload: "4h 20m"
     			}
     		];
-    	scope.init();
     	
     	// when:
     	worklogUpdated();
@@ -90,8 +90,10 @@ describe('Monthly Report Controller', function () {
                 "bart.simpson": { "2014/01/01": "3.5", "2014/01/02": "3", "total": "6.5" },
                 "homer.simpson": { "2014/01/02": "4.33", "total": "4.33" }
             });
-        expect(scope.report.total())
-            .toEqual({ "2014/01/01": "3.5", "2014/01/02": "7.33", "total": "10.83" });
+        expect(scope.report.total()["2014/01/01"]).toEqual("3.5");
+        expect(scope.report.total()["2014/01/02"]).toEqual("7.33");
+        expect(scope.report.total()["total"]).toEqual("10.83");
+
     });
 
     it("rounds to hours only once", function () {
@@ -102,7 +104,6 @@ describe('Monthly Report Controller', function () {
                 workload: "1h"
             }
         ];
-        scope.init();
 
         // when:
         worklogUpdated();

@@ -4,7 +4,7 @@ describe('Report Filters Controller', function () {
 
     var currentMonth;
     var currentEmployee;
-    var scope, worklog, worklogs;
+    var scope, worklog;
     var worklogIsReady;
     var timeout;
     var availableMonths;
@@ -14,7 +14,7 @@ describe('Report Filters Controller', function () {
         worklogIsReady = function () {
         };
     });
-    beforeEach(inject(function ($rootScope, $controller, $timeout, _worklog_, _currentEmployee_, _availableMonths_,_worklogsProvider_) {
+    beforeEach(inject(function ($rootScope, $controller, $timeout, _worklog_, _currentEmployee_, _availableMonths_) {
         availableMonths = _availableMonths_;
         scope = $rootScope.$new();
         $controller('ReportFiltersCtrl', {
@@ -26,12 +26,11 @@ describe('Report Filters Controller', function () {
 
         currentEmployee = _currentEmployee_;
         worklog = _worklog_;
-        worklogs = _worklogsProvider_;
-        spyOn(worklogs, 'setMonths').and.callFake(function (m, callback) {
+        spyOn(worklog, 'setMonths').and.callFake(function (m, callback) {
             worklogIsReady = callback;
         });
-        spyOn(worklogs, 'enableEmployee');
-        spyOn(worklogs, 'enableEmployeeProjects');
+        spyOn(worklog, 'enableEmployee');
+        spyOn(worklog, 'enableEmployeeProjects');
     }));
 
     function initScopeWithTimeout() {
@@ -46,7 +45,7 @@ describe('Report Filters Controller', function () {
         initScopeWithTimeout();
 
         // then:
-        expect(worklogs.setMonths).toHaveBeenCalledWith([currentMonth.name], worklogIsReady);
+        expect(worklog.setMonths).toHaveBeenCalledWith([currentMonth.name], worklogIsReady);
     });
 
     it('setups months from service', function () {
@@ -70,7 +69,7 @@ describe('Report Filters Controller', function () {
         worklogIsReady();
 
         // then:
-        expect(worklogs.enableEmployee).toHaveBeenCalledWith('bart.simpson');
+        expect(worklog.enableEmployee).toHaveBeenCalledWith('bart.simpson');
     });
 
     it('selects current users projects by default', function () {
@@ -83,7 +82,7 @@ describe('Report Filters Controller', function () {
         worklogIsReady();
 
         // then:
-        expect(worklogs.enableEmployeeProjects).toHaveBeenCalledWith('bart.simpson');
+        expect(worklog.enableEmployeeProjects).toHaveBeenCalledWith('bart.simpson');
     });
 
     // --

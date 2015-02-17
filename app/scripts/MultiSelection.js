@@ -5,6 +5,7 @@ angular.module('multi.selection',[])
     var selectionStart, selectionEnd;
 
     var clearSelection = function (defaultSelection) {
+        console.log('clear selection');
         if (selectionStarted) {
             selected = [];
             selectionStarted = false;
@@ -18,6 +19,7 @@ angular.module('multi.selection',[])
     };
 
     var endSelection = function (element) {
+        console.log('end selection');
         selectionStarted = false;
         if (selectionStart > element) {
             selectionEnd = selectionStart;
@@ -27,16 +29,21 @@ angular.module('multi.selection',[])
         }
     };
     var startSelection = function (element) {
+        console.log('start Selection');
         selected = [];
         selectionStarted = true;
         selectionStart = element;
-        console.log(selectionStart);
     };
 
     var overSelection = function (element) {
+        console.log('over Selection');
         if (selectionStarted && !_.contains(selected, element)) {
             selected.push(element);
         }
+    };
+
+    var getSelected = function(){
+        return selected;
     };
 
     var getSelectionStart = function(){
@@ -54,6 +61,7 @@ angular.module('multi.selection',[])
         startSelection: startSelection,
         overSelection: overSelection,
         selectionStart: getSelectionStart,
-        selectionEnd: getSelectionEnd
+        selectionEnd: getSelectionEnd,
+        selected: getSelected
     }
 });

@@ -48,7 +48,7 @@ describe('Registration Controller should', function() {
 	});
 
     it("initializes workload with current month", function () {
-        httpBackend.expectGET("http://localhost:8080/endpoints/v1/calendar/2015/02/work-log/entries").respond(200);
+        httpBackend.expectGET("http://localhost:8080/endpoints/v1/calendar/201502/work-log/entries").respond(200);
 
         scope.init();
         timeout.flush();
