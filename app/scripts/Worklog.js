@@ -131,6 +131,7 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 			that.employees = {};
 			that.projects = {};
 			that.entries = [];
+            listeners = [];
 		},
 		onUpdate: function(listener){
 			listeners.push(listener);
