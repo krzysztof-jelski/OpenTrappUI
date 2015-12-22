@@ -4,6 +4,14 @@
     <div class="col-md-12">
         <h2 class="page-header">Review reports
             <small>by month, project and employee</small>
+            <div class="pull-right">
+                <button ng-controller="BulkEditCtrl" class="btn btn-sm btn-primary" ng-click="open(query())">
+                    <span class="glyphicon glyphicon-pencil small-glyph"></span> Bulk edit
+                </button>
+                <!--button class="btn btn-sm btn-primary">
+                    <span class="glyphicon glyphicon-share-alt small-glyph"></span> Share report
+                </button-->
+            </div>
         </h2>
     </div>
 </div>
@@ -181,9 +189,9 @@
             </td>
             <td>
                 <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
-                    {{item.projectNames.join(",")}} <span class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
+                    {{item.projectNames.join(", ")}} <span class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
                 </a>
-                <span ng-if="item.employee != currentUser">{{item.projectNames.join(",")}}</span>
+                <span ng-if="item.employee != currentUser">{{item.projectNames.join(", ")}}</span>
 	    	</td>
             <td>
                 <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">

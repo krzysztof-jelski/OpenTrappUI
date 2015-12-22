@@ -76,27 +76,27 @@ th[ng-click]{
 }
 
 <!-- -->
-.alert.ng-enter, .alert.ng-leave {
+.slide .alert.ng-enter, .slide .alert.ng-leave {
     -webkit-transition: 0.5s linear all;
     transition: 0.5s linear all;
     width: 100%;
 }
 
-.alert.ng-enter {
+.slide .alert.ng-enter {
     position: absolute;
     left: 200%;
 }
 
-.alert.ng-enter.ng-enter-active {
+.slide .alert.ng-enter.ng-enter-active {
     left: 0px;
 }
 
-.alert.ng-leave {
+.slide .alert.ng-leave {
     position: absolute;
     left: 0px;
 }
 
-.alert.ng-leave.ng-leave-active {
+.slide .alert.ng-leave.ng-leave-active {
     left: -100%;
 }
 

@@ -135,7 +135,17 @@ angular.module('openTrapp').factory('worklog', function ($http) {
 		},
 		onUpdate: function(listener){
 			listeners.push(listener);
-		}
+		},
+        asQueryExpression: function(){
+            var query = "@" + that.month;
+            query += " " + _(that.projects).map(function(v, p){ return v.active ? "#" + p : ""; }).filter(nonEmpty).join(" ");
+            query += " " + _(that.employees).map(function(v, m){ return v.active ? "*" + m : ""; }).filter(nonEmpty).join(" ");
+            return query;
+            
+            function nonEmpty(string){
+                return string && string !== "";
+            }
+        }
 		
 	};
 	

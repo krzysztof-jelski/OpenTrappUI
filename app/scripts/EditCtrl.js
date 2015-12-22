@@ -16,9 +16,9 @@ angular.module('openTrapp')
                     http: function () {
                         return $http;
                     },
-		    worklog: function() {
-			return worklog;
-		    }
+		            worklog: function() {
+			            return worklog;
+		            }
                 }
             });
 
