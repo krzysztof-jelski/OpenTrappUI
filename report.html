@@ -4,6 +4,14 @@
     <div class="col-md-12">
         <h2 class="page-header">Review reports
             <small>by month, project and employee</small>
+            <div class="pull-right">
+                <button ng-controller="BulkEditCtrl" class="btn btn-sm btn-primary" ng-click="open(query())">
+                    <span class="glyphicon glyphicon-pencil small-glyph"></span> Bulk edit
+                </button>
+                <!--button class="btn btn-sm btn-primary">
+                    <span class="glyphicon glyphicon-share-alt small-glyph"></span> Share report
+                </button-->
+            </div>
         </h2>
     </div>
 </div>
@@ -37,6 +45,7 @@
             <li ng-repeat="(project, status) in worklog.projects" 
                 ng-class="{active: status.active, disabled: status.hidden, hidden: status.total == '0h' && !showIneligibleProjects}">
                 <a ng-click="status.hidden || worklog.toggleProject(project)">
+                    <span class="glyphicon small tag-{{project}}"></span>
                     {{project}}
                             <span class="badge badge-primary" ng-if="status.total != '0h'">
                                 {{status.total}}
@@ -141,7 +150,8 @@
         <tbody>
             <tr ng-repeat="(employee, hours) in report.employees()">
                 <td class="employee">{{employee}}</td>
-                <td ng-repeat="day in days" ng-class="{weekend: day.holiday}">
+                <td ng-repeat="day in days" style="position:relative;" ng-class="{weekend: day.holiday}">
+                    <span class="glyphicon project-tag" ng-class="{{report.tag(employee, day.id)}}"></span>
                     {{hours[day.id]}}
                 </td>
                 <td class="total">{{hours.total}}</td>
@@ -181,9 +191,9 @@
             </td>
             <td>
                 <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
-                    {{item.projectNames.join(",")}} <span class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
+                    {{item.projectNames.join(", ")}} <span class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
                 </a>
-                <span ng-if="item.employee != currentUser">{{item.projectNames.join(",")}}</span>
+                <span ng-if="item.employee != currentUser">{{item.projectNames.join(", ")}}</span>
 	    	</td>
             <td>
                 <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">

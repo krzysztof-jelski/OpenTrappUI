@@ -1,12 +1,13 @@
 angular.module('openTrapp')
 	.controller('MonthlyReportCtrl', function($scope, worklog, $http){
 
+        var currentMonth = null;
 		$scope.days = [];
 		$scope.report = {};
 		$scope.init = function(){
-			worklog.onUpdate(function(){
-				fetchDays();
-				calculateDays();
+            worklog.onUpdate(function(){
+                fetchDays();
+                calculateDays();
 			});
 		};
 
@@ -15,8 +16,15 @@ angular.module('openTrapp')
         };
 		
 		var fetchDays = function(){
+            
+            if(currentMonth && currentMonth.valueOf() === worklog.month.valueOf()){
+                return;
+            } else {
+                currentMonth = worklog.month;
+            }
+            
 			$http.get('http://localhost:8080/endpoints/v1/calendar/' + worklog.month).success(function(data){
-				$scope.days = _(data.days).map(function(d){
+                $scope.days = _(data.days).map(function(d){
 					
 					var m = moment(d.id, 'YYYY/MM/DD');
 					

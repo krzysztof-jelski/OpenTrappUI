@@ -7,8 +7,8 @@ angular.module('openTrapp').controller('SignInCtrl',
                 $scope.unauthenticated = !data.authenticated;
                 $scope.username = data.username;
                 $rootScope.currentUser = $scope.username;
-                $scope.loginUrl = data.loginUrl;
-                $scope.logoutUrl = data.logoutUrl;
+                $scope.loginUrl = data.loginUrl + "?redirect_to=" + $location.absUrl();
+                $scope.logoutUrl = data.logoutUrl + "?redirect_to=" + $location.absUrl();
 
                 currentEmployee.signedInAs(data.username);
             });
