@@ -465,3 +465,36 @@ li.active > a > small {
   animation: shake 400ms ease-in-out;
 }
 
+.tag-paid:before {
+    content: "\e148";
+}
+.tag-sick:before {
+    content: "\2b";
+}
+.tag-self-dev:before {
+    content: "\e171";
+}
+.tag-vacation:before {
+    content: "\e135";
+}
+.tag-overtime:before {
+    content: "\e104";
+}
+.project-tag {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+}
+.project-tag:before {
+    right: 0px;
+    bottom: 0px;
+    position: absolute;
+    color: #333;
+    width: 16px;
+    height: 16px;
+    padding: 2px;
+    border-radius: 8px;
+    font-size: 9px;
+}

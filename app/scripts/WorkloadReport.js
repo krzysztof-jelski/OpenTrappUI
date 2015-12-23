@@ -1,5 +1,6 @@
 var WorkloadReport = function() {
     var employeesReport = {};
+    var tagsReport = {};
     var totalReport = {};
     this.updateWorkload = function (worklogEntry) {
         updateEmployeeWorkload(worklogEntry);
@@ -14,9 +15,15 @@ var WorkloadReport = function() {
         return employeesReport;
     };
 
+    this.tag = function(employee, day) {
+        return tagsReport[employee][day];
+    };
+
     function updateMinutesToHoursOnRow(row) {
         _(row).forEach(function (minutes, column) {
-            row[column] = minutesToHours(minutes);
+            if(_.isNumber(minutes)){
+                row[column] = minutesToHours(minutes);
+            }
         });
     }
 
@@ -47,13 +54,24 @@ var WorkloadReport = function() {
         row[column] = currentWorkload + workload;
     }
 
+    function addTagsToCell(row, column, tags) {
+        var currentTags = (row[column] || {});
+        _(tags).forEach(function(t) {
+           currentTags['tag-' + t] = 1; 
+        });
+        row[column] = currentTags;
+    }
+
     function updateRowWithWorkload(key, worklogEntry) {
-        var row = employeesReport[key] || {};
+        var row = employeesReport[key] || { };
+        var tags = tagsReport[key] || { };
 
         var minutes = new Workload(worklogEntry.workload).minutes;
         addWorkloadToCell(row, worklogEntry.day, minutes);
         addWorkloadToCell(row, 'total', minutes);
+        addTagsToCell(tags, worklogEntry.day, worklogEntry.projectNames);
 
         employeesReport[key] = row;
+        tagsReport[key] = tags;
     }
 };
