@@ -20,7 +20,12 @@ module.exports = function (grunt) {
                             dest: libPath + '/fonts',
                             js_dest: libPath,
                             files: [
-                                'dist/css/bootstrap-theme.css'
+                                'dist/fonts/glyphicons-halflings-regular.eot',
+                                'dist/fonts/glyphicons-halflings-regular.woff',
+                                'dist/fonts/glyphicons-halflings-regular.woff2',
+                                'dist/fonts/glyphicons-halflings-regular.ttf',
+                                'dist/css/bootstrap-theme.css',
+                                'dist/css/bootstrap.css'
                             ]
                         }
                     }
