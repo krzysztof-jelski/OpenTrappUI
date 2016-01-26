@@ -147,9 +147,17 @@ th[ng-click]{
     margin-right: 4px;
 }
 
+.badge {
+    vertical-align: baseline;
+}
+
 .badge.badge-primary {
     background-color: #428bca;
     color: #fff;
+}
+
+.nav-pills > li.active > a {
+    background-color: #428bca;
 }
 
 .week > div {
@@ -335,7 +343,7 @@ li.h12 {
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 	border-bottom-color: #eee;
-	margin-top: 15px;	
+	margin-top: 15px;
 }
 .nav > li.refresh {
 	min-width:0px;
@@ -424,27 +432,27 @@ li.active > a > small {
     -webkit-transform: translateX(0);
     transform: translateX(0);
   }
-  
+
   12.5% {
     -webkit-transform: translateX(-6px) rotateY(-5deg);
     transform: translateX(-6px) rotateY(-5deg);
   }
-  
+
   37.5% {
     -webkit-transform: translateX(5px) rotateY(4deg);
     transform: translateX(5px) rotateY(4deg);
   }
-  
+
   62.5% {
     -webkit-transform: translateX(-3px) rotateY(-2deg);
     transform: translateX(-3px) rotateY(-2deg);
   }
-  
+
   87.5% {
     -webkit-transform: translateX(2px) rotateY(1deg);
     transform: translateX(2px) rotateY(1deg);
   }
-  
+
   100% {
     -webkit-transform: translateX(0);
     transform: translateX(0);
@@ -472,13 +480,25 @@ li.active > a > small {
     content: "\2b";
 }
 .tag-self-dev:before {
-    content: "\e171";
+    content: "\e233";
+}
+.tag-self-development:before {
+    content: "\e233";
 }
 .tag-vacation:before {
-    content: "\e135";
+    content: "\e240";
+}
+.tag-internal:before {
+    content: "\e136";
 }
 .tag-overtime:before {
     content: "\e104";
+}
+.tag-trainings:before {
+    content: "\e218";
+}
+.tag-remote:before {
+    content: "\e021";
 }
 .project-tag {
     position: absolute;
