@@ -6,5 +6,6 @@ angular
         'ngCookies',
         'ui.bootstrap',
         /* app */
-        'openTrapp.time'
+        'openTrapp.time',
+        'openTrapp.worklog'
     ]);
