@@ -47,18 +47,15 @@ module.exports = function (grunt) {
                 autoWatch: true
             }
         },
-        'http-server': {
-            'dev': {
-                root: 'app',
-
-                port: 8081,
-                host: "127.0.0.1",
-
-                showDir: false,
-                autoIndex: false,
-                defaultExt: "html",
-
-                runInBackground: false
+        'connect': {
+            server: {
+                options: {
+                    base: 'app',
+                    hostname: "127.0.0.1",
+                    port: 8081,
+                    open: true,
+                    keepalive: true
+                }
             }
         },
         'gh-pages': {
@@ -104,11 +101,11 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-bower');
     grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-http-server');
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-gh-pages');
     grunt.loadNpmTasks('grunt-exec');
 
     grunt.registerTask('default', ['cleanLib', 'bower', 'exec:generate_parser', 'karma:unit']);
 
-    grunt.registerTask('server', ["default", 'http-server:dev']);
+    grunt.registerTask('server', ["default", 'connect']);
 };
