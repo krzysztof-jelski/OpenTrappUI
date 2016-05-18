@@ -6,15 +6,23 @@ module.exports = function (config) {
             '**/bootstrap.min.js',
             'app/scripts/AuthInterceptor.js'
         ],
-        frameworks: ['jasmine'],
+        plugins: [
+            'karma-chrome-launcher',
+            'karma-jasmine',
+            'karma-ng-html2js-preprocessor',
+            'karma-phantomjs-launcher'
+        ],
+        frameworks: [
+            'jasmine'
+        ],
         files: [
             'app/lib/angular.js',
-            'app/lib/*.js',
+            'app/lib/**/*.js',
             'app/scripts/OpenTrappModule.js',
-            'app/scripts/*.js',
-            'test/lib/*.js',
+            'app/scripts/**/*.js',
+            'test/lib/**/*.js',
             'test/**/*.js',
-            'app/templates/*.html'
+            'app/templates/**/*.html'
         ],
         ngHtml2JsPreprocessor: {
             moduleName: 'karma.cached.htmls',
@@ -23,7 +31,7 @@ module.exports = function (config) {
             }
         },
         preprocessors: {
-            'app/templates/*.html': ['ng-html2js']
+            'app/templates/**/*.html': ['ng-html2js']
         },
         browsers: [
             'PhantomJS'

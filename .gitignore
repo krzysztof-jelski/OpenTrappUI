@@ -36,4 +36,5 @@ npm-debug.log
 
 #bower
 bower_components/
-lib/
+app/lib/
+test/lib/

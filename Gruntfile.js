@@ -6,7 +6,6 @@ module.exports = function (grunt) {
         bower: {
             dev: {
                 dest: libPath,
-                css_dest: libPath + '/css',
                 options: {
                     stripAffix: true,
                     packageSpecific: {
@@ -16,16 +15,16 @@ module.exports = function (grunt) {
                                 'angular-mocks.js'
                             ]
                         },
-                        bootstrap: {
-                            dest: libPath + '/fonts',
-                            js_dest: libPath,
+                        'bootstrap': {
+                            dest: libPath,
                             files: [
+                                'dist/js/bootstrap.js',
+                                'dist/css/bootstrap.css',
+                                'dist/css/bootstrap-theme.css',
                                 'dist/fonts/glyphicons-halflings-regular.eot',
                                 'dist/fonts/glyphicons-halflings-regular.woff',
                                 'dist/fonts/glyphicons-halflings-regular.woff2',
-                                'dist/fonts/glyphicons-halflings-regular.ttf',
-                                'dist/css/bootstrap-theme.css',
-                                'dist/css/bootstrap.css'
+                                'dist/fonts/glyphicons-halflings-regular.ttf'
                             ]
                         }
                     }

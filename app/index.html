@@ -22,21 +22,20 @@
     <meta name="msapplication-TileImage" content="favicons/mstile-144x144.png">
     <meta name="msapplication-config" content="favicons/browserconfig.xml">
 
-    <link href="lib/css/bootstrap.css" rel="stylesheet">
-    <link href="lib/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="lib/dist/css/bootstrap.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
 
     <script type="text/javascript" src="lib/angular.js"></script>
     <script type="text/javascript" src="lib/angular-route.js"></script>
     <script type="text/javascript" src="lib/angular-animate.js"></script>
     <script type="text/javascript" src="lib/angular-cookies.js"></script>
-    <script type="text/javascript" src="lib/angular-bootstrap.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+    <script type="text/javascript" src="lib/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script type="text/javascript" src="lib/moment.js"></script>
-    <script type="text/javascript" src="lib/sprintf.js"></script>
-    <script type="text/javascript" src="lib/lodash.js"></script>
-    <script type="text/javascript" src="lib/chart.js"></script>
-    <script type="text/javascript" src="lib/bootstrap.js"></script>
+    <script type="text/javascript" src="lib/src/sprintf.js"></script>
+    <script type="text/javascript" src="lib/dist/lodash.compat.js"></script>
+    <script type="text/javascript" src="lib/dist/Chart.js"></script>
+    <script type="text/javascript" src="lib/dist/js/bootstrap.js"></script>
     <script type="text/javascript" src="lib/PegWorkLogEntryParser.js"></script>
 
     <script type="text/javascript" src="scripts/OpenTrappModule.js"></script>
@@ -47,8 +46,8 @@
 
     <script type="text/javascript" src="scripts/Worklog.js"></script>
     <script type="text/javascript" src="scripts/WorkloadReport.js"></script>
-	<script type="text/javascript" src="scripts/EditCtrl.js"></script>
-	<script type="text/javascript" src="scripts/BulkEditCtrl.js"></script>
+    <script type="text/javascript" src="scripts/EditCtrl.js"></script>
+    <script type="text/javascript" src="scripts/BulkEditCtrl.js"></script>
     <script type="text/javascript" src="scripts/ReportFiltersCtrl.js"></script>
     <script type="text/javascript" src="scripts/PieChartReportCtrl.js"></script>
     <script type="text/javascript" src="scripts/MonthlyReportCtrl.js"></script>
@@ -69,16 +68,17 @@
 <body ng-app="openTrapp">
 
 <!-- Menu -->
-    <nav ng-controller="RouterCtrl" class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav ng-controller="RouterCtrl" class="navbar navbar-default navbar-fixed-top" role="navigation">
 
-      <div class="container">
+    <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#/">
-            <span class="glyphicon glyphicon-time" style="font-size: 120%;color: #333;vertical-align: text-bottom;"></span> Open<b>Trapp</b>
-          </a>
+            <a class="navbar-brand" href="#/">
+                <span class="glyphicon glyphicon-time"
+                      style="font-size: 120%;color: #333;vertical-align: text-bottom;"></span> Open<b>Trapp</b>
+            </a>
         </div>
-    
-          <ul class="nav navbar-nav navbar-right" ng-controller="SignInCtrl" ng-init="init()">
+
+        <ul class="nav navbar-nav navbar-right" ng-controller="SignInCtrl" ng-init="init()">
             <li ng-if="authenticated" ng-class="{active: isActive('/registration')}">
                 <a href="#/registration">
                     <span class="glyphicon glyphicon-plus"></span>
@@ -117,14 +117,14 @@
                     </a>
                 </p>
             </li>
-          </ul>
-        </div>
-
-    </nav>
-    <!-- /Menu -->
-    
-    <div class="content">
-        <div ng-view class="view"></div>
+        </ul>
     </div>
+
+</nav>
+<!-- /Menu -->
+
+<div class="content">
+    <div ng-view class="view"></div>
+</div>
 </body>
 </html>
