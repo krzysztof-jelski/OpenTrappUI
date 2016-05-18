@@ -24,6 +24,7 @@
   },
   "scripts": {
     "postinstall": "bower install",
+    "test": "grunt",
     "start": "grunt server"
   },
   "repository": {
