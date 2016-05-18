@@ -26,6 +26,12 @@ module.exports = function (grunt) {
                                 'dist/fonts/glyphicons-halflings-regular.woff2',
                                 'dist/fonts/glyphicons-halflings-regular.ttf'
                             ]
+                        },
+                        'jquery': {
+                            dest: libPath,
+                            files: [
+                                'dist/jquery.min.js'
+                            ]
                         }
                     }
                 }
