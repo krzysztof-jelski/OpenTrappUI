@@ -35,3 +35,12 @@ Re-generate worklog entry parser: `grunt exec:generate_parser`
 
 Publish on Github on PROD: `grunt gh-pages:prod`
 
+## Upgrade TODOs
+
+- [ ] break a whole app into modules
+- [ ] encapsulate components
+- [ ] remove $scope usages
+- [ ] use ui-router
+- [ ] move templates to same places as their's scripts
+- [ ] break CSS into modules/components etc.
+
