@@ -1,56 +1,62 @@
-angular.module('openTrapp')
-    .config(function ($routeProvider, $locationProvider) {
-        $routeProvider.when('/registration', {
-            templateUrl: 'registration.html',
-            access: {
-                requiresLogin: true
-            }
-        });
-        $routeProvider.when('/report', {
-            templateUrl: 'report.html',
-            access: {
-                requiresLogin: true
-            }
-        });
-        $routeProvider.when('/config', {
-            templateUrl: 'configuration.html',
-            access: {
-                requiresLogin: true
-            }
-        });
-        $routeProvider.when('/', {
-            templateUrl: 'home.html',
-            access: {
-                requiresLogin: false
-            }
-        });
-        $routeProvider.when('/authFailed', {
-            templateUrl: 'auth-failed.html'
-        });
-
-        $routeProvider.when('/authToken/:authToken', {
-            redirectTo: '/',
-            reloadOnSearch: true,
-            resolve: {
-                auth: function ($route, $cookies, $rootScope, $location) {
-                    var receivedAuthToken = $route.current.params.authToken;
+angular
+    .module('openTrapp')
+    .config(function ($stateProvider, $urlRouterProvider) {
+        $stateProvider
+            .state('registration', {
+                url: '/registration',
+                templateUrl: 'registration.html',
+                data: {
+                    requiresLogin: true
+                }
+            })
+            .state('report', {
+                url: '/report',
+                templateUrl: 'report.html',
+                data: {
+                    requiresLogin: true
+                }
+            })
+            .state('home', {
+                url: '/',
+                templateUrl: 'home.html',
+                data: {
+                    requiresLogin: false
+                }
+            })
+            .state('config', {
+                url: '/config',
+                templateUrl: 'configuration.html',
+                data: {
+                    requiresLogin: true
+                }
+            })
+            .state('authFailed', {
+                url: '/authFailed',
+                templateUrl: 'authFailed.html',
+                data: {
+                    requiresLogin: false
+                }
+            })
+            .state('authToken', {
+                url: '/authToken/:authToken',
+                data: {
+                    requiresLogin: false
+                },
+                reloadOnSearch: true,
+                controller: function ($state, $cookies, $rootScope) {
+                    var receivedAuthToken = $state.params.authToken;
                     $cookies.put('authToken', receivedAuthToken);
                     $rootScope.$emit('AuthTokenReceived');
-                    $location.search({});
+                    $state.go('home');
                 }
-            }
-        });
-        $routeProvider.otherwise({
-            redirectTo: '/'
-        });
+            });
 
-        // configure html5 to get links working on jsfiddle
-        $locationProvider.html5Mode(false);
+        $urlRouterProvider.otherwise('/');
     })
     .controller('RouterCtrl',
-    function ($scope, $location) {
-        $scope.isActive = function (path) {
-            return ($location.path().substr(0, path.length) == path);
-        };
-    });
+        function ($scope, $location) {
+            $scope.isActive = function (path) {
+                return ($location.path().substr(0, path.length) == path);
+            };
+        });
 

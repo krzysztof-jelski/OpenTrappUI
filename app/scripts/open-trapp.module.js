@@ -1,8 +1,8 @@
 angular
     .module('openTrapp', [
         /* vendor */
+        'ui.router',
         'ngAnimate',
-        'ngRoute',
         'ngCookies',
         /* app */
         'openTrapp.time',

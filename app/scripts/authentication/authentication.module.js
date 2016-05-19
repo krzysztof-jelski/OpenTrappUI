@@ -1,6 +1,6 @@
 angular
     .module('openTrapp.authentication', [
-        'ngRoute',
+        'ui.router',
         'ngCookies',
         'openTrapp.employee'
     ]);

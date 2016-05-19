@@ -27,9 +27,9 @@
 
     <!-- vendor -->
     <script type="text/javascript" src="lib/angular.js"></script>
-    <script type="text/javascript" src="lib/angular-route.js"></script>
     <script type="text/javascript" src="lib/angular-animate.js"></script>
     <script type="text/javascript" src="lib/angular-cookies.js"></script>
+    <script type="text/javascript" src="lib/release/angular-ui-router.js"></script>
     <script type="text/javascript" src="lib/ui-bootstrap-tpls.js"></script>
     <script type="text/javascript" src="lib/dist/jquery.min.js"></script>
     <script type="text/javascript" src="lib/moment.js"></script>
@@ -78,6 +78,7 @@
 
     <div class="container">
         <div class="navbar-header">
+            <!-- TODO use ui-router sref -->
             <a class="navbar-brand" href="#/">
                 <span class="glyphicon glyphicon-time"
                       style="font-size: 120%;color: #333;vertical-align: text-bottom;"></span> Open<b>Trapp</b>
@@ -86,18 +87,21 @@
 
         <ul class="nav navbar-nav navbar-right" ng-controller="SignInCtrl" ng-init="init()">
             <li ng-if="authenticated" ng-class="{active: isActive('/registration')}">
+                <!-- TODO use ui-router sref -->
                 <a href="#/registration">
                     <span class="glyphicon glyphicon-plus"></span>
                     Register time
                 </a>
             </li>
             <li ng-if="authenticated" ng-class="{active: isActive('/report')}">
+                <!-- TODO use ui-router sref -->
                 <a href="#/report">
                     <span class="glyphicon glyphicon-stats"></span>
                     Reports
                 </a>
             </li>
             <li ng-if="authenticated" ng-class="{active: isActive('/config')}">
+                <!-- TODO use ui-router sref -->
                 <a href="#/config">
                     <span class="glyphicon glyphicon-wrench"></span>
                     Settings
@@ -130,7 +134,7 @@
 <!-- /Menu -->
 
 <div class="content">
-    <div ng-view class="view"></div>
+    <div ui-view class="view"></div>
 </div>
 
 </body>

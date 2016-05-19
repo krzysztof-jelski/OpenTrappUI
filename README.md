@@ -7,7 +7,7 @@ Open Time Registration Application
 
 ## prerequisites
 
-### Install Nodejs
+### Install NodeJS
 
 [https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager)
 
@@ -19,7 +19,7 @@ Open Time Registration Application
 
 ### Run tests
 
-`grunt`
+`npm test` or `grunt`
 
 ### Run local server
 
