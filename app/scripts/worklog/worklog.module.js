@@ -1,4 +1,6 @@
 angular
-    .module('openTrapp.worklog', []);
+    .module('openTrapp.worklog', [
+        'openTrapp.worklog.bulk-edit'
+    ]);
 
 

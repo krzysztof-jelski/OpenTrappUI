@@ -1,4 +1,5 @@
-angular.module('openTrapp')
+angular
+    .module('openTrapp.worklog.bulk-edit', [])
     .controller('BulkEditCtrl', function ($scope, $modal, worklog) {
 
         $scope.open = function (query) {
