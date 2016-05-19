@@ -20,7 +20,7 @@
         "pegjs": "0.8.0"
     },
     "scripts": {
-        "postinstall": "node_modules/.bin/bower install"
+        "postinstall": "bower prune && bower install"
     },
     "repository": {
         "type": "git",
