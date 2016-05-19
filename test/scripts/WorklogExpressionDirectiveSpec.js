@@ -43,7 +43,7 @@ describe("WorklogExpressionDirective", function () {
     });
 
     it("contains input with proper template for typeahead", function () {
-        expect($(inputElement).attr("typeahead-template-url")).toEqual("templates/typeahead-template.html");
+        expect($(inputElement).attr("typeahead-template-url")).toEqual("templates/worklog/typeahead-template.html");
     });
 
     it("suggests all available projects after typing #", function(){
