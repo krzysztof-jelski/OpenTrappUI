@@ -1,19 +1,29 @@
 angular
-    .module('openTrapp.employee', [])
-    .factory('currentEmployee', function () {
+    .module('openTrapp.employee', [
+        'ngCookies'
+    ])
+    .factory('currentEmployee', function ($cookies) {
 
         var username = 'Anonymous';
 
         return {
-
-            signedInAs: function (u) {
-                username = u;
+            signedInAs: function (user) {
+                setCurrentUserTo(user);
             },
             username: function () {
-                return username;
+                return currentUser();
             },
             isAuthenticated: function () {
-                return username !== 'Anonymous';
+                return currentUser() !== 'Anonymous';
             }
         };
+
+        function currentUser() {
+            return $cookies.get('currentUser');
+        }
+
+        function setCurrentUserTo(user) {
+            $cookies.put('currentUser', user);
+        }
+
     });
