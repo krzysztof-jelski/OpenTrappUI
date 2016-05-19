@@ -1,5 +1,6 @@
 angular
     .module('openTrapp.worklog', [
+            'ui.router',
         'openTrapp.time',
         'openTrapp.employee',
         'openTrapp.projects',
