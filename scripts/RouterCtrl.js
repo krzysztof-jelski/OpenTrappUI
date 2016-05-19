@@ -33,7 +33,8 @@ angular.module('openTrapp')
             reloadOnSearch: true,
             resolve: {
                 auth: function ($route, $cookies, $rootScope, $location) {
-                    $cookies.authToken = $route.current.params.authToken;
+                    var receivedAuthToken = $route.current.params.authToken;
+                    $cookies.put('authToken', receivedAuthToken);
                     $rootScope.$emit('AuthTokenReceived');
                     $location.search({});
                 }

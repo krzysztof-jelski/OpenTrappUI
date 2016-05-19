@@ -22,63 +22,69 @@
     <meta name="msapplication-TileImage" content="favicons/mstile-144x144.png">
     <meta name="msapplication-config" content="favicons/browserconfig.xml">
 
-    <link href="lib/css/bootstrap.css" rel="stylesheet">
-    <link href="lib/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="lib/dist/css/bootstrap.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
 
+    <!-- vendor -->
     <script type="text/javascript" src="lib/angular.js"></script>
     <script type="text/javascript" src="lib/angular-route.js"></script>
     <script type="text/javascript" src="lib/angular-animate.js"></script>
     <script type="text/javascript" src="lib/angular-cookies.js"></script>
-    <script type="text/javascript" src="lib/angular-bootstrap.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+    <script type="text/javascript" src="lib/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="lib/dist/jquery.min.js"></script>
     <script type="text/javascript" src="lib/moment.js"></script>
-    <script type="text/javascript" src="lib/sprintf.js"></script>
-    <script type="text/javascript" src="lib/lodash.js"></script>
-    <script type="text/javascript" src="lib/chart.js"></script>
-    <script type="text/javascript" src="lib/bootstrap.js"></script>
+    <script type="text/javascript" src="lib/src/sprintf.js"></script>
+    <script type="text/javascript" src="lib/dist/lodash.compat.js"></script>
+    <script type="text/javascript" src="lib/Chart.js"></script>
+    <script type="text/javascript" src="lib/dist/js/bootstrap.js"></script>
     <script type="text/javascript" src="lib/PegWorkLogEntryParser.js"></script>
 
-    <script type="text/javascript" src="scripts/OpenTrappModule.js"></script>
-    <script type="text/javascript" src="scripts/AuthInterceptor.js"></script>
-    <script type="text/javascript" src="scripts/EnviromentInterceptor.js"></script>
-
-    <script type="text/javascript" src="scripts/AvailiableMonths.js"></script>
-
-    <script type="text/javascript" src="scripts/Worklog.js"></script>
-    <script type="text/javascript" src="scripts/WorkloadReport.js"></script>
-	<script type="text/javascript" src="scripts/EditCtrl.js"></script>
-	<script type="text/javascript" src="scripts/BulkEditCtrl.js"></script>
-    <script type="text/javascript" src="scripts/ReportFiltersCtrl.js"></script>
-    <script type="text/javascript" src="scripts/PieChartReportCtrl.js"></script>
-    <script type="text/javascript" src="scripts/MonthlyReportCtrl.js"></script>
-
+    <!-- app -->
+    <script type="text/javascript" src="scripts/open-trapp.module.js"></script>
+    <script type="text/javascript" src="scripts/authentication/authentication.module.js"></script>
+    <script type="text/javascript" src="scripts/authentication/auth-interceptor.js"></script>
+    <script type="text/javascript" src="scripts/employee/current-employee.factory.js"></script>
+    <script type="text/javascript" src="scripts/time/time.module.js"></script>
+    <script type="text/javascript" src="scripts/time/time-provider.factory.js"></script>
+    <script type="text/javascript" src="scripts/time/current-month.factory.js"></script>
+    <script type="text/javascript" src="scripts/settings/settings.controller.js"></script>
+    <script type="text/javascript" src="scripts/projects/project-names.factory.js"></script>
+    <script type="text/javascript" src="scripts/worklog/worklog.module.js"></script>
+    <script type="text/javascript" src="scripts/worklog/worklog.factory.js"></script>
+    <script type="text/javascript" src="scripts/worklog/worklog-entry-parser.factory.js"></script>
+    <script type="text/javascript" src="scripts/worklog/worklog-expression.directive.js"></script>
+    <script type="text/javascript" src="scripts/worklog/dates-suggesstions.factory.js"></script>
+    <script type="text/javascript" src="scripts/worklog/registration.controller.js"></script>
+    <script type="text/javascript" src="scripts/worklog/edition/edition.module.js"></script>
+    <script type="text/javascript" src="scripts/worklog/edition/edit.controller.js"></script>
+    <script type="text/javascript" src="scripts/worklog/edition/bulk-edit.controller.js"></script>
+    <script type="text/javascript" src="scripts/report/report.module.js"></script>
+    <script type="text/javascript" src="scripts/report/availiable-months.factory.js"></script>
+    <script type="text/javascript" src="scripts/report/report-filters.controller.js"></script>
+    <script type="text/javascript" src="scripts/report/monthly-report.controller.js"></script>
+    <script type="text/javascript" src="scripts/report/pie-chart-report.controller.js"></script>
+    <script type="text/javascript" src="scripts/environment/enviroment-interceptor.js"></script>
     <script type="text/javascript" src="scripts/RouterCtrl.js"></script>
-    <script type="text/javascript" src="scripts/CurrentEmployee.js"></script>
-    <script type="text/javascript" src="scripts/TimeProvider.js"></script>
-    <script type="text/javascript" src="scripts/WorklogEntryParser.js"></script>
-    <script type="text/javascript" src="scripts/ProjectNames.js"></script>
-    <script type="text/javascript" src="scripts/DatesSuggesstions.js"></script>
-    <script type="text/javascript" src="scripts/SignInCtrl.js"></script>
-    <script type="text/javascript" src="scripts/RegistrationCtrl.js"></script>
+    <script type="text/javascript" src="scripts/authentication/sign-in.controller.js"></script>
     <script type="text/javascript" src="scripts/Workload.js"></script>
-    <script type="text/javascript" src="scripts/SettingsCtrl.js"></script>
-    <script type="text/javascript" src="scripts/WorklogExpressionDirective.js"></script>
 
 </head>
 <body ng-app="openTrapp">
 
-<!-- Menu -->
-    <nav ng-controller="RouterCtrl" class="navbar navbar-default navbar-fixed-top" role="navigation">
+<!-- TODO extract everything but <head> and router view placeholder -->
 
-      <div class="container">
+<!-- Menu -->
+<nav ng-controller="RouterCtrl" class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+    <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#/">
-            <span class="glyphicon glyphicon-time" style="font-size: 120%;color: #333;vertical-align: text-bottom;"></span> Open<b>Trapp</b>
-          </a>
+            <a class="navbar-brand" href="#/">
+                <span class="glyphicon glyphicon-time"
+                      style="font-size: 120%;color: #333;vertical-align: text-bottom;"></span> Open<b>Trapp</b>
+            </a>
         </div>
-    
-          <ul class="nav navbar-nav navbar-right" ng-controller="SignInCtrl" ng-init="init()">
+
+        <ul class="nav navbar-nav navbar-right" ng-controller="SignInCtrl" ng-init="init()">
             <li ng-if="authenticated" ng-class="{active: isActive('/registration')}">
                 <a href="#/registration">
                     <span class="glyphicon glyphicon-plus"></span>
@@ -117,14 +123,15 @@
                     </a>
                 </p>
             </li>
-          </ul>
-        </div>
-
-    </nav>
-    <!-- /Menu -->
-    
-    <div class="content">
-        <div ng-view class="view"></div>
+        </ul>
     </div>
+
+</nav>
+<!-- /Menu -->
+
+<div class="content">
+    <div ng-view class="view"></div>
+</div>
+
 </body>
 </html>
