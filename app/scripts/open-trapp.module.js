@@ -7,5 +7,6 @@ angular
         'ui.bootstrap',
         /* app */
         'openTrapp.time',
-        'openTrapp.worklog'
+        'openTrapp.worklog',
+        'openTrapp.report'
     ]);

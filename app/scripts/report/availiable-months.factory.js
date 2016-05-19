@@ -1,4 +1,5 @@
-angular.module("openTrapp")
+angular
+    .module("openTrapp.report")
     .factory('availableMonths', function () {
         return {
             get: function (currentMonth) {

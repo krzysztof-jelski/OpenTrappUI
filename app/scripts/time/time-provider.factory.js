@@ -1,5 +1,5 @@
 angular
-    .module('openTrapp.time', [])
+    .module('openTrapp.time')
     .factory('timeProvider', function () {
         return {
             getCurrentDate: function () {

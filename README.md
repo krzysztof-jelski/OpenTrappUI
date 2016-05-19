@@ -38,6 +38,7 @@ Publish on Github on PROD: `grunt gh-pages:prod`
 ## Upgrade TODOs
 
 - [ ] break a whole app into modules
+- [ ] reflect changes in modules into tests
 - [ ] encapsulate components
 - [ ] remove $scope usages
 - [ ] use ui-router
