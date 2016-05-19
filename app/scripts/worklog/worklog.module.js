@@ -1,6 +1,9 @@
 angular
     .module('openTrapp.worklog', [
-        'openTrapp.worklog.bulk-edit'
+        'openTrapp.time',
+        'openTrapp.employee',
+        'openTrapp.projects',
+        'openTrapp.worklog.edition'
     ]);
 
 

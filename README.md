@@ -37,11 +37,13 @@ Publish on Github on PROD: `grunt gh-pages:prod`
 
 ## Upgrade TODOs
 
-- [ ] break a whole app into modules
-- [ ] reflect changes in modules into tests
+- [x] break a whole app into modules
+- [x] reflect changes in modules into tests (dirs too)
 - [ ] encapsulate components
 - [ ] remove $scope usages
 - [ ] use ui-router
-- [ ] move templates to same places as their's scripts
+- [ ] move templates to same places as their scripts
 - [ ] break CSS into modules/components etc.
-
+- [ ] turn on linting
+- [ ] break routing into specific places with routes
+- [ ] clean TODOs in code

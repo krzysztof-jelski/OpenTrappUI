@@ -1,13 +1,16 @@
 angular
     .module('openTrapp', [
         /* vendor */
-        'ngRoute',
         'ngAnimate',
+        'ngRoute',
         'ngCookies',
-        'ui.bootstrap',
         /* app */
         'openTrapp.time',
         'openTrapp.settings',
+        'openTrapp.employee',
+        'openTrapp.projects',
         'openTrapp.worklog',
-        'openTrapp.report'
+        'openTrapp.report',
+        'openTrapp.authentication',
+        'openTrapp.environment'
     ]);

@@ -1,5 +1,7 @@
 angular
-    .module('openTrapp.settings', [])
+    .module('openTrapp.settings', [
+        'ngCookies'
+    ])
     .controller('SettingsCtrl',
         function ($scope, $cookies) {
             $scope.init = function () {
