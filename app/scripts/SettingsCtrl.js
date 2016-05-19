@@ -3,8 +3,9 @@ angular.module('openTrapp').controller('SettingsCtrl',
         $scope.init = function () {
 
             $scope.apiServerUrl = 'http://open-trapp.herokuapp.com';
-            if ($cookies.apiServerUrl) {
-                $scope.apiServerUrl = $cookies.apiServerUrl;
+            var savedApiServerUrl = $cookies.get('apiServerUrl');
+            if (savedApiServerUrl) {
+                $scope.apiServerUrl = savedApiServerUrl;
             }
         };
 
@@ -15,7 +16,7 @@ angular.module('openTrapp').controller('SettingsCtrl',
 
         $scope.save = function () {
 
-            $cookies.apiServerUrl = $scope.apiServerUrl;
+            $cookies.put('apiServerUrl', $scope.apiServerUrl);
             $scope.alert = 'Settings have been saved!';
         }
     }

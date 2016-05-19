@@ -5,8 +5,9 @@ angular.module('openTrapp')
 
         request: function (config) {
 
-            if ($cookies.authToken && config.url.indexOf('/endpoints/') != -1) {
-                config.url = config.url + ';jsessionid=' + $cookies.authToken;
+            var savedAuthToken = $cookies.get('authToken');
+            if (savedAuthToken && config.url.indexOf('/endpoints/') != -1) {
+                config.url = config.url + ';jsessionid=' + savedAuthToken;
             }
             return config;
         },

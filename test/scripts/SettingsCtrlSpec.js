@@ -11,11 +11,12 @@ describe("Settings", function () {
             $scope: scope
         });
         cookies = $cookies;
+        cookies.remove('apiServerUrl');
     }));
 
     it('loads serverUrl from cookies', function () {
 
-        cookies.apiServerUrl = 'http://api.open-trapp.com';
+        cookies.put('apiServerUrl', 'http://api.open-trapp.com');
 
         scope.init();
 
@@ -37,12 +38,12 @@ describe("Settings", function () {
 
         scope.save();
 
-        expect(cookies.apiServerUrl).toEqual('http://test-api.open-trapp.com');
+        expect(cookies.get('apiServerUrl')).toEqual('http://test-api.open-trapp.com');
     });
 
     it('restores last serverUrl on cancel', function () {
 
-        cookies.apiServerUrl = 'http://api.open-trapp.com';
+        cookies.put('apiServerUrl', 'http://api.open-trapp.com');
         scope.init();
 
         scope.apiServerUrl = 'http://test-api.open-trapp.com';
