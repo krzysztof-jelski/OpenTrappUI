@@ -4,7 +4,8 @@ angular
         $stateProvider
             .state('report', {
                 url: '/report',
-                templateUrl: 'report.html',
+                templateUrl: 'templates/report/report.html',
+                controller: 'ReportController',
                 data: {
                     requiresLogin: true
                 }

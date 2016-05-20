@@ -1,6 +1,6 @@
 angular
     .module('openTrapp.worklog')
-    .controller('RegistrationCtrl',
+    .controller('RegistrationController',
         function ($scope, $http, currentEmployee, worklogEntryParser, $sce, worklog, currentMonth, $timeout) {
             $scope.alerts = [];
             clearExpression();
@@ -62,6 +62,8 @@ angular
             };
 
             $scope.$watch('workLogExpression', update);
+
+            $scope.init();
 
             function expression() {
                 return $scope.workLogExpression;

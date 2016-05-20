@@ -4,7 +4,8 @@ angular
         $stateProvider
             .state('registration', {
                 url: '/registration',
-                templateUrl: 'registration.html',
+                templateUrl: 'templates/worklog/registration.html',
+                controller: 'RegistrationController',
                 data: {
                     requiresLogin: true
                 }

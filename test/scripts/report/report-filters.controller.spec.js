@@ -17,7 +17,7 @@ describe('Report Filters Controller', function () {
     beforeEach(inject(function ($rootScope, $controller, $timeout, _worklog_, _currentEmployee_, _availableMonths_) {
         availableMonths = _availableMonths_;
         scope = $rootScope.$new();
-        $controller('ReportFiltersCtrl', {
+        $controller('ReportController', {
             $scope: scope,
             currentMonth: currentMonth,
             timeout: $timeout

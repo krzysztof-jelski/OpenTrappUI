@@ -44,6 +44,7 @@
     <script type="text/javascript" src="scripts/authentication/authentication.module.js"></script>
     <script type="text/javascript" src="scripts/authentication/authentication.routing.js"></script>
     <script type="text/javascript" src="scripts/authentication/auth-interceptor.js"></script>
+    <script type="text/javascript" src="scripts/authentication/sign-in.controller.js"></script>
     <script type="text/javascript" src="scripts/employee/current-employee.factory.js"></script>
     <script type="text/javascript" src="scripts/time/time.module.js"></script>
     <script type="text/javascript" src="scripts/time/time-provider.factory.js"></script>
@@ -64,13 +65,12 @@
     <script type="text/javascript" src="scripts/worklog/edition/bulk-edit.controller.js"></script>
     <script type="text/javascript" src="scripts/report/report.module.js"></script>
     <script type="text/javascript" src="scripts/report/report.routing.js"></script>
+    <script type="text/javascript" src="scripts/report/report.controller.js"></script>
     <script type="text/javascript" src="scripts/report/available-months.factory.js"></script>
-    <script type="text/javascript" src="scripts/report/report-filters.controller.js"></script>
     <script type="text/javascript" src="scripts/report/monthly-report.controller.js"></script>
     <script type="text/javascript" src="scripts/report/pie-chart-report.controller.js"></script>
-    <script type="text/javascript" src="scripts/environment/enviroment-interceptor.js"></script>
+    <script type="text/javascript" src="scripts/environment/environment-interceptor.js"></script>
     <script type="text/javascript" src="scripts/RouterCtrl.js"></script>
-    <script type="text/javascript" src="scripts/authentication/sign-in.controller.js"></script>
     <script type="text/javascript" src="scripts/Workload.js"></script>
 
 </head>
@@ -79,6 +79,7 @@
 <!-- TODO extract everything but <head> and router view placeholder -->
 
 <!-- Menu -->
+<!-- TODO use router on state or component instead of one attached to view -->
 <nav ng-controller="RouterCtrl" class="navbar navbar-default navbar-fixed-top" role="navigation">
 
     <div class="container">
@@ -90,6 +91,7 @@
             </a>
         </div>
 
+        <!-- TODO use router on state or component instead of one attached to view -->
         <ul class="nav navbar-nav navbar-right" ng-controller="SignInCtrl" ng-init="init()">
             <li ng-if="authenticated" ng-class="{active: isActive('/registration')}">
                 <!-- TODO use ui-router sref -->

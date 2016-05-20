@@ -11,7 +11,7 @@ describe('Registration Controller should', function () {
         timeout = $timeout;
         spyOn(_timeProvider_, 'getCurrentDate').and.returnValue(new Date(currentDateString));
         spyOn(_timeProvider_, 'moment').and.returnValue(moment(currentDateString, 'YYYY-MM-DD'));
-        $controller('RegistrationCtrl', {
+        $controller('RegistrationController', {
             $scope: scope
         });
         httpBackend = $httpBackend;
@@ -48,7 +48,6 @@ describe('Registration Controller should', function () {
     it("initializes workload with current month", function () {
         httpBackend.expectGET("http://localhost:8080/endpoints/v1/calendar/2014/01/work-log/entries").respond(200);
 
-        scope.init();
         timeout.flush();
         httpBackend.flush();
     });

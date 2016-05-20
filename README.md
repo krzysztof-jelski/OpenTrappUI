@@ -41,9 +41,11 @@ Publish on Github on PROD: `grunt gh-pages:prod`
 - [x] reflect changes in modules into tests (dirs too)
 - [ ] encapsulate components
 - [ ] remove $scope usages
-- [ ] use ui-router
+- [x] use ui-router
 - [ ] move templates to same places as their scripts
 - [ ] break CSS into modules/components etc.
 - [ ] turn on linting
-- [ ] break routing into specific places with routes
+- [x] break routing into specific places with routes
 - [ ] clean TODOs in code
+- [x] introduce states' controllers instead of controllers on views
+- [ ] remember which type of report was chosen (on refresh)

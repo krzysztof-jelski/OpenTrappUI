@@ -1,6 +1,6 @@
 angular
     .module('openTrapp.settings')
-    .controller('SettingsCtrl',
+    .controller('SettingsController',
         function ($scope, $cookies) {
             $scope.init = function () {
 
@@ -20,6 +20,8 @@ angular
 
                 $cookies.put('apiServerUrl', $scope.apiServerUrl);
                 $scope.alert = 'Settings have been saved!';
-            }
+            };
+
+            $scope.init();
         }
     );

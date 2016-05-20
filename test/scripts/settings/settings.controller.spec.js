@@ -7,7 +7,7 @@ describe("Settings", function () {
 
     beforeEach(inject(function ($rootScope, $controller, $cookies) {
         scope = $rootScope.$new();
-        $controller('SettingsCtrl', {
+        $controller('SettingsController', {
             $scope: scope
         });
         cookies = $cookies;
