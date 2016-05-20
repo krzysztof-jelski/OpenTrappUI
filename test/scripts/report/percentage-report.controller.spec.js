@@ -2,6 +2,7 @@ describe('Pie Chart Report Controller', function () {
 
     beforeEach(module('openTrapp.report'));
 
+    var $controller;
     var scope;
     var worklog;
     var worklogUpdated;
@@ -11,7 +12,7 @@ describe('Pie Chart Report Controller', function () {
         };
     });
 
-    beforeEach(inject(function ($rootScope, $controller) {
+    beforeEach(inject(function ($rootScope, _$controller_) {
         worklog = {
             projects: {},
             onUpdate: function (callback) {
@@ -19,10 +20,7 @@ describe('Pie Chart Report Controller', function () {
             }
         };
         scope = $rootScope.$new();
-        $controller('PieChartReportCtrl', {
-            $scope: scope,
-            worklog: worklog
-        });
+        $controller = _$controller_;
     }));
 
     it("calculates share for active project", function () {
@@ -42,10 +40,9 @@ describe('Pie Chart Report Controller', function () {
                 total: "1h"
             }
         };
-        scope.init();
 
         // when:
-        worklogUpdated();
+        newPercentageReportController();
 
         // then:
         expect(scope.projects).toEqual([
@@ -53,5 +50,33 @@ describe('Pie Chart Report Controller', function () {
             {name: "ProjectManhattan", total: "1h", share: "33%"}
         ]);
     });
+
+    it("recalculates share on workload update", function () {
+
+        // given:
+        worklog.projects = {};
+        newPercentageReportController();
+
+        // when:
+        worklog.projects = {
+            "ProjectManhattan": {
+                active: true,
+                total: "1h"
+            }
+        };
+        worklogUpdated();
+
+        // then:
+        expect(scope.projects).toEqual([
+            {name: "ProjectManhattan", total: "1h", share: "100%"}
+        ]);
+    });
+
+    function newPercentageReportController() {
+        $controller('PercentageReportController', {
+            $scope: scope,
+            worklog: worklog
+        });
+    }
 
 });

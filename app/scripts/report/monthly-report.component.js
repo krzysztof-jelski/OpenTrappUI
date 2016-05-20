@@ -20,10 +20,13 @@
 
         var currentMonth = null;
 
-        worklog.onUpdate(function () {
+        recreateReport();
+        worklog.onUpdate(recreateReport);
+
+        function recreateReport() {
             fetchDays();
             calculateDays();
-        });
+        }
 
         function isForOneEmployee() {
             return self.forCurrentEmployee;

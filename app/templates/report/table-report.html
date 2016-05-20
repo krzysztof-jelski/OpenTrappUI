@@ -1,0 +1,44 @@
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th style="width: 40px"></th>
+            <th>Project</th>
+            <th>Workload</th>
+            <th>Employee</th>
+            <th ng-click="sort.predicate = 'day'; sort.reverse=!sort.reverse">
+                Date
+                        <span class="glyphicon"
+                              ng-class="sort.reverse ? 'glyphicon-chevron-down' : 'glyphicon-chevron-up'"></span>
+            </th>
+        </tr>
+        </thead>
+        <tr class="worklog-entry"
+            ng-repeat="item in worklog.entries | orderBy:sort.predicate:sort.reverse track by item.id">
+            <td align="right">
+                &nbsp;
+                <a ng-click="worklog.remove(item.id)" ng-if="item.employee == currentUser">
+                    <span class="glyphicon glyphicon-trash small-glyph"/>
+                </a>
+            </td>
+            <td>
+                <!-- TODO use router on state or component instead of one attached to view -->
+                <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
+                    {{item.projectNames.join(", ")}} <span
+                        class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
+                </a>
+                <span ng-if="item.employee != currentUser">{{item.projectNames.join(", ")}}</span>
+            </td>
+            <td>
+                <!-- TODO use router on state or component instead of one attached to view -->
+                <a ng-controller="EditCtrl" ng-click="open(item)" ng-if="item.employee == currentUser">
+                    {{item.workload}} <span style="font-size: 80%"
+                                            class="glyphicon glyphicon-pencil small-glyph hover-edit"/>
+                </a>
+                <span ng-if="item.employee != currentUser">{{item.workload}}</span>
+            </td>
+            <td>{{item.employee}}</td>
+            <td>{{item.day}}</td>
+        </tr>
+    </table>
+</div>

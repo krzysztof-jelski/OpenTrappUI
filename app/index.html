@@ -65,7 +65,7 @@
     <script type="text/javascript" src="scripts/report/available-months.factory.js"></script>
     <script type="text/javascript" src="scripts/report/workload-reports.factory.js"></script>
     <script type="text/javascript" src="scripts/report/monthly-report.component.js"></script>
-    <script type="text/javascript" src="scripts/report/pie-chart-report.controller.js"></script>
+    <script type="text/javascript" src="scripts/report/percentage-report.controller.js"></script>
     <script type="text/javascript" src="scripts/registration/registration.module.js"></script>
     <script type="text/javascript" src="scripts/registration/registration.routing.js"></script>
     <script type="text/javascript" src="scripts/registration/registration.controller.js"></script>
@@ -99,7 +99,7 @@
                 </a>
             </li>
             <li ng-if="authenticated" ng-class="{active: isActive('/report')}">
-                <a ui-sref="report">
+                <a ui-sref="report.calendar">
                     <span class="glyphicon glyphicon-stats"></span>
                     Reports
                 </a>

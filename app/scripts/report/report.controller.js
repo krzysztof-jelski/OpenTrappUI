@@ -1,7 +1,6 @@
 angular
     .module('openTrapp.report')
-    .controller('ReportController', function ($scope, $http, $timeout, worklog, currentMonth, currentEmployee, availableMonths) {
-
+    .controller('ReportController', function ($scope, $http, $timeout, $state, worklog, currentMonth, currentEmployee, availableMonths) {
         $scope.sort = {
             predicate: 'day',
             reverse: true
@@ -40,6 +39,8 @@ angular
         };
 
         $scope.init();
-        $scope.display = 'calendar';
+        $scope.display = function () {
+            return $state.$current.data.reportType;
+        }
 
     });

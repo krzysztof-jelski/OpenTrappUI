@@ -33,7 +33,6 @@ describe('MonthlyReportController', function () {
 
         // when:
         var controller = newMonthlyReportController();
-        worklogUpdated();
         $httpBackend.flush();
 
         // then:
@@ -70,10 +69,9 @@ describe('MonthlyReportController', function () {
                 workload: "4h 20m"
             }
         ];
-        var controller = newMonthlyReportController();
 
         // when:
-        worklogUpdated();
+        var controller = newMonthlyReportController();
 
         // then:
         expect(controller.report.employees())
@@ -93,11 +91,31 @@ describe('MonthlyReportController', function () {
                 workload: "1h"
             }
         ];
+
+        // when:
+        var controller = newMonthlyReportController();
+        controller.report.employees();
+
+        // then:
+        expect(controller.report.employees()).toEqual({
+            "bart.simpson": {"2014/01/01": "1", "total": "1"}
+        });
+    });
+
+    it("recreates report on worklog update", function () {
+        // given
+        worklog.entries = [];
         var controller = newMonthlyReportController();
 
         // when:
+        worklog.entries = [
+            {
+                day: "2014/01/01",
+                employee: "bart.simpson",
+                workload: "1h"
+            }
+        ];
         worklogUpdated();
-        controller.report.employees();
 
         // then:
         expect(controller.report.employees()).toEqual({
