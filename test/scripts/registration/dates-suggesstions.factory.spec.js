@@ -1,13 +1,12 @@
 describe("DatesSuggestions", function () {
     var timeProvider, dateSuggestions;
 
-    beforeEach(module("openTrapp.worklog"));
+    beforeEach(module("openTrapp.registration"));
 
     beforeEach(inject(function (_datesSuggestions_, _timeProvider_) {
         timeProvider = _timeProvider_;
         dateSuggestions = _datesSuggestions_;
     }));
-
 
     it("suggests by day name", function () {
         spyOn(timeProvider, 'getCurrentDate').and.returnValue(new Date('2014/05/12'));

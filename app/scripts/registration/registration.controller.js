@@ -1,5 +1,5 @@
 angular
-    .module('openTrapp.worklog')
+    .module('openTrapp.registration')
     .controller('RegistrationController',
         function ($scope, $http, currentEmployee, worklogEntryParser, $sce, worklog, currentMonth, $timeout) {
             $scope.alerts = [];

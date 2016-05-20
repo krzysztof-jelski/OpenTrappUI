@@ -1,10 +1,10 @@
 angular
-    .module('openTrapp.worklog')
-    .directive('worklogExpression', function ($compile, projectNames, datesSuggestions) {
+    .module('openTrapp.registration')
+    .directive('otWorklogExpression', function ($compile, projectNames, datesSuggestions) {
         return {
             restrict: 'E',
             replace: 'true',
-            templateUrl: 'templates/worklog/worklog-expression.directive.html',
+            templateUrl: 'templates/registration/worklog-expression.directive.html',
 
             link: function ($scope, element) {
                 var inputElement = element[0];

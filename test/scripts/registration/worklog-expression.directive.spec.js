@@ -7,7 +7,7 @@ describe("WorklogExpressionDirective", function () {
     var projectNames, datesSuggestions;
     var spiedCursorPosition;
 
-    beforeEach(module("openTrapp.worklog"));
+    beforeEach(module("openTrapp.registration"));
     beforeEach(module("karma.cached.htmls"));
 
     beforeEach(inject(function ($rootScope, $compile, $timeout, $httpBackend, _projectNames_, _datesSuggestions_) {
@@ -20,7 +20,7 @@ describe("WorklogExpressionDirective", function () {
     }));
 
     beforeEach(function () {
-        compileDirective('<worklog-expression></worklog-expression>');
+        compileDirective('<ot-worklog-expression></ot-worklog-expression>');
     });
 
     beforeEach(function () {

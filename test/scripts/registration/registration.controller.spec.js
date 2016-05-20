@@ -1,5 +1,5 @@
 describe('Registration Controller should', function () {
-    beforeEach(module('openTrapp.worklog'));
+    beforeEach(module('openTrapp.registration'));
 
     var currentDateString = "2014/01/02";
     var employeeUsername = 'homer.simpson';
