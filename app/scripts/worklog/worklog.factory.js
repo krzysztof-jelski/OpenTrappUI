@@ -12,6 +12,10 @@ angular
             projects: {},
             entries: [],
 
+            hasMonthSet: function () {
+                return !!that.month.valueOf();
+            },
+
             setMonth: function (month, callback) {
                 $http.get('http://localhost:8080/endpoints/v1/calendar/' + month + '/work-log/entries')
                     .success(function (data) {

@@ -18,6 +18,9 @@ describe('MonthlyReportController', function () {
             projects: {},
             onUpdate: function (callback) {
                 worklogUpdated = callback;
+            },
+            hasMonthSet: function () {
+                return !!this.month;
             }
         };
     });
