@@ -5,7 +5,7 @@ angular
         $scope.open = function (query) {
 
             var modalInstance = $modal.open({
-                templateUrl: 'bulk-edit.html',
+                templateUrl: 'templates/worklog/edition/bulk-edit.html',
                 controller: BulkEditModalCtrl,
                 resolve: {
                     query: function () {

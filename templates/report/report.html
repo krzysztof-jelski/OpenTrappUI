@@ -1,0 +1,141 @@
+<div class="report">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="page-header">Review reports
+                    <small>by month, project and employee</small>
+                    <div class="pull-right">
+                        <!-- TODO use router on state or component instead of one attached to view -->
+                        <button ng-controller="BulkEditCtrl" class="btn btn-sm btn-primary" ng-click="open(query())">
+                            <span class="glyphicon glyphicon-pencil small-glyph"></span> Bulk edit
+                        </button>
+                        <!--button class="btn btn-sm btn-primary">
+                            <span class="glyphicon glyphicon-share-alt small-glyph"></span> Share report
+                        </button-->
+                    </div>
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <h4>Month:</h4>
+                <ul class="nav nav-pills small months dropdown" style="position:relative;">
+                    <li>
+                        <a ng-click="nextVisibleMonth()" class="glyphicon glyphicon-chevron-up"
+                           style="text-align: center"></a>
+                    </li>
+                    <li ng-repeat="month in months" ng-class="month == worklog.month ? 'active' : ''">
+                        <a ng-click="worklog.setMonth(month)">
+                            <span ng-class="{strong:month == currentMonth.name}">{{month}}</span>
+                    <span ng-if="month == worklog.month" class="badge badge-default">
+                        {{worklog.month.total}}
+                    </span>
+                        </a>
+                        <a ng-if="month == worklog.month" ng-click="worklog.setMonth(month)" class="refresh">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="prevVisibleMonth()" class="glyphicon glyphicon-chevron-down"
+                           style="text-align: center"></a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="col-md-4" ng-init="showIneligibleProjects=true">
+                <h4>Projects:</h4>
+                <ul class="nav nav-pills small" style="clear:both;">
+                    <li ng-repeat="(project, status) in worklog.projects"
+                        ng-class="{active: status.active, disabled: status.hidden, hidden: status.total == '0h' && !showIneligibleProjects}">
+                        <a ng-click="status.hidden || worklog.toggleProject(project)">
+                            <span class="glyphicon tag-{{project}}"></span>
+                            {{project}}
+                            <span class="badge badge-primary" ng-if="status.total != '0h'">
+                                {{status.total}}
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="separator"></li>
+                    <li class="pull-right">
+                        <a ng-click="worklog.enableAllProjects()">
+                            <span class="glyphicon glyphicon-plus"></span> All
+                        </a>
+                    </li>
+                    <li class="pull-right">
+                        <a ng-click="worklog.disableAllProjects()">
+                            <span class="glyphicon glyphicon-minus"></span> None
+                        </a>
+                    </li>
+                    <li class="pull-right">
+                        <a ng-click="showIneligibleProjects=false" ng-show="showIneligibleProjects">
+                            <span class="glyphicon glyphicon-eye-close"></span> Hide ineligible
+                        </a>
+                        <a ng-click="showIneligibleProjects=true" ng-show="!showIneligibleProjects">
+                            <span class="glyphicon glyphicon-eye-open"></span> Show ineligible
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6" ng-init="showIneligibleEmployees=false">
+                <h4>Employees:</h4>
+                <ul class="nav nav-pills small">
+                    <li ng-repeat="(employee, status) in worklog.employees"
+                        ng-class="{active: status.active, disabled: status.hidden, hidden: status.total == '0h' && !showIneligibleEmployees}">
+                        <a ng-click="status.hidden || worklog.toggleEmployee(employee)">
+                            {{employee}}
+                    <span class="badge badge-primary" ng-if="status.total != '0h'">
+                        {{status.total}}
+                    </span>
+                        </a>
+                    </li>
+
+                    <li class="separator"></li>
+                    <li class="pull-right">
+                        <a ng-click="worklog.enableAllEmployees()">
+                            <span class="glyphicon glyphicon-plus"></span> All
+                        </a>
+                    </li>
+                    <li class="pull-right">
+                        <a ng-click="worklog.disableAllEmployees()">
+                            <span class="glyphicon glyphicon-minus"></span> None
+                        </a>
+                    </li>
+                    <li class="pull-right">
+                        <a ng-click="showIneligibleEmployees=false" ng-show="showIneligibleEmployees">
+                            <span class="glyphicon glyphicon-eye-close"></span> Hide ineligible
+                        </a>
+                        <a ng-click="showIneligibleEmployees=true" ng-show="!showIneligibleEmployees">
+                            <span class="glyphicon glyphicon-eye-open"></span> Show ineligible
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>{{worklog.month.toString()}}</h2>
+                <ul class="nav nav-pills small">
+                    <li ng-class="{active: display()=='calendar'}" ui-sref="report.calendar">
+                        <a title="Calendar">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </a>
+                    </li>
+                    <li ng-class="{active: display()=='table'}" ui-sref="report.table">
+                        <a title="Table">
+                            <span class="glyphicon glyphicon-th-list"></span>
+                        </a>
+                    </li>
+                    <li ng-class="{active: display()=='percentage'}" ui-sref="report.percentage">
+                        <a title="Chart">
+                            <span class="glyphicon glyphicon-stats"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div ui-view></div>
+
+    </div>
+</div>

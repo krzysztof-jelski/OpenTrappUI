@@ -5,7 +5,7 @@ angular
         $scope.open = function (item) {
 
             var modalInstance = $modal.open({
-                templateUrl: 'edit.html',
+                templateUrl: 'templates/worklog/edition/edit.html',
                 controller: EditModalCtrl,
                 resolve: {
                     item: function () {

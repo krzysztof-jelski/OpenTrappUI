@@ -1,16 +1,23 @@
 angular
     .module('openTrapp.report')
-    .controller('PieChartReportCtrl', function ($scope, worklog) {
+    .controller('PercentageReportController', function ($scope, worklog) {
+
+        var colors = ['88', 'AA', 'CC'];
+        var chartObject = false;
 
         $scope.projects = [];
-        $scope.init = function () {
-            worklog.onUpdate(function () {
-                calculateShares();
-                updateChart();
-            });
-        };
+        $scope.colorFor = colorFor;
 
-        var calculateShares = function () {
+        recreateReport();
+        worklog.onUpdate(recreateReport);
+
+        function recreateReport() {
+            calculateShares();
+            // FIXME pie chart has no sense for multiple project tags (sum over 100%)
+            // updateChart();
+        }
+
+        function calculateShares() {
 
             var projects = [];
 
@@ -34,11 +41,9 @@ angular
             $scope.projects = _(projects).sortBy(function (x) {
                 return -(new Workload(x.total).minutes);
             }).value();
-        };
+        }
 
-        var colors = ['88', 'AA', 'CC'];
-
-        var hashCode = function (str) {
+        function hashCode(str) {
             var hash = 0;
             if (str.length === 0) return hash;
             for (var i = 0; i < str.length; i++) {
@@ -47,9 +52,9 @@ angular
                 hash = hash & hash;
             }
             return hash;
-        };
+        }
 
-        $scope.colorFor = function (project) {
+        function colorFor(project) {
 
             var num = Math.abs((hashCode(project)) % 27);
             c1 = Math.floor(num / 9);
@@ -57,11 +62,9 @@ angular
             c3 = num % 3;
 
             return '#' + colors[c1] + colors[c2] + colors[c3];
-        };
+        }
 
-        var chartObject = false;
-
-        var updateChart = function () {
+        function updateChart() {
 
             var chartElement = document.getElementById("projectShare");
 
@@ -88,6 +91,6 @@ angular
             var chart = chartObject.Doughnut(data, {
                 animationEasing: "easeOutQuart"
             });
-        };
+        }
 
     });

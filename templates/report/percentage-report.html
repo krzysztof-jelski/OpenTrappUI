@@ -1,0 +1,27 @@
+<!-- TODO use router on state or component instead of one attached to view -->
+<div class="row" ng-controller="PercentageReportController">
+    <!-- FIXME pie chart has no sense for multiple project tags (sum over 100%) -->
+    <!--<div class="col-md-5 col-md-offset-1">-->
+    <!--<canvas id="projectShare" width="400" height="400"></canvas>-->
+    <!--</div>-->
+    <div class="col-md-5">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Project</th>
+                <th>Workload</th>
+                <th>Share</th>
+            </tr>
+            </thead>
+            <tr class="worklog-entry" ng-repeat="project in projects">
+                <td>
+                    <div style="margin-left:auto;margin-right:auto;width: 16px; height:16px; background-color:{{colorFor(project.name)}}"></div>
+                </td>
+                <td>{{project.name}}</td>
+                <td>{{project.total}}</td>
+                <td>{{project.share}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -1,10 +1,11 @@
 angular
-    .module('openTrapp.worklog')
+    .module('openTrapp.registration')
     .config(function ($stateProvider) {
         $stateProvider
             .state('registration', {
                 url: '/registration',
-                templateUrl: 'registration.html',
+                templateUrl: 'templates/registration/registration.html',
+                controller: 'RegistrationController',
                 data: {
                     requiresLogin: true
                 }

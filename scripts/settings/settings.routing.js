@@ -4,7 +4,8 @@ angular
         $stateProvider
             .state('config', {
                 url: '/config',
-                templateUrl: 'configuration.html',
+                templateUrl: 'templates/settings/settings.html',
+                controller: 'SettingsController',
                 data: {
                     requiresLogin: true
                 }

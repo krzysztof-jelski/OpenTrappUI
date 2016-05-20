@@ -20,11 +20,11 @@ angular
     })
     .run(function ($rootScope, $state, currentEmployee) {
         $rootScope.$on('$stateChangeStart', function (event, toState) {
-            if (accessRequired() && !currentEmployee.isAuthenticated()) {
+            if (doesRequireLogin() && !currentEmployee.isAuthenticated()) {
                 changeStateTo('home');
             }
 
-            function accessRequired() {
+            function doesRequireLogin() {
                 return toState.data !== undefined && toState.data.requiresLogin;
             }
 

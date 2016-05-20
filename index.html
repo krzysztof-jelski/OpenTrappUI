@@ -44,6 +44,7 @@
     <script type="text/javascript" src="scripts/authentication/authentication.module.js"></script>
     <script type="text/javascript" src="scripts/authentication/authentication.routing.js"></script>
     <script type="text/javascript" src="scripts/authentication/auth-interceptor.js"></script>
+    <script type="text/javascript" src="scripts/authentication/sign-in.controller.js"></script>
     <script type="text/javascript" src="scripts/employee/current-employee.factory.js"></script>
     <script type="text/javascript" src="scripts/time/time.module.js"></script>
     <script type="text/javascript" src="scripts/time/time-provider.factory.js"></script>
@@ -53,61 +54,58 @@
     <script type="text/javascript" src="scripts/settings/settings.controller.js"></script>
     <script type="text/javascript" src="scripts/projects/project-names.factory.js"></script>
     <script type="text/javascript" src="scripts/worklog/worklog.module.js"></script>
-    <script type="text/javascript" src="scripts/worklog/worklog.routing.js"></script>
     <script type="text/javascript" src="scripts/worklog/worklog.factory.js"></script>
     <script type="text/javascript" src="scripts/worklog/worklog-entry-parser.factory.js"></script>
-    <script type="text/javascript" src="scripts/worklog/worklog-expression.directive.js"></script>
-    <script type="text/javascript" src="scripts/worklog/dates-suggesstions.factory.js"></script>
-    <script type="text/javascript" src="scripts/worklog/registration.controller.js"></script>
     <script type="text/javascript" src="scripts/worklog/edition/edition.module.js"></script>
     <script type="text/javascript" src="scripts/worklog/edition/edit.controller.js"></script>
     <script type="text/javascript" src="scripts/worklog/edition/bulk-edit.controller.js"></script>
     <script type="text/javascript" src="scripts/report/report.module.js"></script>
     <script type="text/javascript" src="scripts/report/report.routing.js"></script>
+    <script type="text/javascript" src="scripts/report/report.controller.js"></script>
     <script type="text/javascript" src="scripts/report/available-months.factory.js"></script>
-    <script type="text/javascript" src="scripts/report/report-filters.controller.js"></script>
-    <script type="text/javascript" src="scripts/report/monthly-report.controller.js"></script>
-    <script type="text/javascript" src="scripts/report/pie-chart-report.controller.js"></script>
-    <script type="text/javascript" src="scripts/environment/enviroment-interceptor.js"></script>
+    <script type="text/javascript" src="scripts/report/workload-reports.factory.js"></script>
+    <script type="text/javascript" src="scripts/report/monthly-report.component.js"></script>
+    <script type="text/javascript" src="scripts/report/percentage-report.controller.js"></script>
+    <script type="text/javascript" src="scripts/registration/registration.module.js"></script>
+    <script type="text/javascript" src="scripts/registration/registration.routing.js"></script>
+    <script type="text/javascript" src="scripts/registration/registration.controller.js"></script>
+    <script type="text/javascript" src="scripts/registration/dates-suggestions.factory.js"></script>
+    <script type="text/javascript" src="scripts/registration/worklog-expression.directive.js"></script>
+    <script type="text/javascript" src="scripts/environment/environment-interceptor.js"></script>
     <script type="text/javascript" src="scripts/RouterCtrl.js"></script>
-    <script type="text/javascript" src="scripts/authentication/sign-in.controller.js"></script>
     <script type="text/javascript" src="scripts/Workload.js"></script>
 
 </head>
 <body ng-app="openTrapp">
 
-<!-- TODO extract everything but <head> and router view placeholder -->
-
 <!-- Menu -->
+<!-- TODO use router on state or component instead of one attached to view -->
 <nav ng-controller="RouterCtrl" class="navbar navbar-default navbar-fixed-top" role="navigation">
 
     <div class="container">
         <div class="navbar-header">
-            <!-- TODO use ui-router sref -->
-            <a class="navbar-brand" href="#/">
+            <a class="navbar-brand" ui-sref="home">
                 <span class="glyphicon glyphicon-time"
                       style="font-size: 120%;color: #333;vertical-align: text-bottom;"></span> Open<b>Trapp</b>
             </a>
         </div>
 
+        <!-- TODO use router on state or component instead of one attached to view -->
         <ul class="nav navbar-nav navbar-right" ng-controller="SignInCtrl" ng-init="init()">
             <li ng-if="authenticated" ng-class="{active: isActive('/registration')}">
-                <!-- TODO use ui-router sref -->
-                <a href="#/registration">
+                <a ui-sref="registration">
                     <span class="glyphicon glyphicon-plus"></span>
                     Register time
                 </a>
             </li>
             <li ng-if="authenticated" ng-class="{active: isActive('/report')}">
-                <!-- TODO use ui-router sref -->
-                <a href="#/report">
+                <a ui-sref="report.calendar">
                     <span class="glyphicon glyphicon-stats"></span>
                     Reports
                 </a>
             </li>
             <li ng-if="authenticated" ng-class="{active: isActive('/config')}">
-                <!-- TODO use ui-router sref -->
-                <a href="#/config">
+                <a ui-sref="config">
                     <span class="glyphicon glyphicon-wrench"></span>
                     Settings
                 </a>

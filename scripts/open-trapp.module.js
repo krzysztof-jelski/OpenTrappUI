@@ -8,6 +8,7 @@ angular
         'openTrapp.projects',
         'openTrapp.worklog',
         'openTrapp.report',
+        'openTrapp.registration',
         'openTrapp.authentication',
         'openTrapp.environment'
     ]);
