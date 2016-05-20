@@ -134,43 +134,10 @@
                 </ul>
             </div>
         </div>
-        <!-- TODO use router on state or component instead of one attached to view -->
-        <div class="row" ng-show="display=='calendar'" ng-controller="MonthlyReportCtrl" ng-init="init()">
-            <table class="table table-striped table-condensed calendar">
-                <thead>
-                <tr>
-                    <th class="employee">
-                        Employee
-                    </th>
-                    <th ng-repeat="day in days" ng-class="{weekend: day.holiday}">
-                        <div>{{day.number}}</div>
-                        {{day.name}}
-                    </th>
-                    <th class="total">
-                        Total
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="(employee, hours) in report.employees()">
-                    <td class="employee">{{employee}}</td>
-                    <td ng-repeat="day in days" style="position:relative;" ng-class="{weekend: day.holiday}">
-                        <span class="glyphicon project-tag" ng-class="{{report.tag(employee, day.id)}}"></span>
-                        {{hours[day.id]}}
-                    </td>
-                    <td class="total">{{hours.total}}</td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td class="employee">Total</td>
-                    <td ng-repeat="day in days" ng-class="{weekend: day.holiday}">
-                        {{report.total()[day.id]}}
-                    </td>
-                    <td class="total">{{report.total().total}}</td>
-                </tr>
-                </tfoot>
-            </table>
+        <div class="row" ng-show="display=='calendar'">
+
+            <ot-monthly-report></ot-monthly-report>
+
         </div>
         <div class="row" ng-show="display=='table'">
             <table class="table table-striped">
