@@ -53,4 +53,5 @@ describe("SignIn", function () {
 
         expect(currentEmployee.signedInAs).toHaveBeenCalledWith('homer.simpson');
     });
+
 });
