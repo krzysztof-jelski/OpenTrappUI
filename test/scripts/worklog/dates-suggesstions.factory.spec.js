@@ -1,7 +1,7 @@
 describe("DatesSuggestions", function () {
     var timeProvider, dateSuggestions;
 
-    beforeEach(module("openTrapp.registration"));
+    beforeEach(module("openTrapp.worklog"));
 
     beforeEach(inject(function (_datesSuggestions_, _timeProvider_) {
         timeProvider = _timeProvider_;

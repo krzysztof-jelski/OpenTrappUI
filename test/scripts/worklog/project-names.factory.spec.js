@@ -1,6 +1,6 @@
 describe('Project Names', function () {
 
-    beforeEach(module('openTrapp.projects'));
+    beforeEach(module('openTrapp.worklog'));
 
     var httpBackend, projectNames;
     beforeEach(inject(function ($httpBackend, _projectNames_) {

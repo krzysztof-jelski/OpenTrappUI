@@ -7,40 +7,41 @@ angular
         };
         $scope.worklog = worklog;
         $scope.months = [];
+        $scope.nextVisibleMonth = nextVisibleMonth;
+        $scope.prevVisibleMonth = prevVisibleMonth;
+        $scope.display = reportType;
 
-        $scope.init = function () {
+        init();
 
+        function init() {
             worklog.reset();
+            $timeout(setMonths, 600);
+        }
 
-            $timeout(function () {
-                worklog.setMonth(currentMonth.name, function () {
+        function reportType() {
+            return $state.$current.data.reportType;
+        }
 
-                    var employee = currentEmployee.username();
-                    worklog.enableEmployee(employee);
-                    worklog.enableEmployeeProjects(employee);
+        function setMonths() {
+            worklog.setMonth(currentMonth.name, function () {
+                var employee = currentEmployee.username();
+                worklog.enableEmployee(employee);
+                worklog.enableEmployeeProjects(employee);
 
-                });
+            });
+            $scope.months = availableMonths.get(currentMonth);
+            $scope.currentMonth = currentMonth;
+            $scope.visibleMonth = currentMonth;
+        }
 
-                $scope.months = availableMonths.get(currentMonth);
-                $scope.currentMonth = currentMonth;
-                $scope.visibleMonth = currentMonth;
-
-            }, 600);
-        };
-
-        $scope.nextVisibleMonth = function () {
+        function nextVisibleMonth() {
             $scope.visibleMonth = $scope.visibleMonth.next();
             $scope.months = availableMonths.get($scope.visibleMonth);
-        };
+        }
 
-        $scope.prevVisibleMonth = function () {
+        function prevVisibleMonth() {
             $scope.visibleMonth = $scope.visibleMonth.prev();
             $scope.months = availableMonths.get($scope.visibleMonth);
-        };
-
-        $scope.init();
-        $scope.display = function () {
-            return $state.$current.data.reportType;
         }
 
     });

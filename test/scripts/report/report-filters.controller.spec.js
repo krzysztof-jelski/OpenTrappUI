@@ -4,7 +4,7 @@ describe('Report Filters Controller', function () {
 
     var currentMonth;
     var currentEmployee;
-    var scope, worklog;
+    var scope, worklog, $controller;
     var worklogIsReady;
     var timeout;
     var availableMonths;
@@ -14,14 +14,10 @@ describe('Report Filters Controller', function () {
         worklogIsReady = function () {
         };
     });
-    beforeEach(inject(function ($rootScope, $controller, $timeout, _worklog_, _currentEmployee_, _availableMonths_) {
+    beforeEach(inject(function ($rootScope, _$controller_, $timeout, _worklog_, _currentEmployee_, _availableMonths_) {
         availableMonths = _availableMonths_;
         scope = $rootScope.$new();
-        $controller('ReportController', {
-            $scope: scope,
-            currentMonth: currentMonth,
-            timeout: $timeout
-        });
+        $controller = _$controller_;
         timeout = $timeout;
 
         currentEmployee = _currentEmployee_;
@@ -42,7 +38,7 @@ describe('Report Filters Controller', function () {
 
         // given:
         // when:
-        initScopeWithTimeout();
+        createReportControllerWithTimeout();
 
         // then:
         expect(worklog.setMonth).toHaveBeenCalledWith(currentMonth.name, worklogIsReady);
@@ -50,20 +46,20 @@ describe('Report Filters Controller', function () {
 
     it('setups months from service', function () {
         // given:
-        spyOn(availableMonths, 'get').and.returnValue(['2014/02','2014/01']);
+        spyOn(availableMonths, 'get').and.returnValue(['2014/02', '2014/01']);
 
         // when:
-        initScopeWithTimeout();
+        createReportControllerWithTimeout();
 
         // then:
-        expect(scope.months).toEqual(['2014/02','2014/01']);
+        expect(scope.months).toEqual(['2014/02', '2014/01']);
     });
 
     it('selects current user by default', function () {
 
         // given:
         currentEmployeeIs('bart.simpson');
-        initScopeWithTimeout();
+        createReportControllerWithTimeout();
 
         // when:
         worklogIsReady();
@@ -76,7 +72,7 @@ describe('Report Filters Controller', function () {
 
         // given:
         currentEmployeeIs('bart.simpson');
-        initScopeWithTimeout();
+        createReportControllerWithTimeout();
 
         // when:
         worklogIsReady();
@@ -85,10 +81,17 @@ describe('Report Filters Controller', function () {
         expect(worklog.enableEmployeeProjects).toHaveBeenCalledWith('bart.simpson');
     });
 
-    // --
-
-    var currentEmployeeIs = function (employee) {
+    function currentEmployeeIs(employee) {
         currentEmployee.signedInAs(employee);
-    };
+    }
+
+    function createReportControllerWithTimeout() {
+        $controller('ReportController', {
+            $scope: scope,
+            currentMonth: currentMonth,
+            timeout: timeout
+        });
+        timeout.flush();
+    }
 
 });

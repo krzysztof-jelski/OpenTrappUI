@@ -5,7 +5,6 @@ angular
         'openTrapp.time',
         'openTrapp.settings',
         'openTrapp.employee',
-        'openTrapp.projects',
         'openTrapp.worklog',
         'openTrapp.report',
         'openTrapp.registration',

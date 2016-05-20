@@ -1,29 +1,25 @@
 describe("WorklogExpressionDirective", function () {
 
     var outerScope;
-    var compile, timeout;
+    var $compile, $timeout, $httpBackend;
     var inputElement;
-    var http;
     var projectNames, datesSuggestions;
     var spiedCursorPosition;
 
     beforeEach(module("openTrapp.registration"));
     beforeEach(module("karma.cached.htmls"));
 
-    beforeEach(inject(function ($rootScope, $compile, $timeout, $httpBackend, _projectNames_, _datesSuggestions_) {
-        outerScope = $rootScope.$new();
-        compile = $compile;
-        timeout = $timeout;
-        http = $httpBackend;
+    beforeEach(inject(function (_$rootScope_, _$compile_, _$timeout_, _$httpBackend_, _projectNames_, _datesSuggestions_) {
+        outerScope = _$rootScope_.$new();
+        $compile = _$compile_;
+        $timeout = _$timeout_;
+        $httpBackend = _$httpBackend_;
         projectNames = _projectNames_;
         datesSuggestions = _datesSuggestions_;
     }));
 
     beforeEach(function () {
         compileDirective('<ot-worklog-expression></ot-worklog-expression>');
-    });
-
-    beforeEach(function () {
         spyCursorPosition();
         resetCursorSpiedReturnValue();
     });
@@ -36,13 +32,13 @@ describe("WorklogExpressionDirective", function () {
         expect($(inputElement).attr("typeahead-wait-ms")).toEqual("100");
     });
 
-    it("contains input with proper template for typeahead", function () {
-        expect($(inputElement).attr("typeahead-template-url")).toEqual("templates/worklog/typeahead-template.html");
+    it("contains input with template for typeahead provided", function () {
+        expect($(inputElement).attr("typeahead-template-url")).toBeDefined();
     });
 
     it("suggests all available projects after typing #", function () {
         // given:
-        followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
+        followingProjectsAreAvailable(['ProjectManhattan', 'ApolloProgram']);
         // when:
         userTypes('#');
         // then:
@@ -51,7 +47,7 @@ describe("WorklogExpressionDirective", function () {
 
     it("does not suggest any projects if # is not present", function () {
         // given:
-        followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
+        followingProjectsAreAvailable(['ProjectManhattan', 'ApolloProgram']);
         // when:
         userTypes('1d');
         // then:
@@ -60,7 +56,7 @@ describe("WorklogExpressionDirective", function () {
 
     it("does not suggest any projects if # is recently added character", function () {
         // given:
-        followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
+        followingProjectsAreAvailable(['ProjectManhattan', 'ApolloProgram']);
         // when:
         userTypes('1d #AppolloProject @Proj');
         // then:
@@ -69,7 +65,7 @@ describe("WorklogExpressionDirective", function () {
 
     it("does not suggest any projects if # is recently added character", function () {
         // given:
-        followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
+        followingProjectsAreAvailable(['ProjectManhattan', 'ApolloProgram']);
         // when:
         userTypes('1d #ApolloProject ');
         // then:
@@ -78,7 +74,7 @@ describe("WorklogExpressionDirective", function () {
 
     it("suggest project starts with pattern", function () {
         // given:
-        followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
+        followingProjectsAreAvailable(['ProjectManhattan', 'ApolloProgram']);
         // when:
         userTypes('#Ap');
         // then:
@@ -87,7 +83,7 @@ describe("WorklogExpressionDirective", function () {
 
     it("complete project name on selecting suggestions", function () {
         // given:
-        followingProjectsAreAvailable('ProjectManhattan', 'ApolloProgram');
+        followingProjectsAreAvailable(['ProjectManhattan', 'ApolloProgram']);
         // when:
         userTypes('1d #ApolloPro');
         userConfirmsFirstSuggestion();
@@ -129,7 +125,7 @@ describe("WorklogExpressionDirective", function () {
 
     it("completes word inside expression", function () {
         // given:
-        followingProjectsAreAvailable('ProjectManhattan');
+        followingProjectsAreAvailable(['ProjectManhattan']);
         followingDatesAreAvailable("monday");
         userTypes("@monday 1d");
 
@@ -142,7 +138,7 @@ describe("WorklogExpressionDirective", function () {
 
     it("puts new characters after space after completed word", function () {
         // given:
-        followingProjectsAreAvailable('ProjectManhattan');
+        followingProjectsAreAvailable(['ProjectManhattan']);
         userTypes('#ProjectMan');
         userConfirmsFirstSuggestion();
 
@@ -153,12 +149,16 @@ describe("WorklogExpressionDirective", function () {
         expect(worklogExpression()).toEqual('#ProjectManhattan 1d');
     });
 
-    function followingProjectsAreAvailable() {
-        var args = _.toArray(arguments);
-        http.expectGET("http://localhost:8080/endpoints/v1/projects/").respond(200, args);
-        projectNames.forEach(function () {
-        });
-        http.flush();
+    function followingProjectsAreAvailable(namesOfAvailableProjects) {
+        $httpBackend
+            .whenGET("http://localhost:8080/endpoints/v1/projects/")
+            .respond(200, namesOfAvailableProjects);
+        forceProjectNamesToBeFetched();
+        $httpBackend.flush();
+    }
+
+    function forceProjectNamesToBeFetched() {
+        projectNames.forEach(function () { });
     }
 
     function followingDatesAreAvailable() {
@@ -167,7 +167,7 @@ describe("WorklogExpressionDirective", function () {
     }
 
     function userMovesCursorToPosition(position) {
-        cursorPositionIs(position);
+        cursorPositionIsAtPosition(position);
         outerScope.$digest();
         return {
             andTypes: function (input) {
@@ -176,12 +176,8 @@ describe("WorklogExpressionDirective", function () {
         }
     }
 
-    function userTypes(input) {
-        if (worklogExpression() == undefined) {
-            setWorklogExpression(input);
-        } else {
-            insertIntoWorklogExpression(outerScope.getCursorPosition(), input);
-        }
+    function userTypes(typedText) {
+        insertIntoWorklogExpressionAtCursorPosition(typedText);
         outerScope.$digest();
     }
 
@@ -199,19 +195,28 @@ describe("WorklogExpressionDirective", function () {
         return outerScope.workLogExpression;
     }
 
-    function setWorklogExpression(expression) {
-        outerScope.workLogExpression = expression;
-        cursorPositionIs(expression.length);
-    }
-
-    function insertIntoWorklogExpression(position, input) {
+    function insertIntoWorklogExpressionAtCursorPosition(text) {
+        var position = cursorPosition();
         var expression = worklogExpression();
-        expression = expression.substr(0, position) + input + expression.substr(position);
+        if (expression) {
+            expression = expression.substr(0, position) + text + expression.substr(position);
+            cursorPositionIsAtPosition(position + text.length);
+        } else {
+            expression = text;
+            cursorPositionIsAtPosition(text.length);
+        }
         setWorklogExpression(expression);
-        cursorPositionIs(position + input.length);
     }
 
-    function cursorPositionIs(position) {
+    function setWorklogExpression(text) {
+        outerScope.workLogExpression = text;
+    }
+
+    function cursorPosition() {
+        return outerScope.getCursorPosition();
+    }
+
+    function cursorPositionIsAtPosition(position) {
         spiedCursorPosition.and.returnValue(position);
     }
 
@@ -225,7 +230,7 @@ describe("WorklogExpressionDirective", function () {
 
     function compileDirective(html) {
         var directive = angular.element(html);
-        compile(directive)(outerScope);
+        $compile(directive)(outerScope);
         outerScope.$digest();
         inputElement = directive[0];
     }

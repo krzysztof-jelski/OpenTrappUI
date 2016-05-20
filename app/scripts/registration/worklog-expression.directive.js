@@ -25,8 +25,12 @@ angular
                             return suggestionsFor(tag);
                         }
                     }
-                    return [];
+                    return emptySuggestions();
                 };
+
+                function emptySuggestions() {
+                    return [];
+                }
 
                 $scope.selectSuggestion = function (suggestion) {
                     if (suggestion.value) {
@@ -53,9 +57,11 @@ angular
 
                 function suggestionsFor(tag) {
                     var suggestions = [];
-                    suggestionSourceFor[tag.symbol].startingWith(tag.value).forEach(function (suggestion) {
-                        suggestions.push(suggestion);
-                    });
+                    suggestionSourceFor[tag.symbol]
+                        .startingWith(tag.value)
+                        .forEach(function (suggestion) {
+                            suggestions.push(suggestion);
+                        });
                     return suggestions;
                 }
 

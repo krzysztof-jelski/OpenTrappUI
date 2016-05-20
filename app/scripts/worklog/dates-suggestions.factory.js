@@ -1,5 +1,5 @@
 angular
-    .module('openTrapp.registration')
+    .module('openTrapp.worklog')
     .factory('datesSuggestions', function (timeProvider) {
         var possibleSuggestions = ["today", "yesterday", "tomorrow", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "t-1", "t-2", "t-3"];
 
