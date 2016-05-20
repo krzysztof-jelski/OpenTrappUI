@@ -6,7 +6,8 @@ angular
         $scope.init = function () {
             worklog.onUpdate(function () {
                 calculateShares();
-                updateChart();
+                // FIXME pie chart has no sense for multiple project tags (sum over 100%)
+                // updateChart();
             });
         };
 
