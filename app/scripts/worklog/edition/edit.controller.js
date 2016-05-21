@@ -34,24 +34,7 @@ angular
 
 var EditModalCtrl = function ($scope, $uibModalInstance, item, projectNames, http, worklog) {
 
-    var suggestions = [];
-    (function gatherSuggestions() {
-        suggestions = [];
-        projectNames.forEach(function (name) {
-            suggestions.push(name);
-        })
-    })();
     $scope.item = angular.copy(item);
-
-    function getSuggestions(prefix) {
-        return _.filter(suggestions, function (suggestion) {
-            return suggestion.indexOf(prefix) != -1;
-        });
-    }
-
-    $scope.$watch('item.projectName', function (newValue) {
-        $scope.suggestions = getSuggestions(newValue);
-    });
 
     $scope.isInvalidWorkload = function (workload) {
         return !Workload.isValid(workload);

@@ -17,10 +17,6 @@ describe('Registration Controller should', function () {
         httpBackend = $httpBackend;
 
         spyOn(_currentEmployee_, 'username').and.returnValue(employeeUsername);
-        spyOn(_projectNames_, 'startingWith').and.returnValue({
-            forEach: function (callback) {
-            }
-        });
         spyOn(worklog, 'refresh');
         spyOn($sce, 'trustAsHtml').and.callFake(function (x) {
             return x;

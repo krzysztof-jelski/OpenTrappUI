@@ -27,6 +27,12 @@ module.exports = function (grunt) {
                                 'dist/fonts/glyphicons-halflings-regular.ttf'
                             ]
                         },
+                        'jasmine-promise-matchers': {
+                            dest: 'test/lib',
+                            files: [
+                                'dist/jasmine-promise-matchers.js'
+                            ]
+                        },
                         'jquery': {
                             dest: libPath,
                             files: [

@@ -1,28 +1,53 @@
 angular
     .module('openTrapp.worklog')
-    .factory('datesSuggestions', function (timeProvider) {
-        var possibleSuggestions = ["today", "yesterday", "tomorrow", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "t-1", "t-2", "t-3"];
+    .factory('datesSuggestions', function ($q, timeProvider) {
 
-        function mapSuggestionToDay(suggestion) {
-            return PegWorkLogEntryParser.parse("#proj @" + suggestion, {timeProvider: timeProvider}).day;
-        }
+        var possibleSuggestions = [
+            "today",
+            "yesterday",
+            "tomorrow",
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday",
+            "t-1",
+            "t-2",
+            "t-3"
+        ];
 
         return {
-            startingWith: function (prefix) {
-                return _(_(possibleSuggestions).map(function (suggestion) {
+            loadAllStartingWith: loadAllStartingWith
+        };
+
+        function loadAllStartingWith(prefix) {
+            var suggestions = _(possibleSuggestions)
+                .map(function (suggestion) {
                     return {
                         name: suggestion,
                         day: mapSuggestionToDay(suggestion)
                     };
-                }).filter(function (entry) {
-                    return entry.name.indexOf(prefix) === 0 || entry.day.indexOf(prefix) !== -1;
-                }).map(function (entry) {
+                })
+                .filter(function (dateSuggestion) {
+                    return dateSuggestion.name.indexOf(prefix) === 0
+                        || dateSuggestion.day.indexOf(prefix) !== -1;
+                })
+                .map(function (dateSuggestion) {
                     return {
-                        value: entry.name,
-                        description: entry.day
+                        value: dateSuggestion.name,
+                        description: dateSuggestion.day
                     };
-                }));
-            }
-
+                })
+                .value();
+            return $q.resolve(suggestions);
         }
+
+        function mapSuggestionToDay(suggestion) {
+            return PegWorkLogEntryParser
+                .parse("#proj @" + suggestion, {timeProvider: timeProvider})
+                .day;
+        }
+
     });

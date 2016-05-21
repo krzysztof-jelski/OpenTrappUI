@@ -1,9 +1,14 @@
 describe("DatesSuggestions", function () {
+
     var timeProvider, dateSuggestions;
 
     beforeEach(module("openTrapp.worklog"));
 
-    beforeEach(inject(function (_datesSuggestions_, _timeProvider_) {
+    beforeEach(function () {
+        installPromiseMatchers();
+    });
+
+    beforeEach(inject(function (_timeProvider_, _datesSuggestions_) {
         timeProvider = _timeProvider_;
         dateSuggestions = _datesSuggestions_;
     }));
@@ -11,7 +16,7 @@ describe("DatesSuggestions", function () {
     it("suggests by day name", function () {
         spyOn(timeProvider, 'getCurrentDate').and.returnValue(new Date('2014/05/12'));
 
-        expect(extract(dateSuggestions.startingWith("tu"))).toEqual([
+        expect(dateSuggestions.loadAllStartingWith("tu")).toBeResolvedWith([
             {value: 'tuesday', description: '2014/05/06'}
         ]);
     });
@@ -19,20 +24,9 @@ describe("DatesSuggestions", function () {
     it("suggests by date", function () {
         spyOn(timeProvider, 'getCurrentDate').and.returnValue(new Date('2014/05/05'));
 
-        var suggestions = extract(dateSuggestions.startingWith("2014/05/01"));
-
-        expect(suggestions).toEqual([
+        expect(dateSuggestions.loadAllStartingWith("2014/05/01")).toBeResolvedWith([
             {value: 'thursday', description: '2014/05/01'}
         ]);
     });
-
-    function extract(iterator) {
-        var result = [];
-        iterator.forEach(function (element) {
-            result.push(element);
-        });
-        return result;
-    }
-
 
 });

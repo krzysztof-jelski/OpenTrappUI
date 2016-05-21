@@ -20,15 +20,6 @@ describe('EditModalCtrl', function () {
         expect(scope.item).not.toBe(item);
     });
 
-    it("suggests", function () {
-        new EditModalCtrl(scope, modal, {}, ['angular', 'angel', 'antler']);
-
-        scope.item.projectName = "ang";
-        scope.$digest();
-
-        expect(scope.suggestions).toEqual(['angular', 'angel']);
-    });
-
     it("cancels", function () {
         new EditModalCtrl(scope, modal, {}, []);
 
