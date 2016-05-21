@@ -28,7 +28,7 @@ var Workload = function (workload) {
     var printDays = function () {
         var days = (h(minutes) - h(minutes) % 8) / 8;
         return days == 0 ? "" : days + "d";
-    }
+    };
 
     return {
         minutes: minutes,
@@ -39,11 +39,11 @@ var Workload = function (workload) {
             return new Workload(minutes + x.minutes);
         }
     };
-}
+};
 
-Workload.isValid = function(workload){
-	if(workload.trim() === ""){
-		return false;
-	}
-	return /^(\d+d)?\s*(\d+h)?\s*(\d+m)?$/.test(workload.trim());
-}
+Workload.isValid = function (workload) {
+    if (workload.trim() === "") {
+        return false;
+    }
+    return /^(\d+d)?\s*(\d+h)?\s*(\d+m)?$/.test(workload.trim());
+};

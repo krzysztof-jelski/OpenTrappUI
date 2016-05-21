@@ -24,8 +24,10 @@
         worklog.onUpdate(recreateReport);
 
         function recreateReport() {
-            fetchDays();
-            calculateDays();
+            if (worklog.hasMonthSet()) {
+                fetchDays();
+                calculateDays();
+            }
         }
 
         function isForOneEmployee() {

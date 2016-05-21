@@ -1,6 +1,6 @@
 angular
     .module('openTrapp.registration')
-    .directive('otWorklogExpression', function ($compile, projectNames, datesSuggestions) {
+    .directive('otWorklogExpression', function ($q, $compile, projectNames, datesSuggestions) {
         return {
             restrict: 'E',
             replace: 'true',
@@ -25,8 +25,12 @@ angular
                             return suggestionsFor(tag);
                         }
                     }
-                    return [];
+                    return emptySuggestions();
                 };
+
+                function emptySuggestions() {
+                    return $q.resolve([]);
+                }
 
                 $scope.selectSuggestion = function (suggestion) {
                     if (suggestion.value) {
@@ -52,11 +56,7 @@ angular
                 });
 
                 function suggestionsFor(tag) {
-                    var suggestions = [];
-                    suggestionSourceFor[tag.symbol].startingWith(tag.value).forEach(function (suggestion) {
-                        suggestions.push(suggestion);
-                    });
-                    return suggestions;
+                    return suggestionSourceFor[tag.symbol].loadAllStartingWith(tag.value);
                 }
 
                 function currentlyEditedTagIn(input) {

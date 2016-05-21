@@ -3,7 +3,6 @@ angular
         'ui.router',
         'openTrapp.time',
         'openTrapp.employee',
-        'openTrapp.projects',
         'openTrapp.worklog'
     ]);
 

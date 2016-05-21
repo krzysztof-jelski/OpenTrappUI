@@ -1,10 +1,10 @@
 angular
     .module('openTrapp.worklog.edition')
-    .controller('EditCtrl', function ($scope, $modal, projectNames, $http, worklog) {
+    .controller('EditCtrl', function ($scope, $uibModal, projectNames, $http, worklog) {
 
         $scope.open = function (item) {
 
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'templates/worklog/edition/edit.html',
                 controller: EditModalCtrl,
                 resolve: {
@@ -32,26 +32,9 @@ angular
         };
     });
 
-var EditModalCtrl = function ($scope, $modalInstance, item, projectNames, http, worklog) {
+var EditModalCtrl = function ($scope, $uibModalInstance, item, projectNames, http, worklog) {
 
-    var suggestions = [];
-    (function gatherSuggestions() {
-        suggestions = [];
-        projectNames.forEach(function (name) {
-            suggestions.push(name);
-        })
-    })();
     $scope.item = angular.copy(item);
-
-    function getSuggestions(prefix) {
-        return _.filter(suggestions, function (suggestion) {
-            return suggestion.indexOf(prefix) != -1;
-        });
-    }
-
-    $scope.$watch('item.projectName', function (newValue) {
-        $scope.suggestions = getSuggestions(newValue);
-    });
 
     $scope.isInvalidWorkload = function (workload) {
         return !Workload.isValid(workload);
@@ -64,7 +47,7 @@ var EditModalCtrl = function ($scope, $modalInstance, item, projectNames, http, 
         };
         http.post('http://localhost:8080/endpoints/v1/work-log/entries/' + item.id, data)
             .success(function () {
-                $modalInstance.close({
+                $uibModalInstance.close({
                     type: 'success',
                     message: 'Worklog updated'
                 });
@@ -77,7 +60,7 @@ var EditModalCtrl = function ($scope, $modalInstance, item, projectNames, http, 
     };
 
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        $uibModalInstance.dismiss('cancel');
     };
 };
 

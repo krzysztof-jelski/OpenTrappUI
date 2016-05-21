@@ -27,6 +27,7 @@ angular
             .state('report.percentage', {
                 url: '/percentage',
                 templateUrl: 'templates/report/percentage-report.html',
+                controller: 'PercentageReportController',
                 data: {
                     requiresLogin: true,
                     reportType: 'percentage'
