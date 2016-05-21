@@ -4,7 +4,7 @@ describe('BulkEditModalCtrl', function () {
 
     var http, httpBackend, scope, modal;
 
-    beforeEach(inject(function ($httpBackend, $http, $controller, $rootScope, $modal) {
+    beforeEach(inject(function ($httpBackend, $http, $controller, $rootScope) {
         httpBackend = $httpBackend;
         http = $http;
         scope = $rootScope.$new();

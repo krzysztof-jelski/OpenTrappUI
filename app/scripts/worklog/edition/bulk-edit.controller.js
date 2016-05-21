@@ -1,10 +1,10 @@
 angular
     .module('openTrapp.worklog.edition')
-    .controller('BulkEditCtrl', function ($scope, $modal, worklog) {
+    .controller('BulkEditCtrl', function ($scope, $uibModal, worklog) {
 
         $scope.open = function (query) {
 
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'templates/worklog/edition/bulk-edit.html',
                 controller: BulkEditModalCtrl,
                 resolve: {
@@ -25,7 +25,7 @@ angular
 
     });
 
-var BulkEditModalCtrl = function ($modalInstance, $scope, $http, query) {
+var BulkEditModalCtrl = function ($uibModalInstance, $scope, $http, query) {
 
     $scope.onQueryChange = onQueryChange;
     $scope.form = {
@@ -45,7 +45,7 @@ var BulkEditModalCtrl = function ($modalInstance, $scope, $http, query) {
 
         $http.post('http://localhost:8080/endpoints/v1/work-log/bulk-update', data)
             .success(function () {
-                $modalInstance.close();
+                $uibModalInstance.close();
                 $scope.alerts = [];
             })
             .error(function () {
@@ -55,7 +55,7 @@ var BulkEditModalCtrl = function ($modalInstance, $scope, $http, query) {
     };
 
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        $uibModalInstance.dismiss('cancel');
     };
 
     $scope.clearAlerts = function () {
