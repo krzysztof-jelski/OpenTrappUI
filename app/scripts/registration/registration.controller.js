@@ -28,7 +28,7 @@ angular
 
                 $http
                     .post('http://localhost:8080/endpoints/v1/employee/' + currentEmployee.username() + '/work-log/entries', data)
-                    .success(function (response, status) {
+                    .then(function () {
                         clearExpression();
                         update();
                         var projectNames = _(data.projectNames).map(function (name) {
@@ -39,12 +39,13 @@ angular
                             {type: 'success', message: $sce.trustAsHtml(message)}
                         ];
                         worklog.refresh();
-                    }).error(function (response, status) {
-                    var message = '<b>Upps...</b> Server is not responding.';
-                    $scope.alerts = [
-                        {type: 'danger', message: $sce.trustAsHtml(message)}
-                    ];
-                });
+                    })
+                    .catch(function () {
+                        var message = '<b>Upps...</b> Server is not responding.';
+                        $scope.alerts = [
+                            {type: 'danger', message: $sce.trustAsHtml(message)}
+                        ];
+                    });
             };
 
             var update = function () {

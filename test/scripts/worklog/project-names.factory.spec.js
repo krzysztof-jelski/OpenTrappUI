@@ -1,6 +1,6 @@
 describe('Project Names', function () {
 
-    var $httpBackend, projectNames;
+    var $httpBackend, $rootScope, projectNames;
 
     beforeEach(module('openTrapp.worklog'));
 
@@ -8,8 +8,9 @@ describe('Project Names', function () {
         installPromiseMatchers();
     });
 
-    beforeEach(inject(function (_$httpBackend_, _projectNames_) {
+    beforeEach(inject(function (_$httpBackend_, _$rootScope_, _projectNames_) {
         $httpBackend = _$httpBackend_;
+        $rootScope = _$rootScope_;
         projectNames = _projectNames_;
     }));
 
@@ -30,7 +31,7 @@ describe('Project Names', function () {
         expect(projectNamesPromise).toBeResolvedWith(['ManhattanProject', 'ApolloProgram']);
     }));
 
-    it('uses cache to prevent fetching projects from server on every keystroke', inject(function ($rootScope, projectNames) {
+    it('uses cache to prevent fetching projects from server on every keystroke', function () {
         // given:
         $httpBackend
             .whenGET("http://localhost:8080/endpoints/v1/projects/")
@@ -49,11 +50,11 @@ describe('Project Names', function () {
         // then
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
-    }));
+    });
 
     describe('filtering', function () {
 
-        it('filters names by matching prefix', inject(function (projectNames) {
+        it('filters names by matching prefix', function () {
             // given:
             $httpBackend
                 .expectGET("http://localhost:8080/endpoints/v1/projects/")
@@ -68,9 +69,9 @@ describe('Project Names', function () {
 
             // then:
             expect(projectNamesPromise).toBeResolvedWith(['ManhattanProject']);
-        }));
+        });
 
-        it('filters names by non-matching prefix', inject(function (projectNames) {
+        it('filters names by non-matching prefix', function () {
             // given:
             $httpBackend
                 .expectGET("http://localhost:8080/endpoints/v1/projects/")
@@ -85,7 +86,7 @@ describe('Project Names', function () {
 
             // then:
             expect(projectNamesPromise).toBeResolvedWith([]);
-        }));
+        });
 
     });
 

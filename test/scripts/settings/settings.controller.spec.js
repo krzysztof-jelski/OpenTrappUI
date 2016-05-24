@@ -2,8 +2,7 @@ describe("Settings", function () {
 
     beforeEach(module('openTrapp.settings'));
 
-    var scope, httpBackend;
-    var currentEmployee;
+    var scope, cookies;
 
     beforeEach(inject(function ($rootScope, $controller, $cookies) {
         scope = $rootScope.$new();

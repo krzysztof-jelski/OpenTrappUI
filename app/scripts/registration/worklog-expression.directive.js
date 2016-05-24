@@ -1,6 +1,6 @@
 angular
     .module('openTrapp.registration')
-    .directive('otWorklogExpression', function ($q, $compile, projectNames, datesSuggestions) {
+    .directive('otWorklogExpression', function ($q, projectNames, datesSuggestions) {
         return {
             restrict: 'E',
             replace: 'true',
@@ -36,7 +36,7 @@ angular
                     if (suggestion.value) {
                         suggestion = suggestion.value;
                     }
-                    var currentExpression = $(inputElement).val();
+                    var currentExpression = angular.element(inputElement).val();
                     var tag = currentlyEditedTagIn(currentExpression.substring(0, $scope.getCursorPosition()));
                     var replacementRegexp = new RegExp(tag.symbol + tag.value + '\\s*');
                     var completion = tag.symbol + suggestion + ' ';

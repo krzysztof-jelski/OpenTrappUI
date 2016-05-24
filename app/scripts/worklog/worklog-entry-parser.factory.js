@@ -8,7 +8,7 @@ angular
 
         return {
             isValid: function (expression) {
-                return this.parse(expression) != undefined;
+                return angular.isDefined(this.parse(expression));
             },
             parse: function (expression) {
                 try {

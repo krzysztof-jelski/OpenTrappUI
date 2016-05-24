@@ -1,21 +1,18 @@
 angular
-    .module('openTrapp.worklog.edition')
-    .controller('EditCtrl', function ($scope, $uibModal, projectNames, $http, worklog) {
+    .module('openTrapp.worklog')
+    .controller('EditCtrl', function ($scope, $uibModal, projectNames, worklog) {
 
         $scope.open = function (item) {
 
             var modalInstance = $uibModal.open({
                 templateUrl: 'templates/worklog/edition/edit.html',
-                controller: EditModalCtrl,
+                controller: 'EditModalCtrl',
                 resolve: {
                     item: function () {
                         return item;
                     },
                     projectNames: function () {
                         return projectNames;
-                    },
-                    http: function () {
-                        return $http;
                     },
                     worklog: function () {
                         return worklog;
@@ -30,45 +27,44 @@ angular
             })
 
         };
-    });
+    })
+    .controller('EditModalCtrl', function ($log, $scope, $uibModalInstance, item, $http, worklog) {
 
-var EditModalCtrl = function ($scope, $uibModalInstance, item, projectNames, http, worklog) {
+        $scope.item = angular.copy(item);
 
-    $scope.item = angular.copy(item);
-
-    $scope.isInvalidWorkload = function (workload) {
-        return !Workload.isValid(workload);
-    };
-
-    $scope.ok = function () {
-        var data = {
-            workload: $scope.item.workload,
-            projectName: $scope.item.projectName
+        $scope.isInvalidWorkload = function (workload) {
+            return !Workload.isValid(workload);
         };
-        http.post('http://localhost:8080/endpoints/v1/work-log/entries/' + item.id, data)
-            .success(function () {
-                $uibModalInstance.close({
-                    type: 'success',
-                    message: 'Worklog updated'
-                });
-                worklog.refresh();
-            })
-            .error(function () {
-                console.log('error');
-                $scope.shake();
-            });
-    };
 
-    $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-    };
-};
+        $scope.ok = function () {
+            var data = {
+                workload: $scope.item.workload,
+                projectName: $scope.item.projectName
+            };
+            $http.post('http://localhost:8080/endpoints/v1/work-log/entries/' + item.id, data)
+                .then(function () {
+                    $uibModalInstance.close({
+                        type: 'success',
+                        message: 'Worklog updated'
+                    });
+                    worklog.refresh();
+                })
+                .catch(function () {
+                    $log.error('error');
+                    $scope.shake();
+                });
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    });
 
 angular.module('openTrapp')
     .directive('shakeMe', ['$animate', function ($animate) {
 
         return {
-            link: function (scope, element, attrs, form) {
+            link: function (scope, element) {
 
                 scope.$parent.shake = function () {
 

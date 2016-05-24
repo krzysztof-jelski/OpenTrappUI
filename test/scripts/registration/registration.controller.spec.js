@@ -5,7 +5,7 @@ describe('Registration Controller should', function () {
     var employeeUsername = 'homer.simpson';
     var scope, httpBackend, worklog, timeout;
 
-    beforeEach(inject(function ($rootScope, $controller, $httpBackend, _currentEmployee_, _timeProvider_, _projectNames_, $sce, _worklog_, $timeout) {
+    beforeEach(inject(function ($rootScope, $controller, $httpBackend, _currentEmployee_, _timeProvider_, $sce, _worklog_, $timeout) {
         scope = $rootScope.$new();
         worklog = _worklog_;
         timeout = $timeout;

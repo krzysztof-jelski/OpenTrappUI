@@ -1,6 +1,7 @@
+/* eslint-env node */
 module.exports = function (grunt) {
 
-    const libPath = 'app/lib';
+    var libPath = 'app/lib';
 
     grunt.initConfig({
         bower: {

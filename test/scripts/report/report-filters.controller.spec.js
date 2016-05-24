@@ -29,11 +29,6 @@ describe('Report Filters Controller', function () {
         spyOn(worklog, 'enableEmployeeProjects');
     }));
 
-    function initScopeWithTimeout() {
-        scope.init();
-        timeout.flush();
-    }
-
     it('starts with current month', function () {
 
         // given:

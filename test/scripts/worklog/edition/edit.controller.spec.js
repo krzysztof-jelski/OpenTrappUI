@@ -1,27 +1,35 @@
 describe('EditModalCtrl', function () {
 
-    beforeEach(module('openTrapp.worklog.edition'));
+    beforeEach(module('openTrapp.worklog'));
 
-    var http, httpBackend, scope, modal;
+    var httpBackend, scope, modal, $controller;
 
-    beforeEach(inject(function ($httpBackend, $http, $rootScope) {
+    beforeEach(inject(function ($httpBackend, $rootScope, _$controller_) {
         httpBackend = $httpBackend;
-        http = $http;
         scope = $rootScope.$new();
         modal = jasmine.createSpyObj("modal", ["close", 'dismiss']);
+        $controller = _$controller_;
     }));
 
     it("initializes", function () {
         var item = {id: "someId"};
 
-        new EditModalCtrl(scope, modal, item, ['pr1', 'pr2']);
+        $controller('EditModalCtrl', {
+            $scope: scope,
+            $uibModalInstance: modal,
+            item: item
+        });
 
         expect(scope.item).toEqual(item);
         expect(scope.item).not.toBe(item);
     });
 
     it("cancels", function () {
-        new EditModalCtrl(scope, modal, {}, []);
+        $controller('EditModalCtrl', {
+            $scope: scope,
+            $uibModalInstance: modal,
+            item: {}
+        });
 
         scope.cancel();
 
@@ -30,9 +38,14 @@ describe('EditModalCtrl', function () {
 
     it("posts", function () {
 
-	var worklog = jasmine.createSpyObj("modal", ['refresh']);
+        var worklog = jasmine.createSpyObj("modal", ['refresh']);
 
-        new EditModalCtrl(scope, modal, {id: "worklogId"}, [], http, worklog);
+        $controller('EditModalCtrl', {
+            $scope: scope,
+            $uibModalInstance: modal,
+            item: {id: "worklogId"},
+            worklog: worklog
+        });
         scope.item.workload = "some workload";
         scope.item.projectName = "Project Manhattan";
         httpBackend.expectPOST("http://localhost:8080/endpoints/v1/work-log/entries/worklogId",
@@ -45,7 +58,7 @@ describe('EditModalCtrl', function () {
             type: 'success',
             message: 'Worklog updated'
         });
-	expect(worklog.refresh).toHaveBeenCalled();
+        expect(worklog.refresh).toHaveBeenCalled();
     });
 
 });

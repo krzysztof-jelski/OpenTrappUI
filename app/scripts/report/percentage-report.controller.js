@@ -1,6 +1,6 @@
 angular
     .module('openTrapp.report')
-    .controller('PercentageReportController', function ($scope, worklog) {
+    .controller('PercentageReportController', function ($scope, $document, worklog) {
 
         var colors = ['88', 'AA', 'CC'];
         var chartObject = false;
@@ -57,16 +57,16 @@ angular
         function colorFor(project) {
 
             var num = Math.abs((hashCode(project)) % 27);
-            c1 = Math.floor(num / 9);
-            c2 = Math.floor((num - c1 * 9) / 3);
-            c3 = num % 3;
+            var c1 = Math.floor(num / 9);
+            var c2 = Math.floor((num - c1 * 9) / 3);
+            var c3 = num % 3;
 
             return '#' + colors[c1] + colors[c2] + colors[c3];
         }
 
         function updateChart() {
 
-            var chartElement = document.getElementById("projectShare");
+            var chartElement = $document.getElementById("projectShare");
 
             if (!chartElement) {
                 return;

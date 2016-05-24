@@ -8,12 +8,15 @@ env:
 
 globals:
   "_": false
+  "angular": false
   "inject": false
   # TODO consider putting it into one defined "common" global
   "installPromiseMatchers": false
   "module": false
   # TODO use angular-moment to prevent global moment usage
   "moment": false
+  # TODO do we really need global Month function
+  "Month": false
   # TODO do we really need global Workload function
   "Workload": false
 

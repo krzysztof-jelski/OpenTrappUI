@@ -1,7 +1,7 @@
 describe("WorklogExpressionDirective", function () {
 
     var $q, $rootScope, $compile, $httpBackend;
-    var projectNames, datesSuggestions;
+    var datesSuggestions;
     var scope, element;
 
     beforeEach(module("openTrapp.registration"));
@@ -11,12 +11,11 @@ describe("WorklogExpressionDirective", function () {
         installPromiseMatchers();
     });
 
-    beforeEach(inject(function (_$q_, _$rootScope_, _$compile_, _$httpBackend_, _projectNames_, _datesSuggestions_) {
+    beforeEach(inject(function (_$q_, _$rootScope_, _$compile_, _$httpBackend_, _datesSuggestions_) {
         $q = _$q_;
         $rootScope = _$rootScope_;
         $compile = _$compile_;
         $httpBackend = _$httpBackend_;
-        projectNames = _projectNames_;
         datesSuggestions = _datesSuggestions_;
     }));
 
@@ -30,15 +29,15 @@ describe("WorklogExpressionDirective", function () {
     });
 
     it("contains input with '1d #my-project' as placeholder", function () {
-        expect($(wokrlogExpressionInput()).attr("placeholder")).toEqual("1d #my-project");
+        expect(worklogExpressionInput().attr("placeholder")).toEqual("1d #my-project");
     });
 
     it("contains input with 100 ms wait for typeahead", function () {
-        expect($(wokrlogExpressionInput()).attr("typeahead-wait-ms")).toEqual("100");
+        expect(worklogExpressionInput().attr("typeahead-wait-ms")).toEqual("100");
     });
 
     it("contains input with template for typeahead provided", function () {
-        expect($(wokrlogExpressionInput()).attr("typeahead-template-url")).toBeDefined();
+        expect(worklogExpressionInput().attr("typeahead-template-url")).toBeDefined();
     });
 
     it("suggests all available projects after typing #", function () {
@@ -131,8 +130,8 @@ describe("WorklogExpressionDirective", function () {
         scope.$digest();
     }
 
-    function wokrlogExpressionInput() {
-        return element[0];
+    function worklogExpressionInput() {
+        return angular.element(element[0]);
     }
 
 });

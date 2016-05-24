@@ -1,6 +1,6 @@
 angular
     .module('openTrapp.authentication')
-    .factory('authInterceptor', function ($cookies, $location) {
+    .factory('authInterceptor', function ($cookies) {
 
         return {
 
@@ -19,7 +19,7 @@ angular
 
     })
     .run(function ($rootScope, $state, currentEmployee) {
-        $rootScope.$on('$stateChangeStart', function (event, toState) {
+        var destroyableHandler = $rootScope.$on('$stateChangeStart', function (event, toState) {
             if (doesRequireLogin() && !currentEmployee.isAuthenticated()) {
                 changeStateTo('home');
             }

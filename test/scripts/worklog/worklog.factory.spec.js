@@ -509,8 +509,7 @@ describe('Worklog', function () {
         httpBackend.flush();
     };
 
-    var worklogWith = function (items) {
-
+    var worklogWith = function () {
         monthContainsFollowingItems('2014/01', _.toArray(arguments));
         worklogFor('2014/01');
     };
