@@ -1,0 +1,8 @@
+---
+root: true
+
+parserOptions:
+  ecmaVersion: 5
+  sourceType: script
+
+extends: "eslint:recommended"

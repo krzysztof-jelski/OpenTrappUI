@@ -34,12 +34,3 @@ Run unit tests in 'continuous run' mode with 'autoWatch': `grunt karma:dev`
 Re-generate worklog entry parser: `grunt exec:generate_parser`
 
 Publish on Github on PROD: `grunt gh-pages:prod`
-
-## Upgrade TODOs
-
-- [ ] extract components
-- [ ] remove $scope usages
-- [ ] break CSS into modules/components etc.
-- [ ] turn on linting
-- [ ] remember which type of report was chosen (on refresh)
-- [ ] clean TODOs in code

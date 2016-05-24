@@ -1,0 +1,6 @@
+.grunt/
+.idea/
+app/lib/
+bower_components/
+node_modules/
+test/lib/
