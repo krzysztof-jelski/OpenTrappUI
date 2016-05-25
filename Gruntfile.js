@@ -44,6 +44,9 @@ module.exports = function (grunt) {
                 }
             }
         },
+        'eslint': {
+            target: ['./']
+        },
         karma: {
             unit: {
                 configFile: 'test/karma.conf.js'
@@ -107,12 +110,13 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-bower');
+    grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-gh-pages');
     grunt.loadNpmTasks('grunt-exec');
 
-    grunt.registerTask('default', ['cleanLib', 'bower', 'exec:generate_parser', 'karma:unit']);
+    grunt.registerTask('default', ['cleanLib', 'bower', 'exec:generate_parser', 'eslint', 'karma:unit']);
 
     grunt.registerTask('server', ["default", 'connect']);
 };

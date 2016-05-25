@@ -4,12 +4,12 @@
   },
   "devDependencies": {
     "bower": "1.7.9",
-    "eslint": "2.10.2",
     "eslint-plugin-angular": "1.0.1",
     "grunt": "1.0.1",
     "grunt-bower": "0.21.1",
     "grunt-cli": "1.2.0",
     "grunt-contrib-connect": "1.0.2",
+    "grunt-eslint": "18.1.0",
     "grunt-exec": "0.4.7",
     "grunt-gh-pages": "1.1.0",
     "grunt-karma": "1.0.0",
@@ -27,7 +27,7 @@
   "scripts": {
     "postinstall": "bower prune && bower install",
     "lint": "eslint ./",
-    "test": "npm run lint && grunt",
+    "test": "grunt",
     "start": "grunt server"
   },
   "repository": {
