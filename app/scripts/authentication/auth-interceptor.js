@@ -19,13 +19,14 @@ angular
 
     })
     .run(function ($rootScope, $state, currentEmployee) {
+        /* eslint no-unused-vars:"off" */
         var destroyableHandler = $rootScope.$on('$stateChangeStart', function (event, toState) {
             if (doesRequireLogin() && !currentEmployee.isAuthenticated()) {
                 changeStateTo('home');
             }
 
             function doesRequireLogin() {
-                return toState.data !== undefined && toState.data.requiresLogin;
+                return angular.isDefined(toState.data) && toState.data.requiresLogin;
             }
 
             function changeStateTo(stateName) {

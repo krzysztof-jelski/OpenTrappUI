@@ -1,8 +1,8 @@
 <div class="registration">
     <div class="container">
         <div class="row slide " style="height:50px;position:relative;">
-            <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}} alert-dismissable">
-                <button type="button" class="close" ng-click="clearAlerts()">
+            <div ng-repeat="alert in registration.alerts" class="alert alert-{{alert.type}} alert-dismissable">
+                <button type="button" class="close" ng-click="registration.clearAlerts()">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
                 <p ng-bind-html="alert.message"/>
@@ -17,9 +17,9 @@
         </div>
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <form ng-submit="logWork()">
+                <form ng-submit="registration.logWork()">
                     <div class="form" role="form">
-                        <div class="input-group has-feedback has-{{status}}">
+                        <div class="input-group has-feedback has-{{registration.status}}">
 
                         <span class="input-group-btn">
                             <button

@@ -11,8 +11,9 @@ angular
             });
         $urlRouterProvider.otherwise('/');
     })
-    .controller('RouterCtrl', function ($scope, $location) {
-        $scope.isActive = function (path) {
+    .controller('RouterCtrl', function ($location) {
+        var self = this;
+        self.isActive = function (path) {
             return ($location.path().substr(0, path.length) == path);
         };
     });

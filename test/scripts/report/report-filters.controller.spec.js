@@ -9,11 +9,11 @@ describe('Report Filters Controller', function () {
     var timeout;
     var availableMonths;
 
-    beforeEach(function () {
+    beforeEach(inject(function (Month) {
         currentMonth = new Month('2014/01');
         worklogIsReady = function () {
         };
-    });
+    }));
     beforeEach(inject(function ($rootScope, _$controller_, $timeout, _worklog_, _currentEmployee_, _availableMonths_) {
         availableMonths = _availableMonths_;
         scope = $rootScope.$new();
@@ -44,10 +44,10 @@ describe('Report Filters Controller', function () {
         spyOn(availableMonths, 'get').and.returnValue(['2014/02', '2014/01']);
 
         // when:
-        createReportControllerWithTimeout();
+        var controller = createReportControllerWithTimeout();
 
         // then:
-        expect(scope.months).toEqual(['2014/02', '2014/01']);
+        expect(controller.months).toEqual(['2014/02', '2014/01']);
     });
 
     it('selects current user by default', function () {
@@ -81,12 +81,13 @@ describe('Report Filters Controller', function () {
     }
 
     function createReportControllerWithTimeout() {
-        $controller('ReportController', {
+        var controller = $controller('ReportController', {
             $scope: scope,
             currentMonth: currentMonth,
             timeout: timeout
         });
         timeout.flush();
+        return controller;
     }
 
 });

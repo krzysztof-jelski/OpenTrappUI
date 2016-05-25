@@ -79,7 +79,7 @@
 
 <!-- Menu -->
 <!-- TODO use router on state or component instead of one attached to view -->
-<nav ng-controller="RouterCtrl" class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav ng-controller="RouterCtrl as router" class="navbar navbar-default navbar-fixed-top" role="navigation">
 
     <div class="container">
         <div class="navbar-header">
@@ -90,20 +90,20 @@
         </div>
 
         <!-- TODO use router on state or component instead of one attached to view -->
-        <ul class="nav navbar-nav navbar-right" ng-controller="SignInCtrl" ng-init="init()">
-            <li ng-if="authenticated" ng-class="{active: isActive('/registration')}">
+        <ul class="nav navbar-nav navbar-right" ng-controller="SignInController as signIn">
+            <li ng-if="signIn.authenticated" ng-class="{active: router.isActive('/registration')}">
                 <a ui-sref="registration">
                     <span class="glyphicon glyphicon-plus"></span>
                     Register time
                 </a>
             </li>
-            <li ng-if="authenticated" ng-class="{active: isActive('/report')}">
+            <li ng-if="signIn.authenticated" ng-class="{active: router.isActive('/report')}">
                 <a ui-sref="report.calendar">
                     <span class="glyphicon glyphicon-stats"></span>
                     Reports
                 </a>
             </li>
-            <li ng-if="authenticated" ng-class="{active: isActive('/config')}">
+            <li ng-if="signIn.authenticated" ng-class="{active: router.isActive('/config')}">
                 <a ui-sref="config">
                     <span class="glyphicon glyphicon-wrench"></span>
                     Settings
@@ -111,19 +111,19 @@
             </li>
             <li>
                 <p class="navbar-text sign-in">
-                    <span ng-if="!authenticated && !unauthenticated">
+                    <span ng-if="!signIn.authenticated && !signIn.unauthenticated">
                         <img src="img/ajax-loader-b.gif">
                         <span style="font-size:10px;padding-left:5px; padding-right:20px;">Connecting...</span>
                     </span>
-                    <span ng-if="authenticated">
+                    <span ng-if="signIn.authenticated">
                         <span class="glyphicon glyphicon-user"></span>
                         {{username}}
                     </span>
-                    <a ng-if="authenticated" href="{{logoutUrl}}">
+                    <a ng-if="signIn.authenticated" href="{{signIn.logoutUrl}}">
                         <span class="glyphicon glyphicon-off"></span>
                         Sign Out
                     </a>
-                    <a ng-if="unauthenticated" href="{{loginUrl}}">
+                    <a ng-if="signIn.unauthenticated" href="{{signIn.loginUrl}}">
                         <span class="glyphicon glyphicon-user"></span>
                         Sign In
                     </a>

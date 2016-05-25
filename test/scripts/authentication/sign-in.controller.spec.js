@@ -2,15 +2,11 @@ describe("SignIn", function () {
 
     beforeEach(module('openTrapp.authentication'));
 
-    var scope, httpBackend;
-    var currentEmployee;
-    var location;
+    var $controller, scope, httpBackend, currentEmployee, location;
 
-    beforeEach(inject(function ($rootScope, $controller, $httpBackend, $location, _currentEmployee_) {
+    beforeEach(inject(function (_$controller_, $rootScope, $httpBackend, $location, _currentEmployee_) {
+        $controller = _$controller_;
         scope = $rootScope.$new();
-        $controller('SignInCtrl', {
-            $scope: scope
-        });
         httpBackend = $httpBackend;
         location = $location;
         currentEmployee = _currentEmployee_;
@@ -18,7 +14,7 @@ describe("SignIn", function () {
     }));
 
     it('gets authentication status', function () {
-
+        // given
         httpBackend.expectGET("http://localhost:8080/endpoints/v1/authentication/status").respond(200, {
             "authenticated": true,
             "displayName": "Homer Simpson",
@@ -28,18 +24,21 @@ describe("SignIn", function () {
         });
         spyOn(location, 'absUrl').and.returnValue('currentLocation');
 
-        scope.init();
+        // when
+        var controller = newSignInController();
         httpBackend.flush();
 
-        expect(scope.authenticated).toEqual(true);
-        expect(scope.displayName).toEqual("Homer Simpson");
-        expect(scope.username).toEqual("homer.simpson");
-        expect(scope.loginUrl).toEqual("/loginUrl?redirect_to=currentLocation");
-        expect(scope.logoutUrl).toEqual("/logoutUrl?redirect_to=currentLocation");
+        // then
+        expect(controller.authenticated).toEqual(true);
+        expect(controller.unauthenticated).toEqual(false);
+        expect(controller.displayName).toEqual("Homer Simpson");
+        expect(controller.username).toEqual("homer.simpson");
+        expect(controller.loginUrl).toEqual("/loginUrl?redirect_to=currentLocation");
+        expect(controller.logoutUrl).toEqual("/logoutUrl?redirect_to=currentLocation");
     });
 
     it('sets currentEmployee', function () {
-
+        // given
         httpBackend.expectGET("http://localhost:8080/endpoints/v1/authentication/status").respond(200, {
             "authenticated": true,
             "displayName": "Homer Simpson",
@@ -48,10 +47,18 @@ describe("SignIn", function () {
             "logoutUrl": "/logoutUrl"
         });
 
-        scope.init();
+        // when
+        newSignInController();
         httpBackend.flush();
 
+        // then
         expect(currentEmployee.signedInAs).toHaveBeenCalledWith('homer.simpson');
     });
+
+    function newSignInController() {
+        return $controller('SignInController', {
+            $scope: scope
+        });
+    }
 
 });

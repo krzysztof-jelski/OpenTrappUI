@@ -1,12 +1,17 @@
 angular
     .module('openTrapp.worklog')
-    .controller('BulkEditCtrl', function ($scope, $uibModal, worklog) {
+    .controller('BulkEditCtrl', function ($uibModal, worklog) {
+        var self = this;
 
-        $scope.open = function (query) {
+        self.open = open;
+        self.query = query;
+
+        function open(query) {
 
             var modalInstance = $uibModal.open({
-                templateUrl: 'templates/worklog/edition/bulk-edit.html',
+                templateUrl: 'templates/worklog/bulk-edit.html',
                 controller: 'BulkEditModalCtrl',
+                controllerAs: 'bulkEdit',
                 resolve: {
                     query: function () {
                         return query;
@@ -17,77 +22,78 @@ angular
             modalInstance.result.then(function () {
                 worklog.refresh();
             });
-        };
+        }
 
-        $scope.query = function () {
+        function query() {
             return worklog.asQueryExpression();
-        };
+        }
 
     })
-    .controller('BulkEditModalCtrl', function ($uibModalInstance, $scope, $http, query) {
+    .controller('BulkEditModalCtrl', function ($uibModalInstance, $http, query) {
+        var self = this;
 
-        $scope.onQueryChange = onQueryChange;
-        $scope.form = {
+        self.query = undefined;
+        self.onQueryChange = onQueryChange;
+        self.form = {
             query: query,
             expression: ""
         };
-        $scope.alerts = [];
+        self.alerts = [];
+        self.entriesAffected = false;
+        self.ok = ok;
+        self.cancel = cancel;
+        self.clearAlerts = clearAlerts;
 
-        $scope.onQueryChange(query);
+        onQueryChange(query);
 
-        $scope.ok = function () {
+        function ok() {
 
             var data = {
-                query: $scope.form.query,
-                expression: $scope.form.expression
+                query: self.form.query,
+                expression: self.form.expression
             };
 
             $http.post('http://localhost:8080/endpoints/v1/work-log/bulk-update', data)
                 .then(function () {
                     $uibModalInstance.close();
-                    $scope.alerts = [];
-                })
-                .catch(function (response) {
-                    $scope.shake();
-                    printError(response.data);
+                    self.alerts = [];
                 });
-        };
+        }
 
-        $scope.cancel = function () {
+        function cancel() {
             $uibModalInstance.dismiss('cancel');
-        };
+        }
 
-        $scope.clearAlerts = function () {
-            $scope.alerts = [];
-        };
+        function clearAlerts() {
+            self.alerts = [];
+        }
 
         function onQueryChange(query) {
-            if (query === undefined) {
+            if (angular.isUndefined(query)) {
                 return;
             }
             $http.get("http://localhost:8080/endpoints/v1/work-log/" + encodeQuery(query))
                 .then(function (response) {
-                    $scope.entriesAffected = response.data.entriesAffected;
-                    $scope.alerts = [];
+                    self.entriesAffected = response.data.entriesAffected;
+                    self.alerts = [];
                 })
                 .catch(function (response) {
                     printError(response.data);
                 });
-            $scope.query = query;
         }
 
         function encodeQuery(query) {
-            query = query.replace(/#/g, "!project=");
-            query = query.replace(/\*/g, "!employee=");
-            query = query.replace(/@/g, "!date=");
-            query = query.replace(/\s/g, "+");
-            query = query.replace(/\//g, ":");
-            return query;
+            return query
+                .replace(/#/g, "!project=")
+                .replace(/\*/g, "!employee=")
+                .replace(/@/g, "!date=")
+                .replace(/\s/g, "+")
+                .replace(/\//g, ":");
         }
 
         function printError(response) {
-            $scope.entriesAffected = false;
-            $scope.alerts = [
+            self.entriesAffected = false;
+            self.alerts = [
                 {type: 'danger', message: response.error}
             ];
         }

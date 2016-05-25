@@ -1,44 +1,55 @@
 var Workload = function (workload) {
 
-    var minutes = 0;
+    var workloadAsMinutes = 0;
 
     if (isNaN(workload)) {
-        var expression = workload.replace("m", "").replace("h", "*60").replace("d", "*8*60").split(" ").join("+");
-        minutes = eval(expression);
+        var expression = workload
+            .replace("m", "")
+            .replace("h", "*60")
+            .replace("d", "*8*60")
+            .split(" ")
+            .join("+");
+        workloadAsMinutes = eval(expression);
     } else {
-        minutes = workload;
+        workloadAsMinutes = workload;
     }
 
-    var printMinutes = function () {
-        var min = minutes % 60;
-        return min == 0 ? "" : min + "m";
-    };
-    var h = function (m) {
-        return (m - m % 60) / 60;
-    };
-    var printHours = function () {
-
-        if (minutes == 0) {
-            return "0h";
-        }
-
-        var hours = h(minutes) % 8;
-        return hours == 0 ? "" : hours + "h";
-    };
-    var printDays = function () {
-        var days = (h(minutes) - h(minutes) % 8) / 8;
-        return days == 0 ? "" : days + "d";
-    };
-
     return {
-        minutes: minutes,
+        minutes: workloadAsMinutes,
         print: function () {
             return _([printDays(), printHours(), printMinutes()]).without("").join(" ");
         },
-        add: function (x) {
-            return new Workload(minutes + x.minutes);
+        add: function (workloadToAdd) {
+            return new Workload(workloadAsMinutes + workloadToAdd.minutes);
         }
     };
+
+    function printMinutes() {
+        var minutes = workloadAsMinutes % 60;
+        return minutes == 0 ? "" : minutes + "m";
+    }
+
+    function printHours() {
+        if (workloadAsMinutes == 0) {
+            return "0h";
+        }
+        var hours = hoursInMinutes(workloadAsMinutes) % 8;
+        return hours == 0 ? "" : hours + "h";
+    }
+
+    function printDays() {
+        var days = daysInHours(hoursInMinutes(workloadAsMinutes));
+        return days == 0 ? "" : days + "d";
+    }
+
+    function hoursInMinutes(minutes) {
+        return (minutes - minutes % 60) / 60;
+    }
+
+    function daysInHours(hours) {
+        return (hours - hours % 8) / 8;
+    }
+
 };
 
 Workload.isValid = function (workload) {

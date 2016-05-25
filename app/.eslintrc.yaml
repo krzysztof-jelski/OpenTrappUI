@@ -19,16 +19,14 @@ globals:
 
 rules:
   angular/angularelement: error
-  # TODO make it error
+  # TODO increase to "error"
   angular/controller-as: warn
-  # TODO make it error
+  # TODO increase to "error"
   angular/controller-as-route: warn
-  angular/controller-as-vm: error
-  # TODO make it error
-  angular/definedundefined: warn
+  angular/definedundefined: error
   angular/document-service: error
   angular/deferred: error
-  angular/di-unused: error
+  angular/di-unused: warn
   angular/directive-restrict: error
   angular/foreach: error
   angular/interval-service: error
@@ -45,18 +43,15 @@ rules:
   angular/module-setter: error
   angular/no-angular-mock: error
   angular/no-cookiestore : error
-  # TODO make it error
   angular/no-directive-replace: warn
   angular/no-http-callback: error
   angular/no-inline-template: error
   angular/no-jquery-angularelement: error
   angular/no-private-call: error
-  # TODO make it error
+  # TODO increase to "error"
   angular/no-services: warn
   angular/no-service-method: error
   angular/on-watch: error
-  # TODO make it error
-  angular/rest-service: warn
   angular/timeout-service: error
   angular/typecheck-array: error
   angular/typecheck-date : error

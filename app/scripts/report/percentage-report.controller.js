@@ -1,12 +1,13 @@
 angular
     .module('openTrapp.report')
-    .controller('PercentageReportController', function ($scope, $document, worklog) {
+    .controller('PercentageReportController', function ($document, worklog) {
+        var self = this;
 
         var colors = ['88', 'AA', 'CC'];
         var chartObject = false;
 
-        $scope.projects = [];
-        $scope.colorFor = colorFor;
+        self.projects = [];
+        self.colorFor = colorFor;
 
         recreateReport();
         worklog.onUpdate(recreateReport);
@@ -38,7 +39,7 @@ angular
                 }
             });
 
-            $scope.projects = _(projects).sortBy(function (x) {
+            self.projects = _(projects).sortBy(function (x) {
                 return -(new Workload(x.total).minutes);
             }).value();
         }
@@ -75,11 +76,11 @@ angular
             var ctx = chartElement.getContext("2d");
             var data = [];
 
-            _($scope.projects).forEach(function (p) {
+            _(self.projects).forEach(function (p) {
                 var share = new Workload(p.total).minutes;
                 data.push({
                     value: share,
-                    color: $scope.colorFor(p.name),
+                    color: self.colorFor(p.name),
                     label: p.name
                 });
             });

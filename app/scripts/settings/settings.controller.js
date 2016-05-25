@@ -1,27 +1,31 @@
 angular
     .module('openTrapp.settings')
-    .controller('SettingsController',
-        function ($scope, $cookies) {
-            $scope.init = function () {
+    .controller('SettingsController', function ($cookies) {
+            var self = this;
 
-                $scope.apiServerUrl = 'http://open-trapp.herokuapp.com';
+            self.init = init;
+            self.cancel = init;
+            self.save = save;
+            self.apiServerUrl = undefined;
+        self.alerts = [];
+
+            init();
+
+            function init() {
+                self.apiServerUrl = 'http://open-trapp.herokuapp.com';
                 var savedApiServerUrl = $cookies.get('apiServerUrl');
                 if (savedApiServerUrl) {
-                    $scope.apiServerUrl = savedApiServerUrl;
+                    self.apiServerUrl = savedApiServerUrl;
                 }
-            };
+            }
 
-            $scope.cancel = function () {
+            function save() {
+                $cookies.put('apiServerUrl', self.apiServerUrl);
+                self.alerts = [{
+                    message: 'Settings have been saved!',
+                    type: 'success'
+                }];
+            }
 
-                $scope.init();
-            };
-
-            $scope.save = function () {
-
-                $cookies.put('apiServerUrl', $scope.apiServerUrl);
-                $scope.alert = 'Settings have been saved!';
-            };
-
-            $scope.init();
         }
     );

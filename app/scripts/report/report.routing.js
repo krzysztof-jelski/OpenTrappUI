@@ -6,7 +6,8 @@ angular
                 abstract: true,
                 url: '/report',
                 templateUrl: 'templates/report/report.html',
-                controller: 'ReportController'
+                controller: 'ReportController',
+                controllerAs: 'report'
             })
             .state('report.calendar', {
                 url: '/calendar',
@@ -28,6 +29,7 @@ angular
                 url: '/percentage',
                 templateUrl: 'templates/report/percentage-report.html',
                 controller: 'PercentageReportController',
+                controllerAs: 'percentageReport',
                 data: {
                     requiresLogin: true,
                     reportType: 'percentage'

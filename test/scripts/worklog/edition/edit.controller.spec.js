@@ -2,11 +2,10 @@ describe('EditModalCtrl', function () {
 
     beforeEach(module('openTrapp.worklog'));
 
-    var httpBackend, scope, modal, $controller;
+    var httpBackend, modal, $controller;
 
-    beforeEach(inject(function ($httpBackend, $rootScope, _$controller_) {
+    beforeEach(inject(function ($httpBackend, _$controller_) {
         httpBackend = $httpBackend;
-        scope = $rootScope.$new();
         modal = jasmine.createSpyObj("modal", ["close", 'dismiss']);
         $controller = _$controller_;
     }));
@@ -14,24 +13,22 @@ describe('EditModalCtrl', function () {
     it("initializes", function () {
         var item = {id: "someId"};
 
-        $controller('EditModalCtrl', {
-            $scope: scope,
+        var controller = $controller('EditModalCtrl', {
             $uibModalInstance: modal,
             item: item
         });
 
-        expect(scope.item).toEqual(item);
-        expect(scope.item).not.toBe(item);
+        expect(controller.item).toEqual(item);
+        expect(controller.item).not.toBe(item);
     });
 
     it("cancels", function () {
-        $controller('EditModalCtrl', {
-            $scope: scope,
+        var controller = $controller('EditModalCtrl', {
             $uibModalInstance: modal,
             item: {}
         });
 
-        scope.cancel();
+        controller.cancel();
 
         expect(modal.dismiss).toHaveBeenCalled();
     });
@@ -40,18 +37,17 @@ describe('EditModalCtrl', function () {
 
         var worklog = jasmine.createSpyObj("modal", ['refresh']);
 
-        $controller('EditModalCtrl', {
-            $scope: scope,
+        var controller = $controller('EditModalCtrl', {
             $uibModalInstance: modal,
             item: {id: "worklogId"},
             worklog: worklog
         });
-        scope.item.workload = "some workload";
-        scope.item.projectName = "Project Manhattan";
+        controller.item.workload = "some workload";
+        controller.item.projectName = "Project Manhattan";
         httpBackend.expectPOST("http://localhost:8080/endpoints/v1/work-log/entries/worklogId",
             {workload: "some workload", projectName: "Project Manhattan"}).respond(200);
 
-        scope.ok();
+        controller.ok();
         httpBackend.flush();
 
         expect(modal.close).toHaveBeenCalledWith({

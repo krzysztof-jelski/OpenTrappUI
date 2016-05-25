@@ -1,25 +1,32 @@
 angular
     .module('openTrapp.authentication')
-    .controller('SignInCtrl',
-        function ($log, $scope, $rootScope, $http, $location, currentEmployee) {
-            $scope.init = function () {
+    .controller('SignInController', function ($log, $rootScope, $http, $location, currentEmployee) {
+        var self = this;
+
+        /* eslint no-unused-vars:"off" */
+        var destroyableHandler = $rootScope.$on('AuthTokenReceived', function () {
+            $log.log('AuthTokenReceived');
+            init();
+        });
+
+        init();
+
+        function init() {
                 $http.get('http://localhost:8080/endpoints/v1/authentication/status')
                     .then(function (response) {
                         var data = response.data;
-                        $scope.displayName = data.displayName;
-                        $scope.authenticated = data.authenticated;
-                        $scope.unauthenticated = !data.authenticated;
-                        $scope.username = data.username;
-                        $rootScope.currentUser = $scope.username;
-                        $scope.loginUrl = data.loginUrl + "?redirect_to=" + $location.absUrl();
-                        $scope.logoutUrl = data.logoutUrl + "?redirect_to=" + $location.absUrl();
+                        self.displayName = data.displayName;
+                        self.authenticated = data.authenticated;
+                        self.unauthenticated = !data.authenticated;
+                        self.username = data.username;
+                        self.loginUrl = data.loginUrl + "?redirect_to=" + $location.absUrl();
+                        self.logoutUrl = data.logoutUrl + "?redirect_to=" + $location.absUrl();
+
+                        $rootScope.currentUser = self.username;
 
                         currentEmployee.signedInAs(data.username);
                     });
-            };
-            var destroyableHandler = $rootScope.$on('AuthTokenReceived', function () {
-                $log.log('AuthTokenReceived');
-                $scope.init();
-            });
+        }
+
         }
     );

@@ -2,13 +2,11 @@ describe("Settings", function () {
 
     beforeEach(module('openTrapp.settings'));
 
-    var scope, cookies;
+    var $controller, $rootScope, cookies;
 
-    beforeEach(inject(function ($rootScope, $controller, $cookies) {
-        scope = $rootScope.$new();
-        $controller('SettingsController', {
-            $scope: scope
-        });
+    beforeEach(inject(function (_$controller_, _$rootScope_, $cookies) {
+        $controller = _$controller_;
+        $rootScope = _$rootScope_;
         cookies = $cookies;
         cookies.remove('apiServerUrl');
     }));
@@ -17,25 +15,25 @@ describe("Settings", function () {
 
         cookies.put('apiServerUrl', 'http://api.open-trapp.com');
 
-        scope.init();
+        var settings = newSettingsController();
 
-        expect(scope.apiServerUrl).toEqual('http://api.open-trapp.com');
+        expect(settings.apiServerUrl).toEqual('http://api.open-trapp.com');
 
     });
 
     it('loads default serverUrl', function () {
 
-        scope.init();
+        var settings = newSettingsController();
 
-        expect(scope.apiServerUrl).toEqual('http://open-trapp.herokuapp.com');
+        expect(settings.apiServerUrl).toEqual('http://open-trapp.herokuapp.com');
     });
 
     it('stores serverUrl to cookies on save', function () {
 
-        scope.init();
-        scope.apiServerUrl = 'http://test-api.open-trapp.com';
+        var settings = newSettingsController();
+        settings.apiServerUrl = 'http://test-api.open-trapp.com';
 
-        scope.save();
+        settings.save();
 
         expect(cookies.get('apiServerUrl')).toEqual('http://test-api.open-trapp.com');
     });
@@ -43,12 +41,18 @@ describe("Settings", function () {
     it('restores last serverUrl on cancel', function () {
 
         cookies.put('apiServerUrl', 'http://api.open-trapp.com');
-        scope.init();
+        var settings = newSettingsController();
 
-        scope.apiServerUrl = 'http://test-api.open-trapp.com';
-        scope.cancel();
+        settings.apiServerUrl = 'http://test-api.open-trapp.com';
+        settings.cancel();
 
-        expect(scope.apiServerUrl).toEqual('http://api.open-trapp.com');
+        expect(settings.apiServerUrl).toEqual('http://api.open-trapp.com');
     });
+
+    function newSettingsController() {
+        return $controller('SettingsController', {
+            $scope: $rootScope.$new()
+        });
+    }
 
 });

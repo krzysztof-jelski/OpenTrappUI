@@ -15,8 +15,6 @@ globals:
   "module": false
   # TODO use angular-moment to prevent global moment usage
   "moment": false
-  # TODO do we really need global Month function
-  "Month": false
   # TODO do we really need global Workload function
   "Workload": false
 
@@ -24,11 +22,11 @@ rules:
   angular/angularelement: error
   angular/controller-as: error
   angular/controller-as-route: error
-  angular/controller-as-vm: error
+  angular/controller-as-vm: warn
   angular/definedundefined: error
   angular/document-service: error
   angular/deferred: error
-  angular/di-unused: error
+  angular/di-unused: warn
   angular/directive-restrict: error
   angular/foreach: error
   angular/interval-service: error
@@ -55,7 +53,6 @@ rules:
   angular/no-services: error
   angular/no-service-method: error
   angular/on-watch: error
-  angular/rest-service: error
   angular/timeout-service: error
   angular/typecheck-array: error
   angular/typecheck-date : error
