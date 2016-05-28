@@ -4,8 +4,11 @@ angular
     ])
     .factory('currentEmployee', function ($cookies) {
 
+        var ANONYMOUS = 'Anonymous';
+
         return {
             signedInAs: signedInAs,
+            clear: clear,
             username: username,
             isAuthenticated: isAuthenticated
         };
@@ -14,12 +17,16 @@ angular
             setCurrentUserTo(user);
         }
 
+        function clear() {
+            setCurrentUserTo(ANONYMOUS);
+        }
+
         function username() {
             return currentUser();
         }
 
         function isAuthenticated() {
-            return currentUser() !== 'Anonymous';
+            return currentUser() !== ANONYMOUS;
         }
 
         function currentUser() {

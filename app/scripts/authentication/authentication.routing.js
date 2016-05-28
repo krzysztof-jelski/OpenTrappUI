@@ -15,12 +15,7 @@ angular
                     requiresLogin: false
                 },
                 reloadOnSearch: true,
-                controller: function ($state, $cookies, $rootScope) {
-                    var receivedAuthToken = $state.params.authToken;
-                    $cookies.put('authToken', receivedAuthToken);
-                    $rootScope.$emit('AuthTokenReceived');
-                    $state.go('home');
-                }
+                controller: 'AuthenticationController'
             });
     });
 

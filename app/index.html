@@ -41,8 +41,10 @@
 
     <!-- app -->
     <script type="text/javascript" src="scripts/open-trapp.module.js"></script>
+    <script type="text/javascript" src="scripts/open-trapp.routing.js"></script>
     <script type="text/javascript" src="scripts/authentication/authentication.module.js"></script>
     <script type="text/javascript" src="scripts/authentication/authentication.routing.js"></script>
+    <script type="text/javascript" src="scripts/authentication/authentication.controller.js"></script>
     <script type="text/javascript" src="scripts/authentication/auth-interceptor.js"></script>
     <script type="text/javascript" src="scripts/authentication/sign-in.controller.js"></script>
     <script type="text/javascript" src="scripts/employee/current-employee.factory.js"></script>
@@ -113,7 +115,9 @@
                 <p class="navbar-text sign-in">
                     <span ng-if="!signIn.authenticated && !signIn.unauthenticated">
                         <img src="img/ajax-loader-b.gif">
-                        <span style="font-size:10px;padding-left:5px; padding-right:20px;">Connecting...</span>
+                        <span style="font-size:10px;padding-left:5px; padding-right:20px;">
+                            Connecting...
+                        </span>
                     </span>
                     <span ng-if="signIn.authenticated">
                         <span class="glyphicon glyphicon-user"></span>
