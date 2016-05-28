@@ -4,7 +4,7 @@ angular
         $stateProvider
             .state('authFailed', {
                 url: '/authFailed',
-                templateUrl: 'authFailed.html',
+                templateUrl: 'auth-failed.html',
                 data: {
                     requiresLogin: false
                 }

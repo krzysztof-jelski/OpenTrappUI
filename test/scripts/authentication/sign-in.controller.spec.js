@@ -1,6 +1,10 @@
 describe("SignIn", function () {
 
-    beforeEach(module('openTrapp.authentication'));
+    beforeEach(module('openTrapp.authentication', {
+        '$state': {
+            go: jasmine.createSpy('go')
+        }
+    }));
 
     var $controller, scope, httpBackend, currentEmployee, location;
 

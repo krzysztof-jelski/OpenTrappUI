@@ -21,6 +21,7 @@ angular
     .run(function ($rootScope, $state, currentEmployee) {
         /* eslint no-unused-vars:"off" */
         var destroyableHandler = $rootScope.$on('$stateChangeStart', function (event, toState) {
+
             if (currentEmployee.isAuthenticated()) {
                 if (toState.name === 'home') {
                     changeStateTo('registration');
