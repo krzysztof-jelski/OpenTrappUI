@@ -18,7 +18,8 @@ angular
 
             setMonth: function (month, callback) {
                 $http.get('http://localhost:8080/endpoints/v1/calendar/' + month + '/work-log/entries')
-                    .success(function (data) {
+                    .then(function (response) {
+                        var data = response.data;
                         if (data) {
 
                             that.month = new String(month);
@@ -39,13 +40,13 @@ angular
                             });
 
                             _(that.projects).forEach(function (status, project) {
-                                if (status.active && projects[project] == undefined) {
+                                if (status.active && angular.isUndefined(projects[project])) {
                                     projects[project] = {hidden: true, active: true};
                                 }
                             });
 
                             _(that.employees).forEach(function (status, employee) {
-                                if (status.active && employees[employee] == undefined) {
+                                if (status.active && angular.isUndefined(employees[employee])) {
                                     employees[employee] = {hidden: true, active: true};
                                 }
                             });
@@ -124,7 +125,7 @@ angular
             },
             remove: function (id) {
                 $http({method: 'DELETE', url: 'http://localhost:8080/endpoints/v1/work-log/entries/' + id})
-                    .success(function (data) {
+                    .then(function () {
                         that.setMonth(that.month);
                     });
             },

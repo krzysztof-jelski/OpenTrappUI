@@ -1,12 +1,13 @@
 angular
     .module('openTrapp.report')
-    .controller('PercentageReportController', function ($scope, worklog) {
+    .controller('PercentageReportController', function ($document, worklog) {
+        var self = this;
 
         var colors = ['88', 'AA', 'CC'];
         var chartObject = false;
 
-        $scope.projects = [];
-        $scope.colorFor = colorFor;
+        self.projects = [];
+        self.colorFor = colorFor;
 
         recreateReport();
         worklog.onUpdate(recreateReport);
@@ -38,7 +39,7 @@ angular
                 }
             });
 
-            $scope.projects = _(projects).sortBy(function (x) {
+            self.projects = _(projects).sortBy(function (x) {
                 return -(new Workload(x.total).minutes);
             }).value();
         }
@@ -57,16 +58,16 @@ angular
         function colorFor(project) {
 
             var num = Math.abs((hashCode(project)) % 27);
-            c1 = Math.floor(num / 9);
-            c2 = Math.floor((num - c1 * 9) / 3);
-            c3 = num % 3;
+            var c1 = Math.floor(num / 9);
+            var c2 = Math.floor((num - c1 * 9) / 3);
+            var c3 = num % 3;
 
             return '#' + colors[c1] + colors[c2] + colors[c3];
         }
 
         function updateChart() {
 
-            var chartElement = document.getElementById("projectShare");
+            var chartElement = $document.getElementById("projectShare");
 
             if (!chartElement) {
                 return;
@@ -75,11 +76,11 @@ angular
             var ctx = chartElement.getContext("2d");
             var data = [];
 
-            _($scope.projects).forEach(function (p) {
+            _(self.projects).forEach(function (p) {
                 var share = new Workload(p.total).minutes;
                 data.push({
                     value: share,
-                    color: $scope.colorFor(p.name),
+                    color: self.colorFor(p.name),
                     label: p.name
                 });
             });

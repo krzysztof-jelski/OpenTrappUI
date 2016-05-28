@@ -40,19 +40,21 @@
             } else {
                 currentMonth = worklog.month;
             }
-            $http.get('http://localhost:8080/endpoints/v1/calendar/' + worklog.month).success(function (data) {
-                self.days = _(data.days).map(function (d) {
+            $http.get('http://localhost:8080/endpoints/v1/calendar/' + worklog.month)
+                .then(function (response) {
+                    var data = response.data;
+                    self.days = _(data.days).map(function (d) {
 
-                    var m = moment(d.id, 'YYYY/MM/DD');
+                        var m = moment(d.id, 'YYYY/MM/DD');
 
-                    return {
-                        id: d.id,
-                        number: m.format('DD'),
-                        name: m.format('ddd'),
-                        holiday: d.holiday
-                    }
-                }).value();
-            });
+                        return {
+                            id: d.id,
+                            number: m.format('DD'),
+                            name: m.format('ddd'),
+                            holiday: d.holiday
+                        }
+                    }).value();
+                });
         }
 
         function calculateDays() {

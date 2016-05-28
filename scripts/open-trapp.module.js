@@ -1,7 +1,7 @@
 angular
     .module('openTrapp', [
-        'ui.router',
         'ngAnimate',
+        'ui.router',
         'openTrapp.time',
         'openTrapp.settings',
         'openTrapp.employee',

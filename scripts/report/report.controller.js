@@ -1,22 +1,28 @@
 angular
     .module('openTrapp.report')
-    .controller('ReportController', function ($scope, $http, $timeout, $state, worklog, currentMonth, currentEmployee, availableMonths) {
-        $scope.sort = {
+    .controller('ReportController', function ($timeout, $state, worklog, currentMonth, currentEmployee, availableMonths) {
+        var self = this;
+
+        // used in Table Report
+        self.sort = {
             predicate: 'day',
             reverse: true
         };
-        $scope.worklog = worklog;
-        $scope.months = [];
-        $scope.nextVisibleMonth = nextVisibleMonth;
-        $scope.prevVisibleMonth = prevVisibleMonth;
-        $scope.display = reportType;
 
-        init();
+        // used in parent Report view
+        self.months = [];
+        self.currentMonth = undefined;
+        self.nextVisibleMonth = nextVisibleMonth;
+        self.prevVisibleMonth = prevVisibleMonth;
+        self.display = reportType;
 
-        function init() {
-            worklog.reset();
-            $timeout(setMonths, 600);
-        }
+        // used in both parent Report view and Table Report
+        self.worklog = worklog;
+
+        var visibleMonth;
+
+        worklog.reset();
+        $timeout(setMonths, 600);
 
         function reportType() {
             return $state.$current.data.reportType;
@@ -29,19 +35,19 @@ angular
                 worklog.enableEmployeeProjects(employee);
 
             });
-            $scope.months = availableMonths.get(currentMonth);
-            $scope.currentMonth = currentMonth;
-            $scope.visibleMonth = currentMonth;
+            self.months = availableMonths.get(currentMonth);
+            self.currentMonth = currentMonth;
+            visibleMonth = currentMonth;
         }
 
         function nextVisibleMonth() {
-            $scope.visibleMonth = $scope.visibleMonth.next();
-            $scope.months = availableMonths.get($scope.visibleMonth);
+            visibleMonth = visibleMonth.next();
+            self.months = availableMonths.get(visibleMonth);
         }
 
         function prevVisibleMonth() {
-            $scope.visibleMonth = $scope.visibleMonth.prev();
-            $scope.months = availableMonths.get($scope.visibleMonth);
+            visibleMonth = visibleMonth.prev();
+            self.months = availableMonths.get(visibleMonth);
         }
 
     });

@@ -13,9 +13,9 @@
                 <th>Share</th>
             </tr>
             </thead>
-            <tr class="worklog-entry" ng-repeat="project in projects">
+            <tr class="worklog-entry" ng-repeat="project in percentageReport.projects">
                 <td>
-                    <div style="margin-left:auto;margin-right:auto;width: 16px; height:16px; background-color:{{colorFor(project.name)}}"></div>
+                    <div style="margin-left:auto;margin-right:auto;width: 16px; height:16px; background-color:{{percentageReport.colorFor(project.name)}}"></div>
                 </td>
                 <td>{{project.name}}</td>
                 <td>{{project.total}}</td>

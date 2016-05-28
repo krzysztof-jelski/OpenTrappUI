@@ -6,6 +6,7 @@ angular
                 url: '/config',
                 templateUrl: 'templates/settings/settings.html',
                 controller: 'SettingsController',
+                controllerAs: 'settings',
                 data: {
                     requiresLogin: true
                 }

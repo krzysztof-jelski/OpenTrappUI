@@ -6,6 +6,7 @@ angular
                 url: '/registration',
                 templateUrl: 'templates/registration/registration.html',
                 controller: 'RegistrationController',
+                controllerAs: 'registration',
                 data: {
                     requiresLogin: true
                 }
